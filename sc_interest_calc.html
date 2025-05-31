@@ -173,20 +173,23 @@
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
 
-        .time-period-group {
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-        }
+    .time-period-group {
+        gap: 8px;
+    }
 
-        .time-input {
-            flex: 1;
-        }
+    .time-toggle {
+        flex: 0 0 auto;
+        width: 110px; /* Increased to accommodate "Months" */
+        min-width: unset;
+    }
 
-        .time-toggle {
-            flex: 0.4;
-            min-width: 100px;
-        }
+    .time-toggle select {
+        padding: 12px 28px 12px 10px; /* Adjusted padding */
+        font-size: 14px;
+        background-size: 16px; /* Smaller dropdown arrow */
+        background-position: right 8px center;
+    }
+
 
         select {
             width: 100%;
@@ -386,10 +389,20 @@
             line-height: 1.8;
         }
 
-        .blog-content p {
-            margin-bottom: 20px;
-            text-align: justify;
-        }
+.blog-content p {
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+/* Add this to your mobile media query */
+@media (max-width: 768px) {
+    .blog-content p {
+        text-align: left; /* Change from justify to left on mobile */
+        font-size: 15px;
+        line-height: 1.7;
+        margin-bottom: 16px;
+    }
+}
 
     .blog-content ul {
         padding-left: 0;
