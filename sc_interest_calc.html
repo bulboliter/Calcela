@@ -173,6 +173,7 @@
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
 
+
         .time-period-group {
             display: flex;
             gap: 12px;
@@ -187,7 +188,6 @@
             flex: 0.4;
             min-width: 100px;
         }
-
 
 
         select {
@@ -390,7 +390,7 @@
 
 .blog-content p {
     margin-bottom: 20px;
-    text-align: left !important;
+    text-align: justify;
 }
 
 @media (max-width: 768px) {
@@ -410,33 +410,50 @@
     }
 }
 
-    .blog-content ul {
-        padding-left: 0;
-        margin-left: 0;
-    }
-    
+.blog-content ul {
+    padding-left: 0;
+    margin-left: 0;
+    list-style: none;
+}
+
+.blog-content ul li {
+    margin-bottom: 12px;
+    line-height: 1.7;
+    word-wrap: break-word;
+    padding-left: 20px;
+    text-indent: -20px;
+}
+
+/* Ensure select dropdown text is fully visible */
+select {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.blog-content ol {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.blog-content ol li {
+    margin-bottom: 10px;
+    line-height: 1.8;
+}
+
+@media (max-width: 768px) {
     .blog-content ul li {
-        margin-bottom: 12px;
-        line-height: 1.7;
-        word-wrap: break-word;
+        text-align: left !important;
     }
     
-    /* Ensure select dropdown text is fully visible */
-    select {
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .blog-content ol {
+        padding-left: 25px;
     }
-
-
-        .blog-content ol {
-            padding-left: 20px;
-            margin-bottom: 20px;
-        }
-
-        .blog-content ol li {
-            margin-bottom: 10px;
-            line-height: 1.8;
-        }
+    
+    .blog-content ol li {
+        text-align: left !important;
+        padding-left: 5px;
+    }
+}
 
         .formula-box {
             background-color: #f8fafc;
@@ -586,10 +603,10 @@
         min-width: unset;
     }
 
-    .time-toggle select {
-        padding: 12px 35px 12px 12px; /* Increased right padding */
-        font-size: 15px; /* Slightly larger for better readability */
-    }
+.time-toggle select {
+    padding: 12px 35px 12px 12px; /* Increased right padding */
+    font-size: 14px; /* Reduced for mobile */
+}
 
 
             .toggle-option label {
