@@ -391,16 +391,23 @@
             text-align: justify;
         }
 
-        .blog-content ul {
-            list-style: none;
-            padding-left: 0;
-            margin-bottom: 20px;
-        }
+    .blog-content ul {
+        padding-left: 0;
+        margin-left: 0;
+    }
+    
+    .blog-content ul li {
+        margin-bottom: 12px;
+        line-height: 1.7;
+        word-wrap: break-word;
+    }
+    
+    /* Ensure select dropdown text is fully visible */
+    select {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-.blog-content ul li {
-    margin-bottom: 10px;
-    line-height: 1.8;
-}
 
         .blog-content ol {
             padding-left: 20px;
@@ -550,20 +557,21 @@
                 -webkit-text-size-adjust: 100%;
             }
 
-            .time-period-group {
-                gap: 8px;
-            }
+    .time-period-group {
+        gap: 8px;
+    }
 
-            .time-toggle {
-                flex: 0 0 auto;
-                width: 85px;
-                min-width: unset;
-            }
+    .time-toggle {
+        flex: 0 0 auto;
+        width: 100px; /* Increased from 85px */
+        min-width: unset;
+    }
 
-            .time-toggle select {
-                padding: 12px 30px 12px 12px;
-                font-size: 14px;
-            }
+    .time-toggle select {
+        padding: 12px 35px 12px 12px; /* Increased right padding */
+        font-size: 15px; /* Slightly larger for better readability */
+    }
+
 
             .toggle-option label {
                 padding: 14px 12px;
