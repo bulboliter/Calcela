@@ -369,35 +369,38 @@
             margin-bottom: 5px;
         }
 
-        /* Blog Section Styles */
-        .blog-section {
-            background-color: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            max-width: 800px;
-            margin: 0 auto;
-        }
+/* Add to the existing <style> section */
+.blog-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 20px;
+}
 
-        .blog-content {
-            color: #34495e;
-            font-size: 16px;
-            line-height: 1.8;
-        }
+.blog-content ul li {
+    margin-bottom: 10px;
+    padding-left: 20px;
+    text-indent: -20px;
+    line-height: 1.8;
+}
 
-        .blog-content p {
-            margin-bottom: 20px;
-            text-align: justify;
-        }
+.blog-content ol {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
 
-        .blog-content ul, .blog-content ol {
-            margin-bottom: 20px;
-            padding-left: 30px;
-        }
+.blog-content ol li {
+    margin-bottom: 10px;
+    line-height: 1.8;
+}
 
-        .blog-content li {
-            margin-bottom: 10px;
-        }
+/* For better bullet point appearance */
+.blog-content ul li::before {
+    content: "•";
+    font-weight: bold;
+    display: inline-block;
+    width: 20px;
+    margin-left: 0;
+}
 
         .formula-box {
             background-color: #f8fafc;
@@ -803,32 +806,32 @@
     </div>
 </div>
 
-                <h3>How to Use Our Interest Calculator</h3>
-                <p>
-                    Our calculator makes it easy to calculate interest on savings accounts, loans, and investments. Simply enter your principal amount, interest rate, and time period to see instant results with interactive charts.
-                </p>
+<h3>How to Use Our Interest Calculator</h3>
+<p>
+    Our calculator makes it easy to calculate interest on savings accounts, loans, and investments. Simply enter your principal amount, interest rate, and time period to see instant results with interactive charts.
+</p>
 
-                <ol>
-                    <li>Enter your principal amount (the initial investment or loan amount)</li>
-                    <li>Input the annual interest rate as a percentage</li>
-                    <li>Select your time period in years or months</li>
-                    <li>Choose between simple or compound interest</li>
-                    <li>View your results instantly with visual charts</li>
-                </ol>
+<ol style="padding-left: 20px;">
+    <li style="margin-bottom: 10px;">Enter your principal amount (the initial investment or loan amount)</li>
+    <li style="margin-bottom: 10px;">Input the annual interest rate as a percentage</li>
+    <li style="margin-bottom: 10px;">Select your time period in years or months</li>
+    <li style="margin-bottom: 10px;">Choose between simple or compound interest</li>
+    <li style="margin-bottom: 10px;">View your results instantly with visual charts</li>
+</ol>
 
                 <h3>When to Use Simple vs Compound Interest</h3>
                 <p>
                     Understanding when to use each type of interest calculation is important for financial planning. Simple interest is typically used for short-term loans and specific financial products, while compound interest is the standard for most investments and savings accounts.
                 </p>
 
-                <h3>Benefits of Using an Interest Calculator</h3>
-                <ul>
-                    <li>Plan your savings and investment strategy effectively</li>
-                    <li>Compare different interest rates and time periods</li>
-                    <li>Visualize your investment growth with charts</li>
-                    <li>Make informed decisions about loans and investments</li>
-                    <li>Calculate loan interest over time accurately</li>
-                </ul>
+<h3>Benefits of Using an Interest Calculator</h3>
+<ul style="list-style: none; padding-left: 0;">
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Plan your savings and investment strategy effectively</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare different interest rates and time periods</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Visualize your investment growth with charts</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Make informed decisions about loans and investments</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Calculate loan interest over time accurately</li>
+</ul>
 
                 <h3>Interest Calculator for Different Scenarios</h3>
                 <p>
@@ -872,18 +875,18 @@
                     </div>
                 </div>
 
-                <h3>Tips for Maximizing Your Investment Returns</h3>
-                <p>
-                    To make the most of compound interest and grow your wealth effectively, consider these strategies:
-                </p>
+<h3>Tips for Maximizing Your Investment Returns</h3>
+<p>
+    To make the most of compound interest and grow your wealth effectively, consider these strategies:
+</p>
 
-                <ul>
-                    <li>Start investing early to maximize the compounding effect</li>
-                    <li>Choose investments with compound interest over simple interest</li>
-                    <li>Reinvest your earnings to accelerate growth</li>
-                    <li>Compare interest rates across different financial institutions</li>
-                    <li>Consider the impact of taxes on your returns</li>
-                </ul>
+<ul style="list-style: none; padding-left: 0;">
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Start investing early to maximize the compounding effect</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Choose investments with compound interest over simple interest</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Reinvest your earnings to accelerate growth</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare interest rates across different financial institutions</li>
+    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Consider the impact of taxes on your returns</li>
+</ul>
 
                 <h3>Understanding Interest Rates and Time Periods</h3>
                 <p>
