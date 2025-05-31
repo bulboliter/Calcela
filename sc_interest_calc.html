@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple & Compound Interest Calculator</title>
+    <meta name="description" content="Calculate simple and compound interest with our easy-to-use interest rate calculator. Visualize your investment growth over time.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .calculator-container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 520px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            color: #5a6c7d;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #e1e8ed;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: #fafbfc;
+    -webkit-appearance: none; /* Safari/Chrome - still needed */
+    -moz-appearance: none;    /* Firefox - still needed */
+    appearance: none;         /* Standard property */
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox - still needed */
+    appearance: textfield;       /* Standard property */
+}
+
+        .toggle-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .toggle-option {
+            flex: 1;
+            position: relative;
+        }
+
+        .toggle-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .toggle-option label {
+            display: block;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 0;
+            background-color: #fafbfc;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .toggle-option input[type="radio"]:checked + label {
+            background-color: #4a90e2;
+            color: white;
+            border-color: #4a90e2;
+        }
+
+        .toggle-option input[type="radio"]:focus + label {
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        .time-period-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .time-input {
+            flex: 1;
+        }
+
+        .time-toggle {
+            flex: 0.4;
+            min-width: 100px;
+        }
+
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            background-color: #fafbfc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6c7d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4a90e2;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .results {
+            margin-top: 32px;
+            padding: 24px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e1e8ed;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-label {
+            color: #5a6c7d;
+            font-size: 14px;
+        }
+
+        .result-value {
+            color: #2c3e50;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .result-value.total {
+            color: #4a90e2;
+            font-size: 22px;
+        }
+
+        .chart-container {
+            margin-top: 24px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-title {
+            font-size: 14px;
+            color: #5a6c7d;
+            text-align: center;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .chart-wrapper {
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        .line-chart-wrapper {
+            margin-top: 20px;
+            height: 250px;
+            position: relative;
+        }
+
+        .realtime-notice {
+            text-align: center;
+            color: #5a6c7d;
+            font-size: 12px;
+            margin-top: 16px;
+            font-style: italic;
+        }
+
+        .tap-hint {
+            text-align: center;
+            color: #5a6c7d;
+            font-size: 11px;
+            margin-top: 8px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        /* Loading state */
+        .calculating {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Error state */
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .input-error {
+            border-color: #e74c3c !important;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 480px) {
+            .calculator-container {
+                padding: 24px 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+
+            .input-group {
+                margin-bottom: 20px;
+            }
+
+            input[type="number"], input[type="text"], select {
+                padding: 12px 16px;
+                font-size: 16px;
+                -webkit-text-size-adjust: 100%;
+            }
+
+            .time-period-group {
+                gap: 8px;
+            }
+
+            .time-toggle {
+                flex: 0.5;
+                min-width: 90px;
+            }
+
+            .toggle-option label {
+                padding: 10px 8px;
+                font-size: 14px;
+            }
+
+            .results {
+                padding: 16px;
+            }
+
+            .result-value {
+                font-size: 16px;
+            }
+
+            .result-value.total {
+                font-size: 20px;
+            }
+
+            .chart-container {
+                padding: 16px;
+            }
+
+            .line-chart-wrapper {
+                height: 200px;
+            }
+
+            /* Fix for mobile hover issues */
+            @media (hover: none) and (pointer: coarse) {
+                .toggle-option label:active {
+                    background-color: #e1e8ed;
+                }
+                
+                .toggle-option input[type="radio"]:checked + label:active {
+                    background-color: #357abd;
+                }
+            }
+        }
+
+        /* Prevent iOS zoom on form focus */
+        @supports (-webkit-touch-callout: none) {
+            input[type="number"],
+            input[type="text"],
+            select {
+                font-size: 16px !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background-color: white;
+            }
+            
+            .calculator-container {
+                box-shadow: none;
+                padding: 20px;
+            }
+            
+            .tap-hint,
+            .realtime-notice {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1>Simple &amp; Compound<br>Interest Calculator</h1>
+        
+        <div class="input-group">
+            <label for="principal">Principal Amount ($)</label>
+            <input type="text" id="principal" placeholder="e.g. 10,000" value="10,000" 
+                   aria-label="Principal amount in dollars" 
+                   inputmode="decimal">
+            <div class="error-message" id="principal-error">Please enter a valid amount</div>
+        </div>
+
+        <div class="input-group">
+            <label for="rate">Annual Interest Rate (%)</label>
+            <input type="number" id="rate" placeholder="e.g. 5.5" step="0.01" min="0" max="100" value="5"
+                   aria-label="Annual interest rate percentage"
+                   inputmode="decimal">
+            <div class="error-message" id="rate-error">Please enter a rate between 0 and 100</div>
+        </div>
+
+        <div class="input-group">
+            <label>Time Period</label>
+            <div class="time-period-group">
+                <div class="time-input">
+                    <input type="number" id="time" placeholder="e.g. 2" step="0.01" min="0" max="100" value="10"
+                           aria-label="Time period"
+                           inputmode="decimal">
+                </div>
+                <div class="time-toggle">
+                    <select id="timeUnit" aria-label="Time unit">
+                        <option value="years">Years</option>
+                        <option value="months">Months</option>
+                    </select>
+                </div>
+            </div>
+            <div class="error-message" id="time-error">Please enter a valid time period</div>
+        </div>
+
+        <div class="input-group">
+            <label>Interest Type</label>
+            <div class="toggle-group" role="radiogroup" aria-label="Interest type">
+                <div class="toggle-option">
+                    <input type="radio" id="simple" name="interestType" value="simple" checked>
+                    <label for="simple">Simple</label>
+                </div>
+                <div class="toggle-option">
+                    <input type="radio" id="compound" name="interestType" value="compound">
+                    <label for="compound">Compound</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="results" id="results" role="region" aria-label="Calculation results">
+            <div class="result-item">
+                <span class="result-label">Interest Earned</span>
+                <span class="result-value" id="interestEarned" aria-live="polite">$0.00</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Total Amount</span>
+                <span class="result-value total" id="totalAmount" aria-live="polite">$0.00</span>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">Principal vs Interest Breakdown</div>
+                <div class="chart-wrapper">
+                    <canvas id="pieChart" aria-label="Pie chart showing principal vs interest breakdown"></canvas>
+                </div>
+                
+                <div class="chart-title" style="margin-top: 30px;">Growth Over Time</div>
+                <div class="line-chart-wrapper">
+                    <canvas id="lineChart" aria-label="Line chart showing investment growth over time"></canvas>
+                </div>
+                <div class="tap-hint">Tap the chart for details</div>
+            </div>
+            
+            <div class="realtime-notice">Calculating in real-time as you type</div>
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+
+        let pieChart = null;
+        let lineChart = null;
+        let lastWindowWidth = window.innerWidth;
+        let tooltipTimeout = null;
+        let debounceTimer = null;
+
+        // Input validation limits
+        const LIMITS = {
+            principal: { min: 0, max: 999999999 },
+            rate: { min: 0, max: 100 },
+            time: { min: 0, max: 100 }
+        };
+
+        function sanitizeNumber(value) {
+            // Remove any potentially harmful characters
+            return String(value).replace(/[^0-9.,]/g, '');
+        }
+
+        function formatWithCommas(number) {
+            return number.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function formatInputWithCommas(input) {
+            // Sanitize input first
+            let value = sanitizeNumber(input.value);
+            
+            // Remove all non-numeric characters except decimal point
+            value = value.replace(/[^0-9.]/g, '');
+            
+            // Ensure only one decimal point
+            const parts = value.split('.');
+            if (parts.length > 2) {
+                value = parts[0] + '.' + parts.slice(1).join('');
+            }
+            
+            // Limit decimal places to 2
+            if (parts.length === 2 && parts[1].length > 2) {
+                value = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+            
+            // Format integer part with commas
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            
+            // Rejoin parts
+            input.value = parts.length === 2 ? parts[0] + '.' + parts[1] : parts[0];
+        }
+
+        function parseFormattedNumber(value) {
+            const sanitized = sanitizeNumber(value);
+            return parseFloat(sanitized.replace(/,/g, '')) || 0;
+        }
+
+        function validateInput(id, value) {
+            const limits = LIMITS[id];
+            const errorElement = document.getElementById(`${id}-error`);
+            const inputElement = document.getElementById(id);
+            
+            if (!limits) return true;
+            
+            const numValue = id === 'principal' ? parseFormattedNumber(value) : parseFloat(value);
+            
+            if (isNaN(numValue) || numValue < limits.min || numValue > limits.max) {
+                inputElement.classList.add('input-error');
+                errorElement.style.display = 'block';
+                return false;
+            } else {
+                inputElement.classList.remove('input-error');
+                errorElement.style.display = 'none';
+                return true;
+            }
+        }
+
+        function calculateInterest() {
+            // Clear any existing debounce
+            clearTimeout(debounceTimer);
+            
+            // Debounce calculation for performance
+            debounceTimer = setTimeout(() => {
+                performCalculation();
+            }, 100);
+        }
+
+        function performCalculation() {
+            // Get input values
+            const principalInput = document.getElementById('principal');
+            const rateInput = document.getElementById('rate');
+            const timeInput = document.getElementById('time');
+            
+            const principal = parseFormattedNumber(principalInput.value);
+            const rate = parseFloat(rateInput.value) || 0;
+            const time = parseFloat(timeInput.value) || 0;
+            const timeUnit = document.getElementById('timeUnit').value;
+            const interestType = document.querySelector('input[name="interestType"]:checked').value;
+
+            // Validate inputs
+            const isPrincipalValid = validateInput('principal', principalInput.value);
+            const isRateValid = validateInput('rate', rate);
+            const isTimeValid = validateInput('time', time);
+
+            // Don't show results if validation fails or no valid input
+            if (!isPrincipalValid || !isRateValid || !isTimeValid || 
+                principal === 0 || rate === 0 || time === 0) {
+                document.getElementById('results').classList.remove('show');
+                return;
+            }
+
+            // Convert time to years if needed
+            const timeInYears = timeUnit === 'months' ? time / 12 : time;
+
+            // Calculate interest
+            let interest = 0;
+            let total = 0;
+
+            try {
+                if (interestType === 'simple') {
+                    interest = (principal * rate * timeInYears) / 100;
+                    total = principal + interest;
+                } else {
+                    // Compound interest formula: A = P(1 + r/n)^(nt)
+                    // Assuming annual compounding (n = 1)
+                    total = principal * Math.pow(1 + rate / 100, timeInYears);
+                    interest = total - principal;
+                }
+
+                // Check for overflow
+                if (!isFinite(total) || !isFinite(interest)) {
+                    throw new Error('Calculation overflow');
+                }
+
+                // Display results with thousand separators
+                document.getElementById('interestEarned').textContent = `$${formatWithCommas(interest)}`;
+                document.getElementById('totalAmount').textContent = `$${formatWithCommas(total)}`;
+                
+                // Show results section
+                document.getElementById('results').classList.add('show');
+
+                // Update charts
+                updateChart(principal, interest);
+                updateLineChart(principal, rate, timeInYears, interestType, timeUnit);
+            } catch (error) {
+                console.error('Calculation error:', error);
+                document.getElementById('results').classList.remove('show');
+            }
+        }
+
+        function updateChart(principal, interest) {
+            // Destroy existing chart if it exists
+            if (pieChart) {
+                pieChart.destroy();
+            }
+
+            // Calculate percentages
+            const total = principal + interest;
+            const principalPercentage = ((principal / total) * 100).toFixed(1);
+            const interestPercentage = ((interest / total) * 100).toFixed(1);
+
+            // Create pie chart
+            const pieCtx = document.getElementById('pieChart').getContext('2d');
+            pieChart = new Chart(pieCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [`Principal (${principalPercentage}%)`, `Interest (${interestPercentage}%)`],
+                    datasets: [{
+                        data: [principal, interest],
+                        backgroundColor: [
+                            '#4a90e2',
+                            '#5cb85c'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff',
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const dataset = data.datasets[0];
+                                            const value = dataset.data[i];
+                                            return {
+                                                text: label + ': $' + formatWithCommas(value),
+                                                fillStyle: dataset.backgroundColor[i],
+                                                hidden: false,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
+                            },
+                            onClick: null // Disable legend click
+                        },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label.split(' (')[0];
+                                    const value = '$' + formatWithCommas(context.parsed);
+                                    const percentage = context.label.match(/\(([^)]+)\)/)[1];
+                                    return label + ': ' + value + ' (' + percentage + ')';
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        function updateLineChart(principal, rate, timeInYears, interestType, timeUnit) {
+            // Destroy existing chart if it exists
+            if (lineChart) {
+                lineChart.destroy();
+            }
+
+            // Generate data points
+            const labels = [];
+            const principalData = [];
+            const interestData = [];
+            const totalData = [];
+            
+            // Determine number of points and labels
+            let numPoints = Math.min(Math.ceil(timeInYears), 10);
+            if (timeUnit === 'months' && timeInYears < 2) {
+                numPoints = Math.ceil(timeInYears * 12);
+            }
+            
+            for (let i = 0; i <= numPoints; i++) {
+                const currentTime = (i / numPoints) * timeInYears;
+                
+                // Generate appropriate labels
+                if (timeUnit === 'months' && timeInYears < 2) {
+                    labels.push(`Month ${Math.round(currentTime * 12)}`);
+                } else {
+                    labels.push(`Year ${currentTime.toFixed(1)}`);
+                }
+                
+                // Calculate values at this time point
+                let currentInterest = 0;
+                let currentTotal = principal;
+                
+                if (currentTime > 0) {
+                    if (interestType === 'simple') {
+                        currentInterest = (principal * rate * currentTime) / 100;
+                        currentTotal = principal + currentInterest;
+                    } else {
+                        currentTotal = principal * Math.pow(1 + rate / 100, currentTime);
+                        currentInterest = currentTotal - principal;
+                    }
+                }
+                
+                principalData.push(principal);
+                interestData.push(currentInterest);
+                totalData.push(currentTotal);
+            }
+
+            // Create line chart with mobile-optimized settings
+            const lineCtx = document.getElementById('lineChart').getContext('2d');
+            const isMobile = window.innerWidth <= 480;
+            
+            lineChart = new Chart(lineCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Principal',
+                            data: principalData,
+                            backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                            borderColor: '#4a90e2',
+                            borderWidth: 2,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: isMobile ? 0 : 3,
+                            pointHoverRadius: 5,
+                            pointHitRadius: isMobile ? 15 : 10,
+                            order: 2
+                        },
+                        {
+                            label: 'Interest',
+                            data: totalData,
+                            backgroundColor: 'rgba(92, 184, 92, 0.2)',
+                            borderColor: '#5cb85c',
+                            borderWidth: 2,
+                            fill: '-1',
+                            tension: 0.1,
+                            pointRadius: isMobile ? 0 : 3,
+                            pointHoverRadius: 5,
+                            pointHitRadius: isMobile ? 15 : 10,
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                        axis: 'x'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                },
+                                generateLabels: function(chart) {
+                                    return [
+                                        {
+                                            text: 'Principal',
+                                            fillStyle: '#4a90e2',
+                                            strokeStyle: '#4a90e2',
+                                            lineWidth: 2,
+                                            hidden: false,
+                                            index: 0
+                                        },
+                                        {
+                                            text: 'Interest',
+                                            fillStyle: '#5cb85c',
+                                            strokeStyle: '#5cb85c',
+                                            lineWidth: 2,
+                                            hidden: false,
+                                            index: 1
+                                        }
+                                    ];
+                                }
+                            },
+                            onClick: null // Disable legend click
+                        },
+                        tooltip: {
+                            enabled: true,
+                            mode: 'index',
+                            intersect: false,
+                            position: isMobile ? 'average' : 'nearest',
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: '#ddd',
+                            borderWidth: 1,
+                            titleFont: {
+                                size: isMobile ? 12 : 14
+                            },
+                            bodyFont: {
+                                size: isMobile ? 11 : 13
+                            },
+                            padding: isMobile ? 8 : 10,
+                            displayColors: false,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return tooltipItems[0].label;
+                                },
+                                label: function(context) {
+                                    return null;
+                                },
+                                afterBody: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    const total = totalData[index];
+                                    const interest = interestData[index];
+                                    const principal = principalData[index];
+                                    
+                                    return [
+                                        'Total: $' + formatWithCommas(total),
+                                        'Principal: $' + formatWithCommas(principal),
+                                        'Interest: $' + formatWithCommas(interest)
+                                    ];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000) {
+                                        return '$' + (value / 1000).toFixed(0) + 'k';
+                                    }
+                                    return '$' + value;
+                                },
+                                font: {
+                                    size: isMobile ? 10 : 11
+                                },
+                                maxTicksLimit: isMobile ? 6 : 8
+                            },
+                            grid: {
+                                display: true,
+                                drawBorder: false,
+                                color: '#f0f0f0'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: {
+                                    size: isMobile ? 10 : 11
+                                },
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: isMobile ? 5 : 8
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    onClick: function(event, elements) {
+                        // Clear any existing timeout
+                        if (tooltipTimeout) {
+                            clearTimeout(tooltipTimeout);
+                        }
+                        
+                        // If clicking on empty space, hide tooltip immediately
+                        if (!elements || elements.length === 0) {
+                            lineChart.tooltip.setActiveElements([]);
+                            lineChart.update();
+                        } else {
+                            // Auto-hide tooltip after 3 seconds
+                            tooltipTimeout = setTimeout(() => {
+                                lineChart.tooltip.setActiveElements([]);
+                                lineChart.update();
+                            }, 3000);
+                        }
+                    },
+                    onHover: function(event, elements) {
+                        // Clear timeout when hovering over data points
+                        if (elements && elements.length > 0) {
+                            if (tooltipTimeout) {
+                                clearTimeout(tooltipTimeout);
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Add click outside handler for mobile
+            if (isMobile) {
+                const chartContainer = document.querySelector('.line-chart-wrapper');
+                
+                // Remove any existing listeners
+                chartContainer.removeEventListener('click', handleChartOutsideClick);
+                
+                // Add new listener
+                chartContainer.addEventListener('click', handleChartOutsideClick);
+            }
+        }
+
+        function handleChartOutsideClick(event) {
+            const rect = event.currentTarget.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Check if click is outside the chart area
+            const chartArea = lineChart.chartArea;
+            if (x < chartArea.left || x > chartArea.right || 
+                y < chartArea.top || y > chartArea.bottom) {
+                // Hide tooltip
+                lineChart.tooltip.setActiveElements([]);
+                lineChart.update();
+                
+                // Clear any timeout
+                if (tooltipTimeout) {
+                    clearTimeout(tooltipTimeout);
+                }
+            }
+        }
+
+        // Real-time calculation
+        function setupRealtimeCalculation() {
+            // Special handling for principal input
+            const principalInput = document.getElementById('principal');
+            principalInput.addEventListener('input', function(e) {
+                formatInputWithCommas(e.target);
+                calculateInterest();
+            });
+            
+            // Prevent paste of invalid content
+            principalInput.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+                const sanitized = sanitizeNumber(pastedText);
+                e.target.value = sanitized;
+                formatInputWithCommas(e.target);
+                calculateInterest();
+            });
+            
+            // Regular inputs
+            const inputs = ['rate', 'time'];
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
+                input.addEventListener('input', calculateInterest);
+                
+                // Prevent invalid input
+                input.addEventListener('keypress', function(e) {
+                    const char = String.fromCharCode(e.which);
+                    const value = e.target.value;
+                    
+                    // Allow backspace, delete, tab, escape, enter
+                    if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 86 && e.ctrlKey === true) ||
+                        (e.keyCode === 88 && e.ctrlKey === true)) {
+                        return;
+                    }
+                    
+                    // Ensure that it is a number or decimal point
+                    if ((char < '0' || char > '9') && char !== '.') {
+                        e.preventDefault();
+                    }
+                    
+                    // Only allow one decimal point
+                    if (char === '.' && value.indexOf('.') !== -1) {
+                        e.preventDefault();
+                    }
+                });
+            });
+            
+            document.getElementById('timeUnit').addEventListener('change', calculateInterest);
+            
+            document.querySelectorAll('input[name="interestType"]').forEach(radio => {
+                radio.addEventListener('change', calculateInterest);
+            });
+        }
+
+        // Initialize with default values
+        window.addEventListener('DOMContentLoaded', () => {
+            setupRealtimeCalculation();
+            calculateInterest(); // Calculate with initial values
+            
+            // Add global click handler for closing tooltips
+            document.addEventListener('click', function(e) {
+                // Check if click is outside any chart
+                const chartContainers = document.querySelectorAll('.chart-wrapper, .line-chart-wrapper');
+                let clickedInsideChart = false;
+                
+                chartContainers.forEach(container => {
+                    if (container.contains(e.target)) {
+                        clickedInsideChart = true;
+                    }
+                });
+                
+                if (!clickedInsideChart && lineChart) {
+                    lineChart.tooltip.setActiveElements([]);
+                    lineChart.update();
+                    if (tooltipTimeout) {
+                        clearTimeout(tooltipTimeout);
+                    }
+                }
+            });
+        });
+
+        // Add enter key support
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    calculateInterest();
+                    // Move to next input
+                    const inputs = Array.from(document.querySelectorAll('input:not([type="radio"])'));
+                    const currentIndex = inputs.indexOf(e.target);
+                    if (currentIndex < inputs.length - 1) {
+                        inputs[currentIndex + 1].focus();
+                    }
+                }
+            });
+        });
+
+        // Handle window resize for chart responsiveness
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            const currentWidth = window.innerWidth;
+            
+            // Only recalculate if width actually changed
+            if (Math.abs(currentWidth - lastWindowWidth) > 10) {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    if (document.getElementById('results').classList.contains('show')) {
+                        lastWindowWidth = currentWidth;
+                        calculateInterest();
+                    }
+                }, 250);
+            }
+        });
+
+        // Prevent accidental zoom on double tap
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        // Touch event handling for better mobile experience
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('.toggle-option label').forEach(label => {
+                label.addEventListener('touchstart', function() {
+                    this.style.backgroundColor = '#e1e8ed';
+                });
+                
+                label.addEventListener('touchend', function() {
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                    }, 100);
+                });
+            });
+        }
+
+        // Optimize chart performance on mobile
+        if (window.innerWidth <= 480) {
+            Chart.defaults.animation.duration = 500; // Faster animations on mobile
+            Chart.defaults.elements.point.radius = 0; // Hide points by default on mobile
+        }
+
+        // Prevent memory leaks
+        window.addEventListener('beforeunload', () => {
+            if (pieChart) {
+                pieChart.destroy();
+            }
+            if (lineChart) {
+                lineChart.destroy();
+            }
+            
+            // Clear all timeouts
+            if (tooltipTimeout) {
+                clearTimeout(tooltipTimeout);
+            }
+            if (debounceTimer) {
+                clearTimeout(debounceTimer);
+            }
+            if (resizeTimeout) {
+                clearTimeout(resizeTimeout);
+            }
+        });
+
+        // Service Worker for offline functionality (optional)
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+            navigator.serviceWorker.register('/sw.js').catch(() => {
+                // Service worker registration failed, app will still work online
+            });
+        }
+
+        // Add keyboard navigation for accessibility
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && lineChart) {
+                lineChart.tooltip.setActiveElements([]);
+                lineChart.update();
+                if (tooltipTimeout) {
+                    clearTimeout(tooltipTimeout);
+                }
+            }
+        });
+
+        // Performance monitoring (optional)
+        if ('PerformanceObserver' in window) {
+            try {
+                const perfObserver = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        if (entry.duration > 100) {
+                            console.warn('Slow interaction detected:', entry.name, entry.duration);
+                        }
+                    }
+                });
+                perfObserver.observe({ entryTypes: ['measure'] });
+            } catch (e) {
+                // PerformanceObserver not supported
+            }
+        }
+    </script>
+</body>
+</html>
