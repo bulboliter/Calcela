@@ -1263,16 +1263,12 @@
             for (let i = 0; i <= numPoints; i++) {
                 const currentTime = (i / numPoints) * timeInYears;
                 
-                // Generate appropriate labels
-                if (timeUnit === 'months' && timeInYears < 2) {
-                    if (isMobile) {
-                        labels.push(`M${Math.round(currentTime * 12)}`);  // Shortened for mobile
-                    } else {
-                        labels.push(`Month ${Math.round(currentTime * 12)}`);
-                    }
-                } else {
-                    labels.push(`Year ${currentTime.toFixed(1)}`);
-                }
+// Generate appropriate labels
+if (timeUnit === 'months' && timeInYears < 2) {
+    labels.push(`Month ${Math.round(currentTime * 12)}`);
+} else {
+    labels.push(`Year ${currentTime.toFixed(1)}`);
+}
                 
                 // Calculate values at this time point
                 let currentInterest = 0;
@@ -1432,26 +1428,18 @@
                             }
                         },
                         x: {
-                            ticks: {
-                                font: {
-                                    size: isMobile ? 9 : 11  // Smaller font for mobile
-                                },
-                                maxRotation: 0,
-                                autoSkip: true,
-                                maxTicksLimit: isMobile ? 5 : 8,
-                                callback: function(value, index) {
-                                    // For mobile, shorten month labels even more if needed
-                                    const label = this.getLabelForValue(index);
-                                    if (isMobile && label && label.includes('Month')) {
-                                        return 'M' + label.replace('Month ', '');
-                                    }
-                                    return label;
-                                }
-                            },
-                            grid: {
-                                display: false
-                            }
-                        }
+    ticks: {
+        font: {
+            size: isMobile ? 9 : 11  // Smaller font for mobile
+        },
+        maxRotation: 0,
+        autoSkip: true,
+        maxTicksLimit: isMobile ? 5 : 8
+    },
+    grid: {
+        display: false
+    }
+}
                     },
                     onClick: function(event, elements) {
                         // Clear any existing timeout
