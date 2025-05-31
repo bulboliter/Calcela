@@ -108,7 +108,7 @@
             border-radius: 12px;
             font-size: 16px;
             font-family: inherit;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             background-color: #fafbfc;
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -156,7 +156,7 @@
             border: 2px solid #e1e8ed;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             margin-bottom: 0;
             background-color: #fafbfc;
             user-select: none;
@@ -173,7 +173,6 @@
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
         }
 
-
         .time-period-group {
             display: flex;
             gap: 12px;
@@ -189,7 +188,6 @@
             min-width: 100px;
         }
 
-
         select {
             width: 100%;
             padding: 14px 18px;
@@ -199,7 +197,7 @@
             font-family: inherit;
             background-color: #fafbfc;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -223,7 +221,6 @@
             background-color: #f8fafc;
             border-radius: 12px;
             display: none;
-            transition: opacity 0.2s ease;
         }
 
         .results.show {
@@ -388,72 +385,49 @@
             line-height: 1.8;
         }
 
-.blog-content p {
-    margin-bottom: 20px;
-    text-align: justify;
-}
+        .blog-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
 
-@media (max-width: 768px) {
-    .blog-section {
-        padding: 30px 20px;
-        border-radius: 20px 20px 0 0;
-        margin-top: 40px;
-    }
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 20px;
+            padding-left: 0;
+            list-style: none;
+        }
 
-    .blog-content {
-        font-size: 15px;
-    }
-    
-    /* Fix ALL paragraphs alignment on mobile */
-    .blog-content p {
-        text-align: left !important;
-    }
-}
+        .blog-content li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
 
-.blog-content ul {
-    padding-left: 0;
-    margin-left: 0;
-    list-style: none;
-}
+        .blog-content ul li:before {
+            content: "•";
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
 
-.blog-content ul li {
-    margin-bottom: 12px;
-    line-height: 1.7;
-    word-wrap: break-word;
-    padding-left: 20px;
-    text-indent: -20px;
-}
+        .blog-content ol {
+            counter-reset: item;
+        }
 
-/* Ensure select dropdown text is fully visible */
-select {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+        .blog-content ol li:before {
+            content: counter(item) ".";
+            counter-increment: item;
+            position: absolute;
+            left: 10px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
 
-.blog-content ol {
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
-
-.blog-content ol li {
-    margin-bottom: 10px;
-    line-height: 1.8;
-}
-
-@media (max-width: 768px) {
-    .blog-content ul li {
-        text-align: left !important;
-    }
-    
-    .blog-content ol {
-        padding-left: 25px;
-    }
-    
-    .blog-content ol li {
-        text-align: left !important;
-        padding-left: 5px;
-    }
-}
+        .blog-content li strong {
+            font-weight: 600;
+            color: #2c3e50;
+        }
 
         .formula-box {
             background-color: #f8fafc;
@@ -527,11 +501,13 @@ select {
         }
 
         /* Error state */
+        .error-message        /* Error state */
         .error-message {
             color: #e74c3c;
             font-size: 12px;
             margin-top: 4px;
-            display: none;        }
+            display: none;
+        }
 
         .input-error {
             border-color: #e74c3c !important;
@@ -564,23 +540,12 @@ select {
 
         @media (max-width: 480px) {
             .calculator-container {
-                padding: 20px 16px;
-                border-radius: 16px;
+                padding: 24px 16px;
             }
 
             h1 {
                 font-size: 24px;
                 margin-bottom: 24px;
-            }
-
-            h2 {
-                font-size: 20px;
-                margin-bottom: 16px;
-            }
-
-            h3 {
-                font-size: 17px;
-                margin-bottom: 12px;
             }
 
             .input-group {
@@ -593,36 +558,22 @@ select {
                 -webkit-text-size-adjust: 100%;
             }
 
-    .time-period-group {
-        gap: 8px;
-    }
+            .time-period-group {
+                gap: 8px;
+            }
 
-    .time-toggle {
-        flex: 0 0 auto;
-        width: 100px; /* Increased from 85px */
-        min-width: unset;
-    }
-
-.time-toggle select {
-    padding: 12px 35px 12px 12px; /* Increased right padding */
-    font-size: 12px; /* Reduced for mobile */
-}
-
+            .time-toggle {
+                flex: 0.5;
+                min-width: 90px;
+            }
 
             .toggle-option label {
-                padding: 14px 12px;
-                font-size: 15px;
-                font-weight: 500;
+                padding: 10px 8px;
+                font-size: 14px;
             }
 
             .results {
-                padding: 20px 16px;
-                margin-top: 24px;
-            }
-
-            .result-item {
-                margin-bottom: 12px;
-                padding-bottom: 12px;
+                padding: 16px;
             }
 
             .result-value {
@@ -634,33 +585,15 @@ select {
             }
 
             .chart-container {
-                margin-top: 20px;
-                padding: 16px 12px;
-            }
-
-            .chart-title {
-                font-size: 13px;
-                margin-bottom: 12px;
+                padding: 16px;
             }
 
             .line-chart-wrapper {
                 height: 200px;
             }
 
-            .tap-hint {
-                font-size: 10px;
-                margin-top: 6px;
-            }
-
-            .blog-section {
-                padding: 24px 16px;
-            }
-
             .blog-content p {
                 text-align: left;
-                font-size: 15px;
-                line-height: 1.7;
-                margin-bottom: 16px;
             }
 
             .formula-visual {
@@ -673,23 +606,7 @@ select {
             }
             
             .formula-input-display {
-                font-size: 14px;
-                gap: 6px;
-            }
-
-            .formula-value {
-                padding: 6px 10px;
-                font-size: 14px;
-            }
-
-            .interactive-formula {
-                padding: 16px;
-                margin: 16px 0;
-            }
-
-            .formula-box, .example-box, .faq-item {
-                padding: 16px;
-                margin: 16px 0;
+                font-size: 16px;
             }
 
             /* Fix for mobile hover issues */
@@ -863,13 +780,15 @@ select {
 
                 <div class="formula-box">
                     <strong>Compound Interest Formula:</strong><br>
-                    <div class="formula-visual">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120'%3E%3Ctext x='200' y='30' font-family='Arial' font-size='18' text-anchor='middle' fill='%232c3e50'%3EA = P(1 + r)^t%3C/text%3E%3Ctext x='200' y='60' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Ewhere: A = Final Amount, P = Principal%3C/text%3E%3Ctext x='200' y='80' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Interest Rate, t = Time Period%3C/text%3E%3Ctext x='200' y='105' font-family='Arial' font-size='16' text-anchor='middle' fill='%232c3e50'%3EI = A - P%3C/text%3E%3C/svg%3E" 
-                             alt="Compound Interest Formula: A = P(1 + r)^t" 
-                             class="formula-image"
-                             width="400" 
-                             height="120">
-                    </div>
+<div class="formula-box">
+    <div class="formula-visual">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EA = Final Amount%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='400' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Annual Rate%3C/text%3E%3Ctext x='150' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3En = Compounds/Year%3C/text%3E%3Ctext x='350' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3Ctext x='250' y='155' font-family='Arial' font-size='16' text-anchor='middle' fill='%234a90e2'%3EFor annual compounding: A = P(1 + r)^t%3C/text%3E%3C/svg%3E" 
+             alt="Compound Interest Formula with variable definitions" 
+             class="formula-image"
+             width="500" 
+             height="180">
+    </div>
+</div>
                     <div class="formula-text">
                         <code>Total Amount = Principal × (1 + Rate)^Time</code><br>
                         <code>Interest = Total Amount - Principal</code>
@@ -905,7 +824,7 @@ select {
                     <h4>Compound Interest Mathematical Formula</h4>
                     <div class="formula-box">
                         <div class="formula-visual">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EA = Final Amount%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='400' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Annual Rate%3C/text%3E%3Ctext x='150' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3En = Compounds/Year%3C/text%3E%3Ctext x='350' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3Ctext x='250' y='155' font-family='Arial' font-size='16' text-anchor='middle' fill='%234a90e2'%3EFor annual compounding: A = P(1 + r)^t%3C/text%3E%3C/svg%3E" 
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EA = Final Amount%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='400' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Annual Rate%3C/text%3E%3Ctext x='150' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3En = Compounds/Year%3C/text%3E%3Ctext x='350' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3Ctext x='250' y='155' font-family='Arial' font-size='16' text-anchor='middle' fill='%234a90e2'%3EFor annual compounding: A = P(1 + r)^t%3C/text%3E%3C/svg%3E" 
                                  alt="Compound Interest Formula with variable definitions" 
                                  class="formula-image"
                                  width="500" 
@@ -919,13 +838,13 @@ select {
                     Our calculator makes it easy to calculate interest on savings accounts, loans, and investments. Simply enter your principal amount, interest rate, and time period to see instant results with interactive charts.
                 </p>
 
-<ol style="padding-left: 20px;">
-    <li style="margin-bottom: 10px; text-align: left;">Enter your principal amount (the initial investment or loan amount)</li>
-    <li style="margin-bottom: 10px; text-align: left;">Input the annual interest rate as a percentage</li>
-    <li style="margin-bottom: 10px; text-align: left;">Select your time period in years or months</li>
-    <li style="margin-bottom: 10px; text-align: left;">Choose between simple or compound interest</li>
-    <li style="margin-bottom: 10px; text-align: left;">View your results instantly with visual charts</li>
-</ol>
+                <ol>
+                    <li><strong>Enter your principal amount</strong>—the initial investment or loan amount</li>
+                    <li><strong>Input the annual interest rate</strong>—as a percentage</li>
+                    <li><strong>Select your time period</strong>—in years or months</li>
+                    <li><strong>Choose between simple or compound interest</strong>—based on your needs</li>
+                    <li><strong>View your results instantly</strong>—with visual charts</li>
+                </ol>
 
                 <h3>When to Use Simple vs Compound Interest</h3>
                 <p>
@@ -933,12 +852,12 @@ select {
                 </p>
 
                 <h3>Benefits of Using an Interest Calculator</h3>
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Plan your savings and investment strategy effectively</li>
-                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare different interest rates and time periods</li>
-                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Visualize your investment growth with charts</li>
-                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Make informed decisions about loans and investments</li>
-                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Calculate loan interest over time accurately</li>
+                <ul>
+                    <li><strong>Plan your savings and investment strategy effectively</strong>—visualize how your money grows over time with different interest rates and compounding periods</li>
+                    <li><strong>Compare different interest rates and time periods</strong>—experiment with various scenarios to find the optimal combination for your financial goals</li>
+                    <li><strong>Visualize your investment growth with charts</strong>—see the breakdown between principal and interest earnings at a glance</li>
+                    <li><strong>Make informed decisions about loans and investments</strong>—understand the true cost of borrowing or the potential returns on your investments</li>
+                    <li><strong>Calculate loan interest over time accurately</strong>—know exactly how much you'll pay in interest for any loan amount and term</li>
                 </ul>
 
                 <h3>Interest Calculator for Different Scenarios</h3>
@@ -988,13 +907,13 @@ select {
                     To make the most of compound interest and grow your wealth effectively, consider these strategies:
                 </p>
 
-<ul style="list-style: none; padding-left: 0;">
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px; text-align: left;">• Start investing early to maximize the compounding effect</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px; text-align: left;">• Choose investments with compound interest over simple interest</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px; text-align: left;">• Reinvest your earnings to accelerate growth</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px; text-align: left;">• Compare interest rates across different financial institutions</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px; text-align: left;">• Consider the impact of taxes on your returns</li>
-</ul>
+                <ul>
+                    <li><strong>Start investing early</strong>—to maximize the compounding effect</li>
+                    <li><strong>Choose investments with compound interest</strong>—over simple interest when possible</li>
+                    <li><strong>Reinvest your earnings</strong>—to accelerate growth</li>
+                    <li><strong>Compare interest rates</strong>—across different financial institutions</li>
+                    <li><strong>Consider the impact of taxes</strong>—on your returns</li>
+                </ul>
 
                 <h3>Understanding Interest Rates and Time Periods</h3>
                 <p>
@@ -1339,12 +1258,18 @@ select {
                 numPoints = Math.ceil(timeInYears * 12);
             }
             
+            const isMobile = window.innerWidth <= 480;
+            
             for (let i = 0; i <= numPoints; i++) {
                 const currentTime = (i / numPoints) * timeInYears;
                 
                 // Generate appropriate labels
                 if (timeUnit === 'months' && timeInYears < 2) {
-                    labels.push(`Month ${Math.round(currentTime * 12)}`);
+                    if (isMobile) {
+                        labels.push(`M${Math.round(currentTime * 12)}`);  // Shortened for mobile
+                    } else {
+                        labels.push(`Month ${Math.round(currentTime * 12)}`);
+                    }
                 } else {
                     labels.push(`Year ${currentTime.toFixed(1)}`);
                 }
@@ -1370,7 +1295,6 @@ select {
 
             // Create line chart with mobile-optimized settings
             const lineCtx = document.getElementById('lineChart').getContext('2d');
-            const isMobile = window.innerWidth <= 480;
             
             lineChart = new Chart(lineCtx, {
                 type: 'line',
@@ -1510,11 +1434,19 @@ select {
                         x: {
                             ticks: {
                                 font: {
-                                    size: isMobile ? 10 : 11
+                                    size: isMobile ? 9 : 11  // Smaller font for mobile
                                 },
                                 maxRotation: 0,
                                 autoSkip: true,
-                                maxTicksLimit: isMobile ? 5 : 8
+                                maxTicksLimit: isMobile ? 5 : 8,
+                                callback: function(value, index) {
+                                    // For mobile, shorten month labels even more if needed
+                                    const label = this.getLabelForValue(index);
+                                    if (isMobile && label && label.includes('Month')) {
+                                        return 'M' + label.replace('Month ', '');
+                                    }
+                                    return label;
+                                }
                             },
                             grid: {
                                 display: false
@@ -1603,7 +1535,8 @@ select {
             
             // Regular inputs
             const inputs = ['rate', 'time'];
-            inputs.forEach(id => {                const input = document.getElementById(id);
+            inputs.forEach(id => {
+                const input = document.getElementById(id);
                 input.addEventListener('input', calculateInterest);
                 
                 // Prevent invalid input
@@ -1614,8 +1547,7 @@ select {
                     // Allow backspace, delete, tab, escape, enter
                     if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
                         // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-                        (e.keyCode === 65 && e.ctrlKey === true) ||
-                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 65 && e.ctrlKey === true) ||                        (e.keyCode === 67 && e.ctrlKey === true) ||
                         (e.keyCode === 86 && e.ctrlKey === true) ||
                         (e.keyCode === 88 && e.ctrlKey === true)) {
                         return;
