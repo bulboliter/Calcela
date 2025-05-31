@@ -108,7 +108,7 @@
             border-radius: 12px;
             font-size: 16px;
             font-family: inherit;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             background-color: #fafbfc;
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -156,7 +156,7 @@
             border: 2px solid #e1e8ed;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             margin-bottom: 0;
             background-color: #fafbfc;
             user-select: none;
@@ -197,7 +197,7 @@
             font-family: inherit;
             background-color: #fafbfc;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -221,6 +221,7 @@
             background-color: #f8fafc;
             border-radius: 12px;
             display: none;
+            transition: opacity 0.2s ease;
         }
 
         .results.show {
@@ -369,38 +370,47 @@
             margin-bottom: 5px;
         }
 
-/* Add to the existing <style> section */
-.blog-content ul {
-    list-style: none;
-    padding-left: 0;
-    margin-bottom: 20px;
-}
+        /* Blog Section Styles */
+        .blog-section {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-content {
+            color: #34495e;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .blog-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .blog-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 20px;
+        }
 
 .blog-content ul li {
     margin-bottom: 10px;
-    padding-left: 20px;
-    text-indent: -20px;
     line-height: 1.8;
 }
 
-.blog-content ol {
-    padding-left: 20px;
-    margin-bottom: 20px;
-}
+        .blog-content ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
 
-.blog-content ol li {
-    margin-bottom: 10px;
-    line-height: 1.8;
-}
-
-/* For better bullet point appearance */
-.blog-content ul li::before {
-    content: "•";
-    font-weight: bold;
-    display: inline-block;
-    width: 20px;
-    margin-left: 0;
-}
+        .blog-content ol li {
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
 
         .formula-box {
             background-color: #f8fafc;
@@ -478,8 +488,7 @@
             color: #e74c3c;
             font-size: 12px;
             margin-top: 4px;
-            display: none;
-        }
+            display: none;        }
 
         .input-error {
             border-color: #e74c3c !important;
@@ -512,12 +521,23 @@
 
         @media (max-width: 480px) {
             .calculator-container {
-                padding: 24px 16px;
+                padding: 20px 16px;
+                border-radius: 16px;
             }
 
             h1 {
                 font-size: 24px;
                 margin-bottom: 24px;
+            }
+
+            h2 {
+                font-size: 20px;
+                margin-bottom: 16px;
+            }
+
+            h3 {
+                font-size: 17px;
+                margin-bottom: 12px;
             }
 
             .input-group {
@@ -535,17 +555,30 @@
             }
 
             .time-toggle {
-                flex: 0.5;
-                min-width: 90px;
+                flex: 0 0 auto;
+                width: 85px;
+                min-width: unset;
             }
 
-            .toggle-option label {
-                padding: 10px 8px;
+            .time-toggle select {
+                padding: 12px 30px 12px 12px;
                 font-size: 14px;
             }
 
+            .toggle-option label {
+                padding: 14px 12px;
+                font-size: 15px;
+                font-weight: 500;
+            }
+
             .results {
-                padding: 16px;
+                padding: 20px 16px;
+                margin-top: 24px;
+            }
+
+            .result-item {
+                margin-bottom: 12px;
+                padding-bottom: 12px;
             }
 
             .result-value {
@@ -557,15 +590,33 @@
             }
 
             .chart-container {
-                padding: 16px;
+                margin-top: 20px;
+                padding: 16px 12px;
+            }
+
+            .chart-title {
+                font-size: 13px;
+                margin-bottom: 12px;
             }
 
             .line-chart-wrapper {
                 height: 200px;
             }
 
+            .tap-hint {
+                font-size: 10px;
+                margin-top: 6px;
+            }
+
+            .blog-section {
+                padding: 24px 16px;
+            }
+
             .blog-content p {
                 text-align: left;
+                font-size: 15px;
+                line-height: 1.7;
+                margin-bottom: 16px;
             }
 
             .formula-visual {
@@ -578,7 +629,23 @@
             }
             
             .formula-input-display {
-                font-size: 16px;
+                font-size: 14px;
+                gap: 6px;
+            }
+
+            .formula-value {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .interactive-formula {
+                padding: 16px;
+                margin: 16px 0;
+            }
+
+            .formula-box, .example-box, .faq-item {
+                padding: 16px;
+                margin: 16px 0;
             }
 
             /* Fix for mobile hover issues */
@@ -749,20 +816,16 @@
                 <p>
                     Compound interest is calculated on both the principal amount and the accumulated interest from previous periods. This creates a snowball effect where your money grows exponentially over time. It's commonly used in savings accounts, investment portfolios, and long-term financial planning.
                 </p>
-<div class="formula-box">
-    <strong>Compound Interest Formula:</strong><br>
-    <div class="formula-visual">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120'%3E%3Ctext x='200' y='30' font-family='Arial' font-size='18' text-anchor='middle' fill='%232c3e50'%3EA = P(1 + r)^t%3C/text%3E%3Ctext x='200' y='60' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Ewhere: A = Final Amount, P = Principal%3C/text%3E%3Ctext x='200' y='80' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Interest Rate, t = Time Period%3C/text%3E%3Ctext x='200' y='105' font-family='Arial' font-size='16' text-anchor='middle' fill='%232c3e50'%3EI = A - P%3C/text%3E%3C/svg%3E" 
-             alt="Compound Interest Formula: A = P(1 + r)^t" 
-             class="formula-image"
-             width="400" 
-             height="120">
-    </div>
-    <div class="formula-text">
-        <code>Total Amount = Principal × (1 + Rate)^Time</code><br>
-        <code>Interest = Total Amount - Principal</code>
-    </div>
-</div>
+
+                <div class="formula-box">
+                    <strong>Compound Interest Formula:</strong><br>
+                    <div class="formula-visual">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120'%3E%3Ctext x='200' y='30' font-family='Arial' font-size='18' text-anchor='middle' fill='%232c3e50'%3EA = P(1 + r)^t%3C/text%3E%3Ctext x='200' y='60' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Ewhere: A = Final Amount, P = Principal%3C/text%3E%3Ctext x='200' y='80' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Interest Rate, t = Time Period%3C/text%3E%3Ctext x='200' y='105' font-family='Arial' font-size='16' text-anchor='middle' fill='%232c3e50'%3EI = A - P%3C/text%3E%3C/svg%3E" 
+                             alt="Compound Interest Formula: A = P(1 + r)^t" 
+                             class="formula-image"
+                             width="400" 
+                             height="120">
+                    </div>
                     <div class="formula-text">
                         <code>Total Amount = Principal × (1 + Rate)^Time</code><br>
                         <code>Interest = Total Amount - Principal</code>
@@ -795,43 +858,44 @@
                         </div>
                     </div>
                     
-<h4>Compound Interest Mathematical Formula</h4>
-<div class="formula-box">
-    <div class="formula-visual">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EA = Final Amount%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='400' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Annual Rate%3C/text%3E%3Ctext x='150' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3En = Compounds/Year%3C/text%3E%3Ctext x='350' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3Ctext x='250' y='155' font-family='Arial' font-size='16' text-anchor='middle' fill='%234a90e2'%3EFor annual compounding: A = P(1 + r)^t%3C/text%3E%3C/svg%3E" 
-             alt="Compound Interest Formula with variable definitions" 
-             class="formula-image"
-             width="500" 
-             height="180">
-    </div>
-</div>
+                    <h4>Compound Interest Mathematical Formula</h4>
+                    <div class="formula-box">
+                        <div class="formula-visual">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EA = Final Amount%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='400' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Annual Rate%3C/text%3E%3Ctext x='150' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3En = Compounds/Year%3C/text%3E%3Ctext x='350' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3Ctext x='250' y='155' font-family='Arial' font-size='16' text-anchor='middle' fill='%234a90e2'%3EFor annual compounding: A = P(1 + r)^t%3C/text%3E%3C/svg%3E" 
+                                 alt="Compound Interest Formula with variable definitions" 
+                                 class="formula-image"
+                                 width="500" 
+                                 height="180">
+                        </div>
+                    </div>
+                </div>
 
-<h3>How to Use Our Interest Calculator</h3>
-<p>
-    Our calculator makes it easy to calculate interest on savings accounts, loans, and investments. Simply enter your principal amount, interest rate, and time period to see instant results with interactive charts.
-</p>
+                <h3>How to Use Our Interest Calculator</h3>
+                <p>
+                    Our calculator makes it easy to calculate interest on savings accounts, loans, and investments. Simply enter your principal amount, interest rate, and time period to see instant results with interactive charts.
+                </p>
 
-<ol style="padding-left: 20px;">
-    <li style="margin-bottom: 10px;">Enter your principal amount (the initial investment or loan amount)</li>
-    <li style="margin-bottom: 10px;">Input the annual interest rate as a percentage</li>
-    <li style="margin-bottom: 10px;">Select your time period in years or months</li>
-    <li style="margin-bottom: 10px;">Choose between simple or compound interest</li>
-    <li style="margin-bottom: 10px;">View your results instantly with visual charts</li>
-</ol>
+                <ol style="padding-left: 20px;">
+                    <li style="margin-bottom: 10px;">Enter your principal amount (the initial investment or loan amount)</li>
+                    <li style="margin-bottom: 10px;">Input the annual interest rate as a percentage</li>
+                    <li style="margin-bottom: 10px;">Select your time period in years or months</li>
+                    <li style="margin-bottom: 10px;">Choose between simple or compound interest</li>
+                    <li style="margin-bottom: 10px;">View your results instantly with visual charts</li>
+                </ol>
 
                 <h3>When to Use Simple vs Compound Interest</h3>
                 <p>
                     Understanding when to use each type of interest calculation is important for financial planning. Simple interest is typically used for short-term loans and specific financial products, while compound interest is the standard for most investments and savings accounts.
                 </p>
 
-<h3>Benefits of Using an Interest Calculator</h3>
-<ul style="list-style: none; padding-left: 0;">
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Plan your savings and investment strategy effectively</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare different interest rates and time periods</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Visualize your investment growth with charts</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Make informed decisions about loans and investments</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Calculate loan interest over time accurately</li>
-</ul>
+                <h3>Benefits of Using an Interest Calculator</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Plan your savings and investment strategy effectively</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare different interest rates and time periods</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Visualize your investment growth with charts</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Make informed decisions about loans and investments</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Calculate loan interest over time accurately</li>
+                </ul>
 
                 <h3>Interest Calculator for Different Scenarios</h3>
                 <p>
@@ -875,18 +939,18 @@
                     </div>
                 </div>
 
-<h3>Tips for Maximizing Your Investment Returns</h3>
-<p>
-    To make the most of compound interest and grow your wealth effectively, consider these strategies:
-</p>
+                <h3>Tips for Maximizing Your Investment Returns</h3>
+                <p>
+                    To make the most of compound interest and grow your wealth effectively, consider these strategies:
+                </p>
 
-<ul style="list-style: none; padding-left: 0;">
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Start investing early to maximize the compounding effect</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Choose investments with compound interest over simple interest</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Reinvest your earnings to accelerate growth</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare interest rates across different financial institutions</li>
-    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Consider the impact of taxes on your returns</li>
-</ul>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Start investing early to maximize the compounding effect</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Choose investments with compound interest over simple interest</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Reinvest your earnings to accelerate growth</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Compare interest rates across different financial institutions</li>
+                    <li style="margin-bottom: 10px; padding-left: 20px; text-indent: -20px;">• Consider the impact of taxes on your returns</li>
+                </ul>
 
                 <h3>Understanding Interest Rates and Time Periods</h3>
                 <p>
@@ -1141,7 +1205,7 @@
             // Destroy existing chart if it exists
             if (pieChart) {
                 pieChart.destroy();
-                        }
+            }
 
             // Calculate percentages
             const total = principal + interest;
@@ -1495,8 +1559,7 @@
             
             // Regular inputs
             const inputs = ['rate', 'time'];
-            inputs.forEach(id => {
-                const input = document.getElementById(id);
+            inputs.forEach(id => {                const input = document.getElementById(id);
                 input.addEventListener('input', calculateInterest);
                 
                 // Prevent invalid input
@@ -1546,60 +1609,46 @@
             }
         }
 
-// Initialize with default values
-window.addEventListener('DOMContentLoaded', () => {
-    setupRealtimeCalculation();
-    calculateInterest(); // Calculate with initial values
-    
-    // Add global click handler for closing tooltips
-    document.addEventListener('click', function(e) {
-        // Check if click is outside any chart
-        const chartContainers = document.querySelectorAll('.chart-wrapper, .line-chart-wrapper');
-        let clickedInsideChart = false;
-        
-        chartContainers.forEach(container => {
-            if (container.contains(e.target)) {
-                clickedInsideChart = true;
-            }
-        });
-        
-        if (!clickedInsideChart && lineChart) {
-            lineChart.tooltip.setActiveElements([]);
-            lineChart.update();
-            if (tooltipTimeout) {
-                clearTimeout(tooltipTimeout);
-            }
-        }
-    });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+        // Initialize with default values
+        window.addEventListener('DOMContentLoaded', () => {
+            setupRealtimeCalculation();
+            calculateInterest(); // Calculate with initial values
+            
+            // Add global click handler for closing tooltips
+            document.addEventListener('click', function(e) {
+                // Check if click is outside any chart
+                const chartContainers = document.querySelectorAll('.chart-wrapper, .line-chart-wrapper');
+                let clickedInsideChart = false;
+                
+                chartContainers.forEach(container => {
+                    if (container.contains(e.target)) {
+                        clickedInsideChart = true;
+                    }
                 });
-            }
-        });
-    });
-});
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+                
+                if (!clickedInsideChart && lineChart) {
+                    lineChart.tooltip.setActiveElements([]);
+                    lineChart.update();
+                    if (tooltipTimeout) {
+                        clearTimeout(tooltipTimeout);
+                    }
+                }
             });
-        }
-    });
-});
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
 
         // Add enter key support
         document.querySelectorAll('input').forEach(input => {
