@@ -3,10 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple & Compound Interest Calculator</title>
-    <meta name="description" content="Calculate simple and compound interest with our easy-to-use interest rate calculator. Visualize your investment growth over time.">
+    <title>Simple & Compound Interest Calculator - Calculate Investment Growth</title>
+    <meta name="description" content="Free online interest calculator for simple and compound interest. Calculate loan interest, savings growth, and investment returns with interactive charts.">
+    <meta name="keywords" content="simple interest calculator, compound interest calculator, interest calculator, investment calculator, loan interest calculator, savings interest calculator">
+    <meta name="author" content="Interest Calculator">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Simple & Compound Interest Calculator">
+    <meta property="og:description" content="Calculate simple and compound interest with our easy-to-use calculator. Visualize investment growth with charts.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourwebsite.com/interest-calculator">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourwebsite.com/interest-calculator">
+    
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Simple & Compound Interest Calculator",
+        "description": "Calculate simple and compound interest with monthly contributions and visualize growth over time",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "All"
+    }
+    </script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         * {
             margin: 0;
@@ -18,12 +44,15 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #f5f7fa;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .calculator-container {
@@ -33,6 +62,7 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             width: 100%;
             max-width: 520px;
+            margin: 0 auto 60px;
         }
 
         h1 {
@@ -41,6 +71,22 @@
             font-weight: 600;
             margin-bottom: 30px;
             text-align: center;
+        }
+
+        h2 {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            margin-top: 25px;
         }
 
         .input-group {
@@ -55,31 +101,37 @@
             margin-bottom: 8px;
         }
 
-input[type="number"], input[type="text"] {
-    width: 100%;
-    padding: 14px 18px;
-    border: 2px solid #e1e8ed;
-    border-radius: 12px;
-    font-size: 16px;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    background-color: #fafbfc;
-    -webkit-appearance: none; /* Safari/Chrome - still needed */
-    -moz-appearance: none;    /* Firefox - still needed */
-    appearance: none;         /* Standard property */
-}
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background-color: #fafbfc;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
 
-/* Remove number input spinners */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-input[type="number"] {
-    -moz-appearance: textfield; /* Firefox - still needed */
-    appearance: textfield;       /* Standard property */
-}
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: #4a90e2;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
 
         .toggle-group {
             display: flex;
@@ -261,6 +313,157 @@ input[type="number"] {
             opacity: 0.8;
         }
 
+        /* Interactive Formula Styles */
+        .interactive-formula {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e1e8ed;
+        }
+
+        .formula-input-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 18px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .formula-value {
+            padding: 8px 12px;
+            background-color: #4a90e2;
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .formula-operator {
+            font-size: 20px;
+            color: #5a6c7d;
+        }
+
+        .formula-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+        }
+
+        .formula-part {
+            text-align: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .formula-part strong {
+            display: block;
+            color: #4a90e2;
+            margin-bottom: 5px;
+        }
+
+        /* Blog Section Styles */
+        .blog-section {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .blog-content {
+            color: #34495e;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .blog-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 20px;
+            padding-left: 30px;
+        }
+
+        .blog-content li {
+            margin-bottom: 10px;
+        }
+
+        .formula-box {
+            background-color: #f8fafc;
+            border-left: 4px solid #4a90e2;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .formula-box code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .formula-visual {
+            margin: 15px 0;
+            text-align: center;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .formula-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .formula-text {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e1e8ed;
+        }
+
+        .example-box {
+            background-color: #e8f5e9;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .example-box h4 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .faq-question {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .faq-answer {
+            color: #5a6c7d;
+            line-height: 1.6;
+        }
+
         /* Loading state */
         .calculating {
             opacity: 0.6;
@@ -280,6 +483,30 @@ input[type="number"] {
         }
 
         /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0;
+            }
+
+            .blog-section {
+                padding: 30px 20px;
+                border-radius: 20px 20px 0 0;
+                margin-top: 40px;
+            }
+
+            .blog-content {
+                font-size: 15px;
+            }
+
+            h2 {
+                font-size: 22px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+        }
+
         @media (max-width: 480px) {
             .calculator-container {
                 padding: 24px 16px;
@@ -334,6 +561,23 @@ input[type="number"] {
                 height: 200px;
             }
 
+            .blog-content p {
+                text-align: left;
+            }
+
+            .formula-visual {
+                padding: 10px;
+            }
+            
+            .formula-breakdown {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .formula-input-display {
+                font-size: 16px;
+            }
+
             /* Fix for mobile hover issues */
             @media (hover: none) and (pointer: coarse) {
                 .toggle-option label:active {
@@ -374,82 +618,292 @@ input[type="number"] {
     </style>
 </head>
 <body>
-    <div class="calculator-container">
-        <h1>Simple &amp; Compound<br>Interest Calculator</h1>
-        
-        <div class="input-group">
-            <label for="principal">Principal Amount ($)</label>
-            <input type="text" id="principal" placeholder="e.g. 10,000" value="10,000" 
-                   aria-label="Principal amount in dollars" 
-                   inputmode="decimal">
-            <div class="error-message" id="principal-error">Please enter a valid amount</div>
-        </div>
-
-        <div class="input-group">
-            <label for="rate">Annual Interest Rate (%)</label>
-            <input type="number" id="rate" placeholder="e.g. 5.5" step="0.01" min="0" max="100" value="5"
-                   aria-label="Annual interest rate percentage"
-                   inputmode="decimal">
-            <div class="error-message" id="rate-error">Please enter a rate between 0 and 100</div>
-        </div>
-
-        <div class="input-group">
-            <label>Time Period</label>
-            <div class="time-period-group">
-                <div class="time-input">
-                    <input type="number" id="time" placeholder="e.g. 2" step="0.01" min="0" max="100" value="10"
-                           aria-label="Time period"
-                           inputmode="decimal">
-                </div>
-                <div class="time-toggle">
-                    <select id="timeUnit" aria-label="Time unit">
-                        <option value="years">Years</option>
-                        <option value="months">Months</option>
-                    </select>
-                </div>
-            </div>
-            <div class="error-message" id="time-error">Please enter a valid time period</div>
-        </div>
-
-        <div class="input-group">
-            <label>Interest Type</label>
-            <div class="toggle-group" role="radiogroup" aria-label="Interest type">
-                <div class="toggle-option">
-                    <input type="radio" id="simple" name="interestType" value="simple" checked>
-                    <label for="simple">Simple</label>
-                </div>
-                <div class="toggle-option">
-                    <input type="radio" id="compound" name="interestType" value="compound">
-                    <label for="compound">Compound</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="results" id="results" role="region" aria-label="Calculation results">
-            <div class="result-item">
-                <span class="result-label">Interest Earned</span>
-                <span class="result-value" id="interestEarned" aria-live="polite">$0.00</span>
-            </div>
-            <div class="result-item">
-                <span class="result-label">Total Amount</span>
-                <span class="result-value total" id="totalAmount" aria-live="polite">$0.00</span>
+    <div class="main-container">
+        <!-- Calculator Section -->
+        <div class="calculator-container">
+            <h1>Simple & Compound Interest Calculator</h1>
+            
+            <div class="input-group">
+                <label for="principal">Principal Amount ($)</label>
+                <input type="text" id="principal" placeholder="e.g. 10,000" value="10,000" 
+                       aria-label="Principal amount in dollars" 
+                       inputmode="decimal">
+                <div class="error-message" id="principal-error">Please enter a valid amount</div>
             </div>
 
-            <div class="chart-container">
-                <div class="chart-title">Principal vs Interest Breakdown</div>
-                <div class="chart-wrapper">
-                    <canvas id="pieChart" aria-label="Pie chart showing principal vs interest breakdown"></canvas>
+            <div class="input-group">
+                <label for="rate">Annual Interest Rate (%)</label>
+                <input type="number" id="rate" placeholder="e.g. 5.5" step="0.01" min="0" max="100" value="5"
+                       aria-label="Annual interest rate percentage"
+                       inputmode="decimal">
+                <div class="error-message" id="rate-error">Please enter a rate between 0 and 100</div>
+            </div>
+
+            <div class="input-group">
+                <label>Time Period</label>
+                <div class="time-period-group">
+                    <div class="time-input">
+                        <input type="number" id="time" placeholder="e.g. 2" step="0.01" min="0" max="100" value="10"
+                               aria-label="Time period"
+                               inputmode="decimal">
+                    </div>
+                    <div class="time-toggle">
+                        <select id="timeUnit" aria-label="Time unit">
+                            <option value="years">Years</option>
+                            <option value="months">Months</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="error-message" id="time-error">Please enter a valid time period</div>
+            </div>
+
+            <div class="input-group">
+                <label>Interest Type</label>
+                <div class="toggle-group" role="radiogroup" aria-label="Interest type">
+                    <div class="toggle-option">
+                        <input type="radio" id="simple" name="interestType" value="simple" checked>
+                        <label for="simple">Simple</label>
+                    </div>
+                    <div class="toggle-option">
+                        <input type="radio" id="compound" name="interestType" value="compound">
+                        <label for="compound">Compound</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results" id="results" role="region" aria-label="Calculation results">
+                <div class="result-item">
+                    <span class="result-label">Interest Earned</span>
+                    <span class="result-value" id="interestEarned" aria-live="polite">$0.00</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Total Amount</span>
+                    <span class="result-value total" id="totalAmount" aria-live="polite">$0.00</span>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-title">Principal vs Interest Breakdown</div>
+                    <div class="chart-wrapper">
+                        <canvas id="pieChart" aria-label="Pie chart showing principal vs interest breakdown"></canvas>
+                    </div>
+                    
+                    <div class="chart-title" style="margin-top: 30px;">Growth Over Time</div>
+                    <div class="line-chart-wrapper">
+                        <canvas id="lineChart" aria-label="Line chart showing investment growth over time"></canvas>
+                    </div>
+                    <div class="tap-hint">Tap the chart for details</div>
                 </div>
                 
-                <div class="chart-title" style="margin-top: 30px;">Growth Over Time</div>
-                <div class="line-chart-wrapper">
-                    <canvas id="lineChart" aria-label="Line chart showing investment growth over time"></canvas>
-                </div>
-                <div class="tap-hint">Tap the chart for details</div>
+                <div class="realtime-notice">Calculating in real-time as you type</div>
             </div>
-            
-            <div class="realtime-notice">Calculating in real-time as you type</div>
+
+            <!-- Interactive Formula Display -->
+            <div class="interactive-formula" id="interactiveFormula" style="display: none;">
+                <h3 style="font-size: 16px; margin-bottom: 15px; text-align: center;">Formula Breakdown</h3>
+                <div id="formulaDisplay"></div>
+            </div>
         </div>
+
+        <!-- Blog Section -->
+        <article class="blog-section">
+            <div class="blog-content">
+                <h2>Understanding Simple vs Compound Interest Calculator</h2>
+                
+                <p>
+                    Whether you're planning to invest in a savings account, take out a loan, or grow your investment portfolio, understanding how interest works is crucial. Our interest calculator helps you calculate both simple and compound interest with ease, providing visual charts to track your investment growth over time.
+                </p>
+
+                <h3>What is Simple Interest?</h3>
+                <p>
+                    Simple interest is calculated only on the principal amount of a loan or investment. It's straightforward to calculate and commonly used for short-term loans, car loans, and some personal loans. The formula remains constant throughout the investment period.
+                </p>
+
+                <div class="formula-box">
+                    <strong>Simple Interest Formula:</strong><br>
+                    <div class="formula-visual">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 100'%3E%3Ctext x='200' y='30' font-family='Arial' font-size='18' text-anchor='middle' fill='%232c3e50'%3EI = P × r × t%3C/text%3E%3Ctext x='200' y='60' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Ewhere: I = Interest, P = Principal, r = Rate, t = Time%3C/text%3E%3Ctext x='200' y='85' font-family='Arial' font-size='16' text-anchor='middle' fill='%232c3e50'%3EA = P + I%3C/text%3E%3C/svg%3E" 
+                             alt="Simple Interest Formula: I = P × r × t" 
+                             class="formula-image"
+                             width="400" 
+                             height="100">
+                    </div>
+                    <div class="formula-text">
+                        <code>Interest = Principal × Rate × Time</code><br>
+                        <code>Total Amount = Principal + Interest</code>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>Example: Simple Interest Calculation</h4>
+                    <p>
+                        If you invest $10,000 at 5% annual interest for 3 years:<br>
+                        Interest = $10,000 × 0.05 × 3 = $1,500<br>
+                        Total Amount = $10,000 + $1,500 = $11,500
+                    </p>
+                </div>
+
+                <h3>What is Compound Interest?</h3>
+                <p>
+                    Compound interest is calculated on both the principal amount and the accumulated interest from previous periods. This creates a snowball effect where your money grows exponentially over time. It's commonly used in savings accounts, investment portfolios, and long-term financial planning.
+                </p>
+<div class="formula-box">
+    <strong>Compound Interest Formula:</strong><br>
+    <div class="formula-visual">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 120'%3E%3Ctext x='200' y='30' font-family='Arial' font-size='18' text-anchor='middle' fill='%232c3e50'%3EA = P(1 + r)^t%3C/text%3E%3Ctext x='200' y='60' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Ewhere: A = Final Amount, P = Principal%3C/text%3E%3Ctext x='200' y='80' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Interest Rate, t = Time Period%3C/text%3E%3Ctext x='200' y='105' font-family='Arial' font-size='16' text-anchor='middle' fill='%232c3e50'%3EI = A - P%3C/text%3E%3C/svg%3E" 
+             alt="Compound Interest Formula: A = P(1 + r)^t" 
+             class="formula-image"
+             width="400" 
+             height="120">
+    </div>
+    <div class="formula-text">
+        <code>Total Amount = Principal × (1 + Rate)^Time</code><br>
+        <code>Interest = Total Amount - Principal</code>
+    </div>
+</div>
+                    <div class="formula-text">
+                        <code>Total Amount = Principal × (1 + Rate)^Time</code><br>
+                        <code>Interest = Total Amount - Principal</code>
+                    </div>
+                </div>
+
+                <div class="example-box">
+                    <h4>Example: Compound Interest Calculation</h4>
+                    <p>
+                        Using the same $10,000 at 5% annual interest for 3 years:<br>
+                        Total Amount = $10,000 × (1.05)³ = $11,576.25<br>
+                        Interest = $11,576.25 - $10,000 = $1,576.25
+                    </p>
+                </div>
+
+                <h3>Mathematical Notation and Formulas</h3>
+                <div class="formula-explanation">
+                    <p>
+                        Understanding the mathematical formulas behind interest calculations helps you make better financial decisions. Here's a detailed breakdown of both formulas:
+                    </p>
+                    
+                    <h4>Simple Interest Mathematical Formula</h4>
+                    <div class="formula-box">
+                        <div class="formula-visual">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 150'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EI = P × r × t%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='125' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EI = Interest%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='375' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Rate (decimal)%3C/text%3E%3Ctext x='250' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3C/svg%3E" 
+                                 alt="Simple Interest Formula with variable definitions" 
+                                 class="formula-image"
+                                 width="500" 
+                                 height="150">
+                        </div>
+                    </div>
+                    
+<h4>Compound Interest Mathematical Formula</h4>
+<div class="formula-box">
+    <div class="formula-visual">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180'%3E%3Ctext x='250' y='40' font-family='Times New Roman' font-size='24' text-anchor='middle' fill='%232c3e50' font-style='italic'%3EA = P(1 + r/n)%3C/text%3E%3Ctext x='340' y='30' font-family='Times New Roman' font-size='18' text-anchor='start' fill='%232c3e50' font-style='italic'%3Ent%3C/text%3E%3Cline x1='50' y1='60' x2='450' y2='60' stroke='%23e1e8ed' stroke-width='2'/%3E%3Ctext x='100' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EA = Final Amount%3C/text%3E%3Ctext x='250' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3EP = Principal%3C/text%3E%3Ctext x='400' y='90' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Er = Annual Rate%3C/text%3E%3Ctext x='150' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3En = Compounds/Year%3C/text%3E%3Ctext x='350' y='120' font-family='Arial' font-size='14' text-anchor='middle' fill='%235a6c7d'%3Et = Time (years)%3C/text%3E%3Ctext x='250' y='155' font-family='Arial' font-size='16' text-anchor='middle' fill='%234a90e2'%3EFor annual compounding: A = P(1 + r)^t%3C/text%3E%3C/svg%3E" 
+             alt="Compound Interest Formula with variable definitions" 
+             class="formula-image"
+             width="500" 
+             height="180">
+    </div>
+</div>
+
+                <h3>How to Use Our Interest Calculator</h3>
+                <p>
+                    Our calculator makes it easy to calculate interest on savings accounts, loans, and investments. Simply enter your principal amount, interest rate, and time period to see instant results with interactive charts.
+                </p>
+
+                <ol>
+                    <li>Enter your principal amount (the initial investment or loan amount)</li>
+                    <li>Input the annual interest rate as a percentage</li>
+                    <li>Select your time period in years or months</li>
+                    <li>Choose between simple or compound interest</li>
+                    <li>View your results instantly with visual charts</li>
+                </ol>
+
+                <h3>When to Use Simple vs Compound Interest</h3>
+                <p>
+                    Understanding when to use each type of interest calculation is important for financial planning. Simple interest is typically used for short-term loans and specific financial products, while compound interest is the standard for most investments and savings accounts.
+                </p>
+
+                <h3>Benefits of Using an Interest Calculator</h3>
+                <ul>
+                    <li>Plan your savings and investment strategy effectively</li>
+                    <li>Compare different interest rates and time periods</li>
+                    <li>Visualize your investment growth with charts</li>
+                    <li>Make informed decisions about loans and investments</li>
+                    <li>Calculate loan interest over time accurately</li>
+                </ul>
+
+                <h3>Interest Calculator for Different Scenarios</h3>
+                <p>
+                    Our versatile calculator can be used as a savings interest calculator, loan interest calculator, or investment calculator. Whether you're calculating interest on a savings account or planning long-term investment growth, our tool provides accurate results instantly.
+                </p>
+
+                <h2>Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">How to calculate simple interest on a loan?</div>
+                    <div class="faq-answer">
+                        To calculate simple interest on a loan, multiply the principal amount by the interest rate and the time period. For example, a $5,000 loan at 6% annual interest for 2 years would generate $600 in interest ($5,000 × 0.06 × 2).
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How to calculate compound interest on investments?</div>
+                    <div class="faq-answer">
+                        Compound interest is calculated using the formula: A = P(1 + r)^t, where A is the final amount, P is the principal, r is the interest rate, and t is time. Our calculator handles these complex calculations automatically.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">What's the difference between simple and compound interest?</div>
+                    <div class="faq-answer">
+                        Simple interest is calculated only on the principal amount, while compound interest is calculated on both the principal and accumulated interest. Compound interest results in higher returns over time due to the compounding effect.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">Can I use this calculator for monthly contributions?</div>
+                    <div class="faq-answer">
+                        This calculator focuses on lump-sum investments. For calculations with monthly contributions, you would need an interest calculator with monthly contributions feature, which accounts for regular deposits.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">How accurate is this interest calculator?</div>
+                    <div class="faq-answer">
+                        Our calculator provides highly accurate results based on standard financial formulas. It's suitable for educational purposes and financial planning, though actual returns may vary based on specific terms and conditions.
+                    </div>
+                </div>
+
+                <h3>Tips for Maximizing Your Investment Returns</h3>
+                <p>
+                    To make the most of compound interest and grow your wealth effectively, consider these strategies:
+                </p>
+
+                <ul>
+                    <li>Start investing early to maximize the compounding effect</li>
+                    <li>Choose investments with compound interest over simple interest</li>
+                    <li>Reinvest your earnings to accelerate growth</li>
+                    <li>Compare interest rates across different financial institutions</li>
+                    <li>Consider the impact of taxes on your returns</li>
+                </ul>
+
+                <h3>Understanding Interest Rates and Time Periods</h3>
+                <p>
+                    Interest rates can vary significantly based on the type of investment or loan. Our calculator allows you to experiment with different rates and time periods to see how they affect your returns. Whether you're using it as a loan interest calculator or investment growth calculator, understanding these variables is key to financial success.
+                </p>
+
+                <p>
+                    The time period selection feature lets you calculate interest in both years and months, making it flexible for various financial scenarios. This is particularly useful when comparing short-term and long-term investment options.
+                </p>
+
+                <h3>Conclusion</h3>
+                <p>
+                    Our simple and compound interest calculator is designed to help you make informed financial decisions. With its user-friendly interface, real-time calculations, and visual charts, you can easily understand how your money grows over time. Whether you're planning for retirement, saving for a major purchase, or evaluating loan options, this tool provides the insights you need.
+                </p>
+
+                <p>
+                    Remember, the key to building wealth is understanding how interest works and making it work for you. Use our calculator to explore different scenarios and find the best strategy for your financial goals.
+                </p>
+            </div>
+        </article>
     </div>
 
     <script>
@@ -527,6 +981,78 @@ input[type="number"] {
             }
         }
 
+        function updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total) {
+            const formulaDiv = document.getElementById('interactiveFormula');
+            const formulaDisplay = document.getElementById('formulaDisplay');
+            
+            if (!formulaDiv || !formulaDisplay) return;
+            
+            formulaDiv.style.display = 'block';
+            
+            if (interestType === 'simple') {
+                formulaDisplay.innerHTML = `
+                    <div class="formula-input-display">
+                        <span class="formula-value">$${formatWithCommas(principal)}</span>
+                        <span class="formula-operator">×</span>
+                        <span class="formula-value">${rate}%</span>
+                        <span class="formula-operator">×</span>
+                        <span class="formula-value">${timeInYears.toFixed(2)} years</span>
+                        <span class="formula-operator">=</span>
+                        <span class="formula-value" style="background-color: #5cb85c;">$${formatWithCommas(interest)}</span>
+                    </div>
+                    <div class="formula-breakdown">
+                        <div class="formula-part">
+                            <strong>Principal (P)</strong>
+                            $${formatWithCommas(principal)}
+                        </div>
+                        <div class="formula-part">
+                            <strong>Rate (r)</strong>
+                            ${rate}% = ${(rate/100).toFixed(4)}
+                        </div>
+                        <div class="formula-part">
+                            <strong>Time (t)</strong>
+                            ${timeInYears.toFixed(2)} years
+                        </div>
+                        <div class="formula-part">
+                            <strong>Interest (I)</strong>
+                            $${formatWithCommas(interest)}
+                        </div>
+                    </div>
+                `;
+            } else {
+                formulaDisplay.innerHTML = `
+                    <div class="formula-input-display">
+                        <span class="formula-value">$${formatWithCommas(principal)}</span>
+                        <span class="formula-operator">×</span>
+                        <span class="formula-operator">(1 +</span>
+                        <span class="formula-value">${rate}%</span>
+                        <span class="formula-operator">)^</span>
+                        <span class="formula-value">${timeInYears.toFixed(2)}</span>
+                        <span class="formula-operator">=</span>
+                        <span class="formula-value" style="background-color: #5cb85c;">$${formatWithCommas(total)}</span>
+                    </div>
+                    <div class="formula-breakdown">
+                        <div class="formula-part">
+                            <strong>Principal (P)</strong>
+                            $${formatWithCommas(principal)}
+                        </div>
+                        <div class="formula-part">
+                            <strong>Rate (r)</strong>
+                            ${rate}% = ${(rate/100).toFixed(4)}
+                        </div>
+                        <div class="formula-part">
+                            <strong>Time (t)</strong>
+                            ${timeInYears.toFixed(2)} years
+                        </div>
+                        <div class="formula-part">
+                            <strong>Growth Factor</strong>
+                            ${Math.pow(1 + rate/100, timeInYears).toFixed(4)}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         function calculateInterest() {
             // Clear any existing debounce
             clearTimeout(debounceTimer);
@@ -558,6 +1084,7 @@ input[type="number"] {
             if (!isPrincipalValid || !isRateValid || !isTimeValid || 
                 principal === 0 || rate === 0 || time === 0) {
                 document.getElementById('results').classList.remove('show');
+                document.getElementById('interactiveFormula').style.display = 'none';
                 return;
             }
 
@@ -594,9 +1121,16 @@ input[type="number"] {
                 // Update charts
                 updateChart(principal, interest);
                 updateLineChart(principal, rate, timeInYears, interestType, timeUnit);
+                
+                // Update interactive formula
+                updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total);
+                
+                // Update meta tags
+                updateMetaTags();
             } catch (error) {
                 console.error('Calculation error:', error);
                 document.getElementById('results').classList.remove('show');
+                document.getElementById('interactiveFormula').style.display = 'none';
             }
         }
 
@@ -604,7 +1138,7 @@ input[type="number"] {
             // Destroy existing chart if it exists
             if (pieChart) {
                 pieChart.destroy();
-            }
+                        }
 
             // Calculate percentages
             const total = principal + interest;
@@ -996,32 +1530,73 @@ input[type="number"] {
             });
         }
 
-        // Initialize with default values
-        window.addEventListener('DOMContentLoaded', () => {
-            setupRealtimeCalculation();
-            calculateInterest(); // Calculate with initial values
+        // Update meta tags dynamically
+        function updateMetaTags() {
+            const principal = parseFormattedNumber(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value) || 0;
+            const time = parseFloat(document.getElementById('time').value) || 0;
             
-            // Add global click handler for closing tooltips
-            document.addEventListener('click', function(e) {
-                // Check if click is outside any chart
-                const chartContainers = document.querySelectorAll('.chart-wrapper, .line-chart-wrapper');
-                let clickedInsideChart = false;
-                
-                chartContainers.forEach(container => {
-                    if (container.contains(e.target)) {
-                        clickedInsideChart = true;
-                    }
-                });
-                
-                if (!clickedInsideChart && lineChart) {
-                    lineChart.tooltip.setActiveElements([]);
-                    lineChart.update();
-                    if (tooltipTimeout) {
-                        clearTimeout(tooltipTimeout);
-                    }
-                }
-            });
+            if (principal && rate && time) {
+                const description = `Calculate interest on $${formatWithCommas(principal)} at ${rate}% for ${time} ${document.getElementById('timeUnit').value}`;
+                document.querySelector('meta[name="description"]').content = description;
+                document.querySelector('meta[property="og:description"]').content = description;
+            }
+        }
+
+// Initialize with default values
+window.addEventListener('DOMContentLoaded', () => {
+    setupRealtimeCalculation();
+    calculateInterest(); // Calculate with initial values
+    
+    // Add global click handler for closing tooltips
+    document.addEventListener('click', function(e) {
+        // Check if click is outside any chart
+        const chartContainers = document.querySelectorAll('.chart-wrapper, .line-chart-wrapper');
+        let clickedInsideChart = false;
+        
+        chartContainers.forEach(container => {
+            if (container.contains(e.target)) {
+                clickedInsideChart = true;
+            }
         });
+        
+        if (!clickedInsideChart && lineChart) {
+            lineChart.tooltip.setActiveElements([]);
+            lineChart.update();
+            if (tooltipTimeout) {
+                clearTimeout(tooltipTimeout);
+            }
+        }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+});
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
 
         // Add enter key support
         document.querySelectorAll('input').forEach(input => {
@@ -1108,13 +1683,6 @@ input[type="number"] {
             }
         });
 
-        // Service Worker for offline functionality (optional)
-        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
-            navigator.serviceWorker.register('/sw.js').catch(() => {
-                // Service worker registration failed, app will still work online
-            });
-        }
-
         // Add keyboard navigation for accessibility
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && lineChart) {
@@ -1140,6 +1708,194 @@ input[type="number"] {
             } catch (e) {
                 // PerformanceObserver not supported
             }
+        }
+
+        // Add print functionality
+        window.addEventListener('beforeprint', () => {
+            // Ensure charts are visible for printing
+            if (pieChart) {
+                pieChart.resize();
+            }
+            if (lineChart) {
+                lineChart.resize();
+            }
+        });
+
+        // SEO-friendly URL update without page reload
+        function updateURL() {
+            const principal = document.getElementById('principal').value;
+            const rate = document.getElementById('rate').value;
+            const time = document.getElementById('time').value;
+            const timeUnit = document.getElementById('timeUnit').value;
+            const interestType = document.querySelector('input[name="interestType"]:checked').value;
+            
+            const params = new URLSearchParams({
+                p: principal.replace(/,/g, ''),
+                r: rate,
+                t: time,
+                u: timeUnit,
+                type: interestType
+            });
+            
+            const newURL = window.location.pathname + '?' + params.toString();
+            window.history.replaceState({}, '', newURL);
+        }
+
+        // Load parameters from URL on page load
+        function loadFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            
+            if (params.has('p')) {
+                const principal = params.get('p');
+                document.getElementById('principal').value = principal;
+                formatInputWithCommas(document.getElementById('principal'));
+            }
+            
+            if (params.has('r')) {
+                document.getElementById('rate').value = params.get('r');
+            }
+            
+            if (params.has('t')) {
+                document.getElementById('time').value = params.get('t');
+            }
+            
+            if (params.has('u')) {
+                document.getElementById('timeUnit').value = params.get('u');
+            }
+            
+            if (params.has('type')) {
+                const type = params.get('type');
+                document.querySelector(`input[name="interestType"][value="${type}"]`).checked = true;
+            }
+        }
+
+        // Initialize URL parameters
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromURL();
+            
+            // Update URL when inputs change
+            ['principal', 'rate', 'time'].forEach(id => {
+                document.getElementById(id).addEventListener('input', debounce(updateURL, 1000));
+            });
+            
+            document.getElementById('timeUnit').addEventListener('change', updateURL);
+            document.querySelectorAll('input[name="interestType"]').forEach(radio => {
+                radio.addEventListener('change', updateURL);
+            });
+        });
+
+        // Debounce function for performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Add social sharing functionality
+        function shareCalculation() {
+            const url = window.location.href;
+            const text = 'Check out this Simple & Compound Interest Calculator!';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Interest Calculator',
+                    text: text,
+                    url: url
+                }).catch(err => console.log('Error sharing:', err));
+            }
+        }
+
+        // Accessibility improvements
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add skip to content link
+            const skipLink = document.createElement('a');
+            skipLink.href = '#calculator';
+            skipLink.className = 'skip-link';
+            skipLink.textContent = 'Skip to calculator';
+            skipLink.style.cssText = 'position: absolute; left: -9999px; top: 0; z-index: 999;';
+            skipLink.addEventListener('focus', () => {
+                skipLink.style.left = '0';
+            });
+            skipLink.addEventListener('blur', () => {
+                skipLink.style.left = '-9999px';
+            });
+            document.body.insertBefore(skipLink, document.body.firstChild);
+            
+            // Ensure proper focus management
+            const calculator = document.querySelector('.calculator-container');
+            calculator.setAttribute('id', 'calculator');
+            calculator.setAttribute('tabindex', '-1');
+        });
+
+        // Error boundary for chart rendering
+        function safeChartUpdate(updateFunction) {
+            try {
+                updateFunction();
+            } catch (error) {
+                console.error('Chart update error:', error);
+                // Attempt to recover by destroying and recreating charts
+                if (pieChart) {
+                    pieChart.destroy();
+                    pieChart = null;
+                }
+                if (lineChart) {
+                    lineChart.destroy();
+                    lineChart = null;
+                }
+                // Retry calculation after recovery
+                setTimeout(calculateInterest, 100);
+            }
+        }
+
+        // Lazy load images if any (for future enhancements)
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.remove('lazy');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img.lazy').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Add analytics tracking (if needed)
+        function trackEvent(category, action, label) {
+            // Google Analytics tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', action, {
+                    'event_category': category,
+                    'event_label': label
+                });
+            }
+        }
+
+        // Track calculator usage
+        document.querySelectorAll('input[name="interestType"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                trackEvent('Calculator', 'Interest Type Changed', this.value);
+            });
+        });
+
+        // Service Worker registration for PWA capabilities
+        if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => console.log('SW registered:', registration))
+                    .catch(error => console.log('SW registration failed:', error));
+            });
         }
     </script>
 </body>
