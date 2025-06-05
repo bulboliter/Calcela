@@ -33,6 +33,725 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
+<!-- Universal Header Section - Copy and paste this into any page -->
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+    .universal-header {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: #4a90e2;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(74, 144, 226, 0.1);
+    }
+
+    .header-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .brand-name {
+        font-family: 'Poppins', sans-serif;
+        font-size: 24px;
+        font-weight: 700;
+        color: white;
+        letter-spacing: -0.5px;
+        text-decoration: none;
+        transition: opacity 0.3s ease;
+    }
+
+    .brand-name:hover {
+        opacity: 0.9;
+    }
+
+    .nav-divider {
+        width: 1px;
+        height: 24px;
+        background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .home-button {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background-color: transparent;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .home-button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .home-icon {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    .search-wrapper {
+        flex: 1;
+        max-width: 480px;
+        position: relative;
+    }
+
+    .search-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 10px 44px 10px 18px;
+        border: none;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: white;
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .search-input:focus {
+        outline: none;
+        background-color: white;
+        color: #2c3e50;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .search-input:focus::placeholder {
+        color: #95a5a6;
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        color: rgba(255, 255, 255, 0.7);
+        pointer-events: none;
+        transition: color 0.3s ease;
+    }
+
+    .search-input:focus ~ .search-icon {
+        color: #4a90e2;
+    }
+
+    .search-results {
+        position: absolute;
+        top: calc(100% + 8px);
+        left: 0;
+        right: 0;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        max-height: 400px;
+        overflow-y: auto;
+        display: none;
+        z-index: 1001;
+    }
+
+    .search-results.show {
+        display: block;
+        animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .search-result-item {
+        padding: 12px 18px;
+        border-bottom: 1px solid #f0f4f8;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: block;
+        color: inherit;
+    }
+
+    .search-result-item:last-child {
+        border-bottom: none;
+    }
+
+    .search-result-item:hover {
+        background-color: #f8fafc;
+    }
+
+    .search-result-title {
+        font-weight: 600;
+        color: #2c3e50;
+        font-size: 14px;
+        margin-bottom: 2px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .search-result-title strong {
+        color: #4a90e2;
+    }
+
+    .search-result-description {
+        font-size: 13px;
+        color: #7f8c8d;
+        line-height: 1.4;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .search-no-results {
+        padding: 24px;
+        text-align: center;
+        color: #7f8c8d;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Loading state */
+    .search-loading {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .search-spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid #e1e8ed;
+        border-top-color: #4a90e2;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    /* Add padding to body */
+    body {
+        padding-top: 72px !important;
+    }
+
+    /* Scrollbar styling for search results */
+    .search-results::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .search-results::-webkit-scrollbar-track {
+        background: #f8fafc;
+        border-radius: 3px;
+    }
+
+    .search-results::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 3px;
+    }
+
+    .search-results::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+        .header-container {
+            padding: 14px 16px;
+            gap: 16px;
+        }
+
+        .header-left {
+            gap: 16px;
+        }
+
+        .brand-name {
+            font-size: 20px;
+        }
+
+        .nav-divider {
+            height: 20px;
+        }
+
+        .home-button {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .home-button span {
+            display: none;
+        }
+
+        .search-wrapper {
+            max-width: none;
+        }
+
+        .search-input {
+            padding: 9px 40px 9px 16px;
+            font-size: 16px; /* Prevent zoom on iOS */
+        }
+
+        .search-results {
+            border-radius: 0 0 12px 12px;
+            max-height: calc(100vh - 80px);
+        }
+
+        body {
+            padding-top: 64px !important;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .header-container {
+            padding: 12px;
+            gap: 12px;
+        }
+
+        .header-left {
+            gap: 12px;
+        }
+
+        .brand-name {
+            font-size: 18px;
+        }
+
+        .home-button {
+            padding: 6px 10px;
+        }
+
+        .home-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .search-input {
+            padding: 8px 36px 8px 14px;
+        }
+
+        .search-icon {
+            width: 18px;
+            height: 18px;
+            right: 12px;
+        }
+
+        body {
+            padding-top: 60px !important;
+        }
+    }
+
+    /* Focus styles for accessibility */
+    .home-button:focus-visible,
+    .search-input:focus-visible {
+        outline: 2px solid white;
+        outline-offset: 2px;
+    }
+
+    /* Smooth transitions */
+    * {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+
+<header class="universal-header" role="banner">
+    <div class="header-container">
+        <div class="header-left">
+            <a href="/home" class="brand-name" aria-label="CALCELA - Home">CALCELA</a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a href="/home" class="home-button" aria-label="Go to home page">
+                <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>Home</span>
+            </a>
+        </div>
+        
+        <div class="search-wrapper">
+            <div class="search-container" role="search">
+                <input 
+                    type="search" 
+                    class="search-input" 
+                    placeholder="Search calculators..." 
+                    id="calculatorSearch"
+                    aria-label="Search for calculators"
+                    aria-autocomplete="list"
+                    aria-controls="searchResults"
+                    autocomplete="off"
+                    spellcheck="false"
+                    maxlength="100"
+                >
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<script>
+(function() {
+    'use strict';
+    
+    // Security: Sanitize HTML to prevent XSS
+    function sanitizeHTML(str) {
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
+    }
+
+    // Security: Validate and sanitize search input
+    function sanitizeSearchInput(input) {
+        return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
+    }
+
+    // Calculator database
+    const calculators = [
+        {
+            title: "Simple & Compound Interest Calculator",
+            description: "Calculate simple and compound interest with visual charts",
+            url: "/interest-calculator",
+            keywords: ["interest", "compound", "simple", "investment", "savings", "finance"]
+        },
+        {
+            title: "Mortgage Calculator",
+            description: "Calculate monthly payments and total interest for mortgages",
+            url: "/mortgage-calculator",
+            keywords: ["mortgage", "home", "loan", "payment", "house", "real estate"]
+        },
+        {
+            title: "BMI Calculator",
+            description: "Calculate your Body Mass Index and health category",
+            url: "/bmi-calculator",
+            keywords: ["bmi", "body", "mass", "index", "health", "weight", "fitness"]
+        },
+        {
+            title: "Percentage Calculator",
+            description: "Calculate percentages, increases, decreases, and more",
+            url: "/percentage-calculator",
+            keywords: ["percentage", "percent", "increase", "decrease", "calculation", "math"]
+        },
+        {
+            title: "Loan Calculator",
+            description: "Calculate loan payments, interest, and amortization schedules",
+            url: "/loan-calculator",
+            keywords: ["loan", "payment", "amortization", "interest", "finance", "debt"]
+        },
+        {
+            title: "Retirement Calculator",
+            description: "Plan your retirement savings and estimate future value",
+            url: "/retirement-calculator",
+            keywords: ["retirement", "savings", "401k", "pension", "planning", "future"]
+        },
+        {
+            title: "Tax Calculator",
+            description: "Estimate your income tax and take-home pay",
+            url: "/tax-calculator",
+            keywords: ["tax", "income", "salary", "deduction", "refund", "irs"]
+        },
+        {
+            title: "Tip Calculator",
+            description: "Calculate tips and split bills among multiple people",
+            url: "/tip-calculator",
+            keywords: ["tip", "gratuity", "bill", "split", "restaurant", "service"]
+        }
+    ];
+
+    const searchInput = document.getElementById('calculatorSearch');
+    const searchResults = document.getElementById('searchResults');
+    let searchTimeout;
+    let selectedIndex = -1;
+
+    function performSearch(query) {
+        query = sanitizeSearchInput(query);
+        
+        if (!query.trim()) {
+            hideResults();
+            return;
+        }
+
+        showLoading();
+
+        setTimeout(() => {
+            const lowerQuery = query.toLowerCase();
+            const results = calculators.filter(calc => {
+                const titleMatch = calc.title.toLowerCase().includes(lowerQuery);
+                const descMatch = calc.description.toLowerCase().includes(lowerQuery);
+                const keywordMatch = calc.keywords.some(keyword => keyword.includes(lowerQuery));
+                return titleMatch || descMatch || keywordMatch;
+            });
+
+            // Sort by relevance
+            results.sort((a, b) => {
+                const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
+                const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
+                if (aTitle !== -1 && bTitle === -1) return -1;
+                if (aTitle === -1 && bTitle !== -1) return 1;
+                if (aTitle !== -1 && bTitle !== -1) return aTitle - bTitle;
+                return 0;
+            });
+
+            displayResults(results, query);
+        }, 200);
+    }    function showLoading() {
+        searchResults.innerHTML = '<div class="search-loading"><div class="search-spinner"></div></div>';
+        searchResults.classList.add('show');
+    }
+
+    function hideResults() {
+        searchResults.classList.remove('show');
+        setTimeout(() => {
+            searchResults.innerHTML = '';
+            selectedIndex = -1;
+        }, 200);
+    }
+
+    function displayResults(results, query) {
+        if (results.length === 0) {
+            searchResults.innerHTML = `
+                <div class="search-no-results">
+                    No calculators found for "${sanitizeHTML(query)}"
+                </div>
+            `;
+        } else {
+            searchResults.innerHTML = results.map((calc, index) => `
+                <a href="${sanitizeHTML(calc.url)}" 
+                   class="search-result-item" 
+                   role="option" 
+                   aria-selected="false"
+                   data-index="${index}"
+                   tabindex="-1">
+                    <div class="search-result-title">${highlightMatch(sanitizeHTML(calc.title), query)}</div>
+                    <div class="search-result-description">${sanitizeHTML(calc.description)}</div>
+                </a>
+            `).join('');
+        }
+        searchResults.classList.add('show');
+    }
+
+    function highlightMatch(text, query) {
+        if (!query.trim()) return text;
+        const sanitizedQuery = sanitizeHTML(query);
+        const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return text.replace(regex, '<strong>$1</strong>');
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            performSearch(e.target.value);
+        }, 300);
+    });
+
+    searchInput.addEventListener('focus', () => {
+        if (searchInput.value.trim()) {
+            performSearch(searchInput.value);
+        }
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-wrapper')) {
+            hideResults();
+        }
+    });
+
+    // Keyboard navigation
+    searchInput.addEventListener('keydown', (e) => {
+        const items = searchResults.querySelectorAll('.search-result-item');
+        
+        switch(e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                if (selectedIndex < items.length - 1) {
+                    selectedIndex++;
+                    updateSelection(items, selectedIndex);
+                }
+                break;
+                
+            case 'ArrowUp':
+                e.preventDefault();
+                if (selectedIndex > -1) {
+                    selectedIndex--;
+                    updateSelection(items, selectedIndex);
+                }
+                break;
+                
+            case 'Enter':
+                e.preventDefault();
+                if (selectedIndex > -1 && items[selectedIndex]) {
+                    const url = items[selectedIndex].getAttribute('href');
+                    if (url && url.startsWith('/')) {
+                        window.location.href = url;
+                    }
+                } else if (items.length > 0) {
+                    window.location.href = items[0].getAttribute('href');
+                }
+                break;
+                
+            case 'Escape':
+                e.preventDefault();
+                hideResults();
+                searchInput.blur();
+                break;
+        }
+    });
+
+    function updateSelection(items, index) {
+        items.forEach((item, i) => {
+            if (i === index) {
+                item.setAttribute('aria-selected', 'true');
+                item.style.backgroundColor = '#f8fafc';
+                item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            } else {
+                item.setAttribute('aria-selected', 'false');
+                item.style.backgroundColor = '';
+            }
+        });
+    }
+
+    // Prevent form submission
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+
+    // Mobile touch optimization
+    if ('ontouchstart' in window) {
+        searchResults.addEventListener('touchstart', (e) => {
+            const target = e.target.closest('.search-result-item');
+            if (target) {
+                target.style.backgroundColor = '#f0f4f8';
+            }
+        }, { passive: true });
+
+        searchResults.addEventListener('touchend', (e) => {
+            const target = e.target.closest('.search-result-item');
+            if (target) {
+                setTimeout(() => {
+                    target.style.backgroundColor = '';
+                }, 100);
+            }
+        }, { passive: true });
+    }
+
+    // Rate limiting
+    let searchCount = 0;
+    let rateLimitReset = Date.now();
+    
+    function checkRateLimit() {
+        const now = Date.now();
+        if (now - rateLimitReset > 60000) {
+            searchCount = 0;
+            rateLimitReset = now;
+        }
+        
+        searchCount++;
+        if (searchCount > 30) {
+            console.warn('Search rate limit exceeded');
+            return false;
+        }
+        return true;
+    }
+
+    const originalPerformSearch = performSearch;
+    performSearch = function(query) {
+        if (checkRateLimit()) {
+            originalPerformSearch(query);
+        }
+    };
+
+    // Accessibility announcements
+    const announcer = document.createElement('div');
+    announcer.setAttribute('role', 'status');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.setAttribute('aria-atomic', 'true');
+    announcer.style.position = 'absolute';
+    announcer.style.left = '-10000px';
+    announcer.style.width = '1px';
+    announcer.style.height = '1px';
+    announcer.style.overflow = 'hidden';
+    document.body.appendChild(announcer);
+
+    const originalDisplayResults = displayResults;
+    displayResults = function(results, query) {
+        originalDisplayResults(results, query);
+        
+        if (results.length === 0) {
+            announcer.textContent = `No results found for ${query}`;
+        } else {
+            announcer.textContent = `${results.length} calculator${results.length > 1 ? 's' : ''} found`;
+        }
+    };
+
+    // Handle resize events
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (searchResults.classList.contains('show') && window.innerWidth <= 768) {
+                const rect = searchInput.getBoundingClientRect();
+                searchResults.style.maxWidth = `${window.innerWidth - 32}px`;
+            } else {
+                searchResults.style.maxWidth = '';
+            }
+        }, 250);
+    });
+
+    // Clean up
+    window.addEventListener('beforeunload', () => {
+        clearTimeout(searchTimeout);
+        clearTimeout(resizeTimeout);
+    });
+
+    // Brand name click tracking (optional)
+    document.querySelector('.brand-name').addEventListener('click', () => {
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'brand_click', {
+                'event_category': 'Navigation',
+                'event_label': 'CALCELA Brand'
+            });
+        }
+    });
+})();
+</script>
+<!-- End of Universal Header Section -->
+
     <style>
         * {
             margin: 0;
