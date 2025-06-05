@@ -934,6 +934,15 @@
             box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
         }
 
+        .compound-only {
+            transition: all 0.3s ease;
+        }
+
+        .compound-only.show {
+            display: block !important;
+            animation: fadeIn 0.3s ease;
+        }
+
         .results {
             margin-top: 32px;
             padding: 24px;
@@ -1220,7 +1229,6 @@
         }
 
         /* Error state */
-        .error-message        /* Error state */
         .error-message {
             color: #e74c3c;
             font-size: 12px;
@@ -1393,14 +1401,17 @@
                 <label>Time Period</label>
                 <div class="time-period-group">
                     <div class="time-input">
-                        <input type="number" id="time" placeholder="e.g. 2" step="0.01" min="0" max="100" value="10"
+                        <input type="number" id="time" placeholder="e.g. 2" step="0.01" min="0" max="1000" value="10"
                                aria-label="Time period"
                                inputmode="decimal">
                     </div>
                     <div class="time-toggle">
                         <select id="timeUnit" aria-label="Time unit">
-                            <option value="years">Years</option>
+                            <option value="days">Days</option>
+                            <option value="weeks">Weeks</option>
                             <option value="months">Months</option>
+                            <option value="quarters">Quarters</option>
+                            <option value="years" selected>Years</option>
                         </select>
                     </div>
                 </div>
@@ -1419,6 +1430,18 @@
                         <label for="compound">Compound</label>
                     </div>
                 </div>
+            </div>
+
+            <div class="input-group compound-only" id="compoundFrequencyGroup" style="display: none;">
+                <label for="compoundFrequency">Compounding Frequency</label>
+                <select id="compoundFrequency" aria-label="Compounding frequency">
+                    <option value="365">Daily</option>
+                    <option value="52">Weekly</option>
+                    <option value="12">Monthly</option>
+                    <option value="4">Quarterly</option>
+                    <option value="2">Semi-Annually</option>
+                    <option value="1" selected>Annually</option>
+                </select>
             </div>
 
             <div class="results" id="results" role="region" aria-label="Calculation results">
@@ -1658,7 +1681,7 @@
         const LIMITS = {
             principal: { min: 0, max: 999999999 },
             rate: { min: 0, max: 100 },
-            time: { min: 0, max: 100 }
+            time: { min: 0, max: 1000 }
         };
 
         function sanitizeNumber(value) {
@@ -1720,7 +1743,7 @@
             }
         }
 
-        function updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total) {
+        function updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total, compoundFrequency) {
             const formulaDiv = document.getElementById('interactiveFormula');
             const formulaDisplay = document.getElementById('formulaDisplay');
             
@@ -1759,14 +1782,23 @@
                     </div>
                 `;
             } else {
+                const compoundName = {
+                    '365': 'Daily',
+                    '52': 'Weekly',
+                    '12': 'Monthly',
+                    '4': 'Quarterly',
+                    '2': 'Semi-Annually',
+                    '1': 'Annually'
+                }[compoundFrequency] || 'Annually';
+                
                 formulaDisplay.innerHTML = `
                     <div class="formula-input-display">
                         <span class="formula-value">$${formatWithCommas(principal)}</span>
                         <span class="formula-operator">×</span>
                         <span class="formula-operator">(1 +</span>
-                        <span class="formula-value">${rate}%</span>
+                        <span class="formula-value">${rate}%/${compoundFrequency}</span>
                         <span class="formula-operator">)^</span>
-                        <span class="formula-value">${timeInYears.toFixed(2)}</span>
+                        <span class="formula-value">${(compoundFrequency * timeInYears).toFixed(0)}</span>
                         <span class="formula-operator">=</span>
                         <span class="formula-value" style="background-color: #5cb85c;">$${formatWithCommas(total)}</span>
                     </div>
@@ -1784,8 +1816,16 @@
                             ${timeInYears.toFixed(2)} years
                         </div>
                         <div class="formula-part">
+                            <strong>Compounding</strong>
+                            ${compoundName} (n=${compoundFrequency})
+                        </div>
+                        <div class="formula-part">
+                            <strong>Total Periods</strong>
+                            ${(compoundFrequency * timeInYears).toFixed(0)}
+                        </div>
+                        <div class="formula-part">
                             <strong>Growth Factor</strong>
-                            ${Math.pow(1 + rate/100, timeInYears).toFixed(4)}
+                            ${Math.pow(1 + (rate/100)/compoundFrequency, compoundFrequency * timeInYears).toFixed(4)}
                         </div>
                     </div>
                 `;
@@ -1813,6 +1853,17 @@
             const time = parseFloat(timeInput.value) || 0;
             const timeUnit = document.getElementById('timeUnit').value;
             const interestType = document.querySelector('input[name="interestType"]:checked').value;
+            const compoundFrequency = parseFloat(document.getElementById('compoundFrequency').value) || 1;
+
+            // Show/hide compound frequency based on interest type
+            const compoundFreqGroup = document.getElementById('compoundFrequencyGroup');
+            if (interestType === 'compound') {
+                compoundFreqGroup.style.display = 'block';
+                compoundFreqGroup.classList.add('show');
+            } else {
+                compoundFreqGroup.style.display = 'none';
+                compoundFreqGroup.classList.remove('show');
+            }
 
             // Validate inputs
             const isPrincipalValid = validateInput('principal', principalInput.value);
@@ -1827,8 +1878,24 @@
                 return;
             }
 
-            // Convert time to years if needed
-            const timeInYears = timeUnit === 'months' ? time / 12 : time;
+            // Convert time to years
+            let timeInYears;
+            switch(timeUnit) {
+                case 'days':
+                    timeInYears = time / 365;
+                    break;
+                case 'weeks':
+                    timeInYears = time / 52;
+                    break;
+                case 'months':
+                    timeInYears = time / 12;
+                    break;
+                case 'quarters':
+                    timeInYears = time / 4;
+                    break;
+                default: // years
+                    timeInYears = time;
+            }
 
             // Calculate interest
             let interest = 0;
@@ -1840,8 +1907,8 @@
                     total = principal + interest;
                 } else {
                     // Compound interest formula: A = P(1 + r/n)^(nt)
-                    // Assuming annual compounding (n = 1)
-                    total = principal * Math.pow(1 + rate / 100, timeInYears);
+                    const rateDecimal = rate / 100;
+                    total = principal * Math.pow(1 + rateDecimal / compoundFrequency, compoundFrequency * timeInYears);
                     interest = total - principal;
                 }
 
@@ -1859,10 +1926,10 @@
 
                 // Update charts
                 updateChart(principal, interest);
-                updateLineChart(principal, rate, timeInYears, interestType, timeUnit);
+                updateLineChart(principal, rate, timeInYears, interestType, timeUnit, compoundFrequency);
                 
                 // Update interactive formula
-                updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total);
+                updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total, compoundFrequency);
                 
                 // Update meta tags
                 updateMetaTags();
@@ -1949,7 +2016,7 @@
             });
         }
 
-        function updateLineChart(principal, rate, timeInYears, interestType, timeUnit) {
+        function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, compoundFrequency = 1) {
             // Destroy existing chart if it exists
             if (lineChart) {
                 lineChart.destroy();
@@ -1972,12 +2039,16 @@
             for (let i = 0; i <= numPoints; i++) {
                 const currentTime = (i / numPoints) * timeInYears;
                 
-// Generate appropriate labels
-if (timeUnit === 'months' && timeInYears < 2) {
-    labels.push(`Month ${Math.round(currentTime * 12)}`);
-} else {
-    labels.push(`Year ${currentTime.toFixed(1)}`);
-}
+                // Generate appropriate labels
+                if (timeUnit === 'days' && timeInYears < 0.5) {
+                    labels.push(`Day ${Math.round(currentTime * 365)}`);
+                } else if (timeUnit === 'weeks' && timeInYears < 1) {
+                    labels.push(`Week ${Math.round(currentTime * 52)}`);
+                } else if (timeUnit === 'months' && timeInYears < 2) {
+                    labels.push(`Month ${Math.round(currentTime * 12)}`);
+                } else {
+                    labels.push(`Year ${currentTime.toFixed(1)}`);
+                }
                 
                 // Calculate values at this time point
                 let currentInterest = 0;
@@ -1988,7 +2059,7 @@ if (timeUnit === 'months' && timeInYears < 2) {
                         currentInterest = (principal * rate * currentTime) / 100;
                         currentTotal = principal + currentInterest;
                     } else {
-                        currentTotal = principal * Math.pow(1 + rate / 100, currentTime);
+                        currentTotal = principal * Math.pow(1 + (rate / 100) / compoundFrequency, compoundFrequency * currentTime);
                         currentInterest = currentTotal - principal;
                     }
                 }
@@ -2024,6 +2095,7 @@ if (timeUnit === 'months' && timeInYears < 2) {
                             data: totalData,
                             backgroundColor: 'rgba(92, 184, 92, 0.2)',
                             borderColor: '#5cb85c',
+                                            borderColor: '#5cb85c',
                             borderWidth: 2,
                             fill: '-1',
                             tension: 0.1,
@@ -2137,18 +2209,18 @@ if (timeUnit === 'months' && timeInYears < 2) {
                             }
                         },
                         x: {
-    ticks: {
-        font: {
-            size: isMobile ? 9 : 11  // Smaller font for mobile
-        },
-        maxRotation: 0,
-        autoSkip: true,
-        maxTicksLimit: isMobile ? 5 : 8
-    },
-    grid: {
-        display: false
-    }
-}
+                            ticks: {
+                                font: {
+                                    size: isMobile ? 9 : 11
+                                },
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: isMobile ? 5 : 8
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
                     },
                     onClick: function(event, elements) {
                         // Clear any existing timeout
@@ -2244,7 +2316,8 @@ if (timeUnit === 'months' && timeInYears < 2) {
                     // Allow backspace, delete, tab, escape, enter
                     if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
                         // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-                        (e.keyCode === 65 && e.ctrlKey === true) ||                        (e.keyCode === 67 && e.ctrlKey === true) ||
+                        (e.keyCode === 65 && e.ctrlKey === true) ||
+                        (e.keyCode === 67 && e.ctrlKey === true) ||
                         (e.keyCode === 86 && e.ctrlKey === true) ||
                         (e.keyCode === 88 && e.ctrlKey === true)) {
                         return;
@@ -2263,6 +2336,7 @@ if (timeUnit === 'months' && timeInYears < 2) {
             });
             
             document.getElementById('timeUnit').addEventListener('change', calculateInterest);
+            document.getElementById('compoundFrequency').addEventListener('change', calculateInterest);
             
             document.querySelectorAll('input[name="interestType"]').forEach(radio => {
                 radio.addEventListener('change', calculateInterest);
@@ -2446,53 +2520,59 @@ if (timeUnit === 'months' && timeInYears < 2) {
             }
         });
 
-        // SEO-friendly URL update without page reload
-        function updateURL() {
-            const principal = document.getElementById('principal').value;
-            const rate = document.getElementById('rate').value;
-            const time = document.getElementById('time').value;
-            const timeUnit = document.getElementById('timeUnit').value;
-            const interestType = document.querySelector('input[name="interestType"]:checked').value;
-            
-            const params = new URLSearchParams({
-                p: principal.replace(/,/g, ''),
-                r: rate,
-                t: time,
-                u: timeUnit,
-                type: interestType
-            });
-            
-            const newURL = window.location.pathname + '?' + params.toString();
-            window.history.replaceState({}, '', newURL);
-        }
+// SEO-friendly URL update without page reload
+function updateURL() {
+    const principal = document.getElementById('principal').value;
+    const rate = document.getElementById('rate').value;
+    const time = document.getElementById('time').value;
+    const timeUnit = document.getElementById('timeUnit').value;
+    const interestType = document.querySelector('input[name="interestType"]:checked').value;
+    const compoundFrequency = document.getElementById('compoundFrequency').value;
+    
+    const params = new URLSearchParams({
+        p: principal.replace(/,/g, ''),
+        r: rate,
+        t: time,
+        u: timeUnit,
+        type: interestType,
+        freq: compoundFrequency
+    });
+    
+    const newURL = window.location.pathname + '?' + params.toString();
+    window.history.replaceState({}, '', newURL);
+}
 
-        // Load parameters from URL on page load
-        function loadFromURL() {
-            const params = new URLSearchParams(window.location.search);
-            
-            if (params.has('p')) {
-                const principal = params.get('p');
-                document.getElementById('principal').value = principal;
-                formatInputWithCommas(document.getElementById('principal'));
-            }
-            
-            if (params.has('r')) {
-                document.getElementById('rate').value = params.get('r');
-            }
-            
-            if (params.has('t')) {
-                document.getElementById('time').value = params.get('t');
-            }
-            
-            if (params.has('u')) {
-                document.getElementById('timeUnit').value = params.get('u');
-            }
-            
-            if (params.has('type')) {
-                const type = params.get('type');
-                document.querySelector(`input[name="interestType"][value="${type}"]`).checked = true;
-            }
-        }
+// Load parameters from URL on page load
+function loadFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    
+    if (params.has('p')) {
+        const principal = params.get('p');
+        document.getElementById('principal').value = principal;
+        formatInputWithCommas(document.getElementById('principal'));
+    }
+    
+    if (params.has('r')) {
+        document.getElementById('rate').value = params.get('r');
+    }
+    
+    if (params.has('t')) {
+        document.getElementById('time').value = params.get('t');
+    }
+    
+    if (params.has('u')) {
+        document.getElementById('timeUnit').value = params.get('u');
+    }
+    
+    if (params.has('type')) {
+        const type = params.get('type');
+        document.querySelector(`input[name="interestType"][value="${type}"]`).checked = true;
+    }
+    
+    if (params.has('freq')) {
+        document.getElementById('compoundFrequency').value = params.get('freq');
+    }
+}
 
         // Initialize URL parameters
         window.addEventListener('DOMContentLoaded', () => {
@@ -2504,6 +2584,7 @@ if (timeUnit === 'months' && timeInYears < 2) {
             });
             
             document.getElementById('timeUnit').addEventListener('change', updateURL);
+            document.getElementById('compoundFrequency').addEventListener('change', updateURL);
             document.querySelectorAll('input[name="interestType"]').forEach(radio => {
                 radio.addEventListener('change', updateURL);
             });
@@ -2622,6 +2703,204 @@ if (timeUnit === 'months' && timeInYears < 2) {
                     .catch(error => console.log('SW registration failed:', error));
             });
         }
+
+        // Add custom validation messages
+        function setCustomValidationMessages() {
+            const principalInput = document.getElementById('principal');
+            const rateInput = document.getElementById('rate');
+            const timeInput = document.getElementById('time');
+            
+            principalInput.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                validateInput('principal', this.value);
+            });
+            
+            rateInput.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                validateInput('rate', this.value);
+            });
+            
+            timeInput.addEventListener('invalid', function(e) {
+                e.preventDefault();
+                validateInput('time', this.value);
+            });
+        }
+
+        // Initialize custom validation
+        window.addEventListener('DOMContentLoaded', setCustomValidationMessages);
+
+        // Add copy to clipboard functionality for results
+        function addCopyToClipboard() {
+            const resultValues = document.querySelectorAll('.result-value');
+            
+            resultValues.forEach(element => {
+                element.style.cursor = 'pointer';
+                element.title = 'Click to copy';
+                
+                element.addEventListener('click', function() {
+                    const value = this.textContent;
+                    navigator.clipboard.writeText(value).then(() => {
+                        const originalText = this.textContent;
+                        this.textContent = 'Copied!';
+                        this.style.color = '#5cb85c';
+                        
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                            this.style.color = '';
+                        }, 1500);
+                    }).catch(err => {
+                        console.error('Failed to copy:', err);
+                    });
+                });
+            });
+        }
+
+        // Initialize copy functionality
+        window.addEventListener('DOMContentLoaded', addCopyToClipboard);
+
+        // Add export functionality
+        function exportResults() {
+            const principal = parseFormattedNumber(document.getElementById('principal').value);
+            const rate = parseFloat(document.getElementById('rate').value);
+            const time = parseFloat(document.getElementById('time').value);
+            const timeUnit = document.getElementById('timeUnit').value;
+            const interestType = document.querySelector('input[name="interestType"]:checked').value;
+            const compoundFrequency = document.getElementById('compoundFrequency').value;
+            const interest = document.getElementById('interestEarned').textContent;
+            const total = document.getElementById('totalAmount').textContent;
+            
+            const data = {
+                'Principal Amount': `$${formatWithCommas(principal)}`,
+                'Interest Rate': `${rate}%`,
+                'Time Period': `${time} ${timeUnit}`,
+                'Interest Type': interestType.charAt(0).toUpperCase() + interestType.slice(1),
+                'Compound Frequency': interestType === 'compound' ? getCompoundFrequencyName(compoundFrequency) : 'N/A',
+                'Interest Earned': interest,
+                'Total Amount': total,
+                'Calculation Date': new Date().toLocaleDateString()
+            };
+            
+            // Create CSV content
+            const csvContent = Object.entries(data)
+                .map(([key, value]) => `${key},${value}`)
+                .join('\n');
+            
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `interest-calculation-${Date.now()}.csv`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function getCompoundFrequencyName(frequency) {
+            const names = {
+                '365': 'Daily',
+                '52': 'Weekly',
+                '12': 'Monthly',
+                '4': 'Quarterly',
+                '2': 'Semi-Annually',
+                '1': 'Annually'
+            };
+            return names[frequency] || 'Unknown';
+        }
+
+        // Add print-specific styles
+        function addPrintStyles() {
+            const style = document.createElement('style');
+            style.textContent = `
+                @media print {
+                    .universal-header,
+                    .tap-hint,
+                    .realtime-notice {
+                        display: none !important;
+                    }
+                    
+                    body {
+                        padding-top: 0 !important;
+                    }
+                    
+                    .calculator-container {
+                        break-inside: avoid;
+                    }
+                    
+                    .chart-container {
+                        break-inside: avoid;
+                    }
+                    
+                    .interactive-formula {
+                        break-inside: avoid;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Initialize print styles
+        window.addEventListener('DOMContentLoaded', addPrintStyles);
+
+        // Handle offline functionality
+        window.addEventListener('online', () => {
+            console.log('Back online');
+        });
+
+        window.addEventListener('offline', () => {
+            console.log('Gone offline');
+            // Could show a notification that charts might not load
+        });
+
+        // Add number formatting for different locales
+        function formatNumberForLocale(number, locale = 'en-US') {
+            return new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(number);
+        }
+
+        // Detect user's locale
+        const userLocale = navigator.language || 'en-US';
+
+        // Enhanced error handling
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            // Could send to error tracking service
+        });
+
+        // Add calculation history (stored in sessionStorage)
+        function saveCalculation() {
+            const calculation = {
+                timestamp: Date.now(),
+                principal: document.getElementById('principal').value,
+                rate: document.getElementById('rate').value,
+                time: document.getElementById('time').value,
+                timeUnit: document.getElementById('timeUnit').value,
+                interestType: document.querySelector('input[name="interestType"]:checked').value,
+                compoundFrequency: document.getElementById('compoundFrequency').value,
+                interest: document.getElementById('interestEarned').textContent,
+                total: document.getElementById('totalAmount').textContent
+            };
+            
+            let history = JSON.parse(sessionStorage.getItem('calculationHistory') || '[]');
+            history.unshift(calculation);
+            history = history.slice(0, 10); // Keep only last 10 calculations
+            sessionStorage.setItem('calculationHistory', JSON.stringify(history));
+        }
+
+        // Call saveCalculation after each successful calculation
+        const originalPerformCalculation = performCalculation;
+        performCalculation = function() {
+            originalPerformCalculation();
+            if (document.getElementById('results').classList.contains('show')) {
+                saveCalculation();
+            }
+        };
+
+        // Final initialization
+        console.log('Interest Calculator initialized successfully');
     </script>
 </body>
 </html>
