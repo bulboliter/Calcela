@@ -2462,32 +2462,35 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
         document.querySelectorAll('input:not([type="radio"])').forEach(input => {
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
-                    // Prevent the default form submission behavior
+                    // Prevent default behavior (like form submission)
                     e.preventDefault();
                     
-                    // Run the calculation immediately to update the state
+                    // Force the calculation to run immediately
                     clearTimeout(debounceTimer);
                     performCalculation();
 
-                    // Find the next input field to move to
+                    // Find the next available input
                     const inputs = Array.from(document.querySelectorAll('input:not([type="radio"])'));
                     const currentIndex = inputs.indexOf(e.target);
 
                     if (currentIndex > -1 && currentIndex < inputs.length - 1) {
                         const nextInput = inputs[currentIndex + 1];
 
-                        // THE KEY CHANGE: We delay the focus() call itself.
-                        // By using requestAnimationFrame, we tell the browser: "After you've
-                        // finished processing the current calculations and are about to redraw
-                        // the screen, THEN run this code."
-                        requestAnimationFrame(() => {
-                            // 1. Focus the next input
-                            nextInput.focus();
-                            
-                            // 2. Immediately set the cursor position to the end
-                            const len = nextInput.value.length;
-                            nextInput.setSelectionRange(len, len);
-                        });
+                        // This sequence is the key to reliably overriding the browser's default selection
+                        // on numeric inputs. No timeouts are needed.
+                        
+                        // 1. First, focus the element.
+                        nextInput.focus();
+                        
+                        // 2. Then, programmatically select the entire content. This takes control
+                        //    of the selection from the browser's default handler.
+                        nextInput.select();
+                        
+                        // 3. Finally, collapse the selection to the end of the input.
+                        //    Because we just manually selected the text, the browser
+                        //    now respects this command to change the selection range.
+                        const len = nextInput.value.length;
+                        nextInput.setSelectionRange(len, len);
                     }
                 }
             });
