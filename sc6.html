@@ -2459,15 +2459,37 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
             }
         });
 
-        // Add keyboard navigation for accessibility
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && lineChart) {
-                lineChart.tooltip.setActiveElements([]);
-                lineChart.update();
-                if (tooltipTimeout) {
-                    clearTimeout(tooltipTimeout);
+        // Add enter key support
+        document.querySelectorAll('input:not([type="radio"])').forEach(input => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    // Prevent the default form submission behavior
+                    e.preventDefault();
+                    
+                    // The debounce is for typing, but on 'Enter' we want an immediate result.
+                    // So, we clear any pending debounced calculation and run it now.
+                    clearTimeout(debounceTimer);
+                    performCalculation();
+
+                    // Find the next input field to move to
+                    const inputs = Array.from(document.querySelectorAll('input:not([type="radio"])'));
+                    const currentIndex = inputs.indexOf(e.target);
+
+                    if (currentIndex > -1 && currentIndex < inputs.length - 1) {
+                        const nextInput = inputs[currentIndex + 1];
+                        nextInput.focus();
+
+                        // Use requestAnimationFrame to reliably set the cursor position.
+                        // This schedules the action to run just before the next browser repaint,
+                        // ensuring it happens AFTER the browser's default focus behavior.
+                        requestAnimationFrame(() => {
+                            const len = nextInput.value.length;
+                            // This command moves the cursor to the end of the input's value.
+                            nextInput.setSelectionRange(len, len);
+                        });
+                    }
                 }
-            }
+            });
         });
 
         // Performance monitoring (optional)
