@@ -1899,11 +1899,11 @@
             }
         }
 
-        function updateChart(principal, interest) {
-            // Destroy existing chart if it exists
-            if (pieChart) {
-                pieChart.destroy();
-            }
+function updateChart(principal, interest) {
+    // Safely destroy existing chart if it exists
+    if (pieChart && typeof pieChart.destroy === 'function') {
+        pieChart.destroy();
+    }
 
             // Calculate percentages
             const total = principal + interest;
@@ -1975,11 +1975,11 @@
             });
         }
 
-        function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, compoundFrequency = 1) {
-            // Destroy existing chart if it exists
-            if (lineChart) {
-                lineChart.destroy();
-            }
+function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, compoundFrequency = 1) {
+    // Safely destroy existing chart if it exists
+    if (lineChart && typeof lineChart.destroy === 'function') {
+        lineChart.destroy();
+    }
 
             // Generate data points
             const labels = [];
@@ -2860,6 +2860,38 @@ function loadFromURL() {
 
         // Final initialization
         console.log('Interest Calculator initialized successfully');
+        // Handle page restoration from browser's back-forward cache
+window.addEventListener('pageshow', function(event) {
+    // Check if the page is being restored from the cache
+    if (event.persisted) {
+        console.log('Page restored from cache');
+        // Re-initialize charts and calculations
+        if (document.getElementById('results').classList.contains('show')) {
+            // Destroy existing charts first
+            if (pieChart) {
+                pieChart.destroy();
+                pieChart = null;
+            }
+            if (lineChart) {
+                lineChart.destroy();
+                lineChart = null;
+            }
+            // Recalculate and redraw charts
+            calculateInterest();
+        }
+    }
+});
+
+// Also handle visibility changes (tab switching)
+document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+        // If the results are shown but charts might be missing
+        if (document.getElementById('results').classList.contains('show') && 
+            (!pieChart || !lineChart)) {
+            calculateInterest();
+        }
+    }
+});
     </script>
 </body>
 </html>
