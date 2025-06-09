@@ -2458,7 +2458,6 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                 clearTimeout(resizeTimeout);
             }
         });
-
         // Add enter key support
         document.querySelectorAll('input:not([type="radio"])').forEach(input => {
             input.addEventListener('keydown', function(e) {
@@ -2466,8 +2465,7 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                     // Prevent the default form submission behavior
                     e.preventDefault();
                     
-                    // The debounce is for typing, but on 'Enter' we want an immediate result.
-                    // So, we clear any pending debounced calculation and run it now.
+                    // Run the calculation immediately to update the state
                     clearTimeout(debounceTimer);
                     performCalculation();
 
@@ -2477,14 +2475,17 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
 
                     if (currentIndex > -1 && currentIndex < inputs.length - 1) {
                         const nextInput = inputs[currentIndex + 1];
-                        nextInput.focus();
 
-                        // Use requestAnimationFrame to reliably set the cursor position.
-                        // This schedules the action to run just before the next browser repaint,
-                        // ensuring it happens AFTER the browser's default focus behavior.
+                        // THE KEY CHANGE: We delay the focus() call itself.
+                        // By using requestAnimationFrame, we tell the browser: "After you've
+                        // finished processing the current calculations and are about to redraw
+                        // the screen, THEN run this code."
                         requestAnimationFrame(() => {
+                            // 1. Focus the next input
+                            nextInput.focus();
+                            
+                            // 2. Immediately set the cursor position to the end
                             const len = nextInput.value.length;
-                            // This command moves the cursor to the end of the input's value.
                             nextInput.setSelectionRange(len, len);
                         });
                     }
