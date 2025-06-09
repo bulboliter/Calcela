@@ -423,7 +423,7 @@
 </header>
 
 <!-- Load external calculator database -->
-<script src="js/calculators-database.js"></script>
+<script src="/calculators-database.js"></script>
 
 <script>
 (function() {
@@ -2362,20 +2362,29 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
         });
 
         // Add enter key support
-        document.querySelectorAll('input').forEach(input => {
-            input.addEventListener('keypress', function(e) {
+        document.querySelectorAll('input:not([type="radio"])').forEach(input => {
+            input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
+                    // Prevent the default form submission or other 'Enter' key actions
                     e.preventDefault();
+                    
+                    // Trigger calculation
                     calculateInterest();
-                    // Move to next input
+
+                    // Find the next input field to move to
                     const inputs = Array.from(document.querySelectorAll('input:not([type="radio"])'));
                     const currentIndex = inputs.indexOf(e.target);
-                    if (currentIndex < inputs.length - 1) {
+
+                    if (currentIndex > -1 && currentIndex < inputs.length - 1) {
                         const nextInput = inputs[currentIndex + 1];
                         nextInput.focus();
-                        // Set cursor to the end of the text
-                        const len = nextInput.value.length;
-                        nextInput.setSelectionRange(len, len);
+
+                        // IMPORTANT: Use a setTimeout to move the cursor to the end.
+                        // This runs after the browser's default focus behavior (which can select all text).
+                        setTimeout(() => {
+                            const len = nextInput.value.length;
+                            nextInput.setSelectionRange(len, len);
+                        }, 0);
                     }
                 }
             });
