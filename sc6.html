@@ -863,8 +863,14 @@
 
         .time-toggle {
             flex: 0.4;
-            min-width: 120px;
+            min-width: 100px;
         }
+
+        /* Add this new rule to fix the "Quarters" text clipping */
+        #timeUnit {
+            font-size: 15px;
+        }
+        
 
         select {
             width: 100%;
@@ -1250,7 +1256,7 @@
 
             .time-toggle {
                 flex: 0.5;
-                min-width: 105px;
+                min-width: 90px;
             }
 
             .toggle-option label {
@@ -1350,7 +1356,7 @@
 
             <div class="input-group">
                 <label for="rate">Annual Interest Rate (%)</label>
-                <input type="number" id="rate" placeholder="e.g. 5.5" step="0.1" min="0" max="100" value="5"
+                <input type="text" id="rate" placeholder="e.g. 5.5" value="5"
                        aria-label="Annual interest rate percentage"
                        inputmode="decimal">
                 <div class="error-message" id="rate-error">Please enter a rate between 0 and 100</div>
@@ -1360,7 +1366,7 @@
                 <label>Time Period</label>
                 <div class="time-period-group">
                     <div class="time-input">
-                        <input type="number" id="time" placeholder="e.g. 2" step="1" min="0" max="1000" value="10"
+                        <input type="text" id="time" placeholder="e.g. 2" value="10"
                                aria-label="Time period"
                                inputmode="decimal">
                     </div>
@@ -2247,65 +2253,142 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
             }
         }
 
-        // Real-time calculation
-        function setupRealtimeCalculation() {
-            // Special handling for principal input
-            const principalInput = document.getElementById('principal');
-            principalInput.addEventListener('input', function(e) {
-                formatInputWithCommas(e.target);
-                calculateInterest();
-            });
+// Real-time calculation
+function setupRealtimeCalculation() {
+    // Special handling for principal input
+    const principalInput = document.getElementById('principal');
+    principalInput.addEventListener('input', function(e) {
+        formatInputWithCommas(e.target);
+        calculateInterest();
+    });
+    
+    // Add arrow key support for principal input
+    principalInput.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            e.preventDefault();
             
-            // Prevent paste of invalid content
-            principalInput.addEventListener('paste', function(e) {
-                e.preventDefault();
-                const pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                const sanitized = sanitizeNumber(pastedText);
-                e.target.value = sanitized;
-                formatInputWithCommas(e.target);
-                calculateInterest();
-            });
+            // Get current value without commas
+            let currentValue = parseFormattedNumber(this.value);
             
-            // Regular inputs
-            const inputs = ['rate', 'time'];
-            inputs.forEach(id => {
-                const input = document.getElementById(id);
-                input.addEventListener('input', calculateInterest);
-                
-                // Prevent invalid input
-                input.addEventListener('keypress', function(e) {
-                    const char = String.fromCharCode(e.which);
-                    const value = e.target.value;
-                    
-                    // Allow backspace, delete, tab, escape, enter
-                    if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
-                        // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
-                        (e.keyCode === 65 && e.ctrlKey === true) ||
-                        (e.keyCode === 67 && e.ctrlKey === true) ||
-                        (e.keyCode === 86 && e.ctrlKey === true) ||
-                        (e.keyCode === 88 && e.ctrlKey === true)) {
-                        return;
-                    }
-                    
-                    // Ensure that it is a number or decimal point
-                    if ((char < '0' || char > '9') && char !== '.') {
-                        e.preventDefault();
-                    }
-                    
-                    // Only allow one decimal point
-                    if (char === '.' && value.indexOf('.') !== -1) {
-                        e.preventDefault();
-                    }
-                });
-            });
+            // Determine increment based on current value
+            let increment = 1;
+            if (currentValue >= 10000) {
+                increment = 1000;
+            } else if (currentValue >= 1000) {
+                increment = 100;
+            } else if (currentValue >= 100) {
+                increment = 10;
+            }
             
-            document.getElementById('timeUnit').addEventListener('change', calculateInterest);
-            document.getElementById('compoundFrequency').addEventListener('change', calculateInterest);
+            // Increase or decrease value
+            if (e.key === 'ArrowUp') {
+                currentValue += increment;
+            } else {
+                currentValue -= increment;
+            }
             
-            document.querySelectorAll('input[name="interestType"]').forEach(radio => {
-                radio.addEventListener('change', calculateInterest);
-            });
+            // Ensure value stays within limits
+            if (currentValue < 0) currentValue = 0;
+            if (currentValue > LIMITS.principal.max) currentValue = LIMITS.principal.max;
+            
+            // Set the new value
+            this.value = currentValue.toString();
+            formatInputWithCommas(this);
+            calculateInterest();
         }
+    });
+    
+    // Prevent paste of invalid content
+    principalInput.addEventListener('paste', function(e) {
+        e.preventDefault();
+        const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+        const sanitized = sanitizeNumber(pastedText);
+        e.target.value = sanitized;
+        formatInputWithCommas(e.target);
+        calculateInterest();
+    });
+    
+    // Regular inputs with arrow key support
+    const inputs = ['rate', 'time'];
+    inputs.forEach(id => {
+        const input = document.getElementById(id);
+        input.addEventListener('input', calculateInterest);
+        
+        // Add arrow key support for rate and time inputs
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                
+                // Get current value
+                let currentValue = parseFloat(this.value) || 0;
+                
+                // Determine increment
+                let increment = 1;
+                if (id === 'rate') {
+                    increment = 0.1; // 0.1% increments for interest rate
+                } else if (id === 'time') {
+                    increment = 1; // 1 unit increment for time
+                }
+                
+                // Increase or decrease value
+                if (e.key === 'ArrowUp') {
+                    currentValue += increment;
+                } else {
+                    currentValue -= increment;
+                }
+                
+                // Ensure value stays within limits
+                const limits = LIMITS[id];
+                if (currentValue < limits.min) currentValue = limits.min;
+                if (currentValue > limits.max) currentValue = limits.max;
+                
+                // Round to appropriate decimal places
+                if (id === 'rate') {
+                    currentValue = Math.round(currentValue * 10) / 10; // Round to 1 decimal place
+                } else {
+                    currentValue = Math.round(currentValue); // Round to whole number
+                }
+                
+                // Set the new value
+                this.value = currentValue.toString();
+                calculateInterest();
+            }
+        });
+        
+        // Prevent invalid input
+        input.addEventListener('keypress', function(e) {
+            const char = String.fromCharCode(e.which);
+            const value = e.target.value;
+            
+            // Allow backspace, delete, tab, escape, enter
+            if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
+                // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true)) {
+                return;
+            }
+            
+            // Ensure that it is a number or decimal point
+            if ((char < '0' || char > '9') && char !== '.') {
+                e.preventDefault();
+            }
+            
+            // Only allow one decimal point
+            if (char === '.' && value.indexOf('.') !== -1) {
+                e.preventDefault();
+            }
+        });
+    });
+    
+    document.getElementById('timeUnit').addEventListener('change', calculateInterest);
+    document.getElementById('compoundFrequency').addEventListener('change', calculateInterest);
+    
+    document.querySelectorAll('input[name="interestType"]').forEach(radio => {
+        radio.addEventListener('change', calculateInterest);
+    });
+}
 
         // Update meta tags dynamically
         function updateMetaTags() {
@@ -2746,6 +2829,9 @@ function loadFromURL() {
                 });
             });
         }
+
+
+        
 
         // Initialize copy functionality
         window.addEventListener('DOMContentLoaded', addCopyToClipboard);
