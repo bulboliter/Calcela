@@ -1877,9 +1877,9 @@
         updateComparisonTable(inputStats.tokenCount, outputStats.tokenCount);
     }
 
-    function updateTokenUsageBar(tokenCount, model) {
-    // Hide the chart if no model, no context window, custom model, or no tokens
-    if (!model || model.contextWindow <= 0 || modelSelect.value === 'custom' || tokenCount === 0) {
+function updateTokenUsageBar(tokenCount, model) {
+    // Hide the chart only if no model, no context window, or custom model
+    if (!model || model.contextWindow <= 0 || modelSelect.value === 'custom') {
         tokenUsageContainer.style.display = 'none';
         if (tokenUsageChart) {
             tokenUsageChart.destroy();
@@ -1906,8 +1906,11 @@
     const ctx = document.getElementById('tokenUsageChart').getContext('2d');
     const chartColor = rawPercentage > 100 ? '#e74c3c' : rawPercentage > 90 ? '#e74c3c' : rawPercentage > 75 ? '#f39c12' : '#4a90e2';
 
+    // Ensure we always have valid data for the chart
+    const chartData = tokenCount === 0 ? [0, model.contextWindow] : [tokenCount, remaining];
+
     if (tokenUsageChart) {
-        tokenUsageChart.data.datasets[0].data = [tokenCount, remaining];
+        tokenUsageChart.data.datasets[0].data = chartData;
         tokenUsageChart.data.datasets[0].backgroundColor[0] = chartColor;
         tokenUsageChart.update();
     } else {
@@ -1916,7 +1919,7 @@
             data: {
                 labels: ['Used Tokens', 'Available Tokens'],
                 datasets: [{
-                    data: [tokenCount, remaining],
+                    data: chartData,
                     backgroundColor: [chartColor, '#e1e8ed'],
                     borderWidth: 0,
                     hoverOffset: 4
