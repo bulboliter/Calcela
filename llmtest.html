@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,79 +10,80 @@
     <meta name="author" content="Calcela">
     <meta name="robots" content="index, follow">
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="LLM Token Calculator & Cost Estimator">
-    <meta property="og:description" content="Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://calcela.com/llm-token-calculator">
-    <meta property="og:image" content="https://calcela.com/llm-token-calculator-preview.png">
-    <meta property="og:site_name" content="Calcela">
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="LLM Token Calculator & Cost Estimator">
+<meta property="og:description" content="Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://calcela.com/llm-token-calculator">
+<meta property="og:image" content="https://calcela.com/llm-token-calculator-preview.png">
+<meta property="og:site_name" content="Calcela">
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="LLM Token Calculator & Cost Estimator">
-    <meta name="twitter:description" content="Free tool to estimate token counts and API costs for models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.">
-    <meta name="twitter:image" content="https://calcela.com/llm-token-calculator-preview.png">
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LLM Token Calculator & Cost Estimator">
+<meta name="twitter:description" content="Free tool to estimate token counts and API costs for models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.">
+<meta name="twitter:image" content="https://calcela.com/llm-token-calculator-preview.png">
 
-    <link rel="icon" href="/wicon.png" type="image/png">
+<link rel="icon" href="/wicon.png" type="image/png">
 
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://calcela.com/llm-token-calculator">
+<!-- Canonical URL -->
+<link rel="canonical" href="https://calcela.com/llm-token-calculator">
 
-    <!-- Schema.org Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "LLM Token Calculator & Cost Estimator",
-        "description": "A free tool to estimate token count and API costs for large language models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "All",
-        "url": "https://calcela.com/llm-token-calculator",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
+<!-- Schema.org Structured Data -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "LLM Token Calculator & Cost Estimator",
+    "description": "A free tool to estimate token count and API costs for large language models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "url": "https://calcela.com/llm-token-calculator",
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+
+<!-- FAQ Schema -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [{
+        "@type": "Question",
+        "name": "How accurate is the 4-character-per-token estimation?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The approximation works well for English text (95-99% accuracy) but varies for code, other languages, mathematical expressions, and special formatting. For precise counts, always refer to the official tokenizer library from the model provider."
         }
-    }
-    </script>
+    },{
+        "@type": "Question",
+        "name": "Why do output tokens cost more than input tokens?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence."
+        }
+    },{
+        "@type": "Question",
+        "name": "Which models offer the best value for money?",
+        "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For general tasks, models like GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios. For complex reasoning, models like Claude 4 Sonnet or GPT-4.1 offer superior capabilities at competitive pricing."
+        }
+    }]
+}
+</script>
 
-    <!-- FAQ Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [{
-            "@type": "Question",
-            "name": "How accurate is the 4-character-per-token estimation?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "The approximation works well for English text (95-99% accuracy) but varies for code, other languages, mathematical expressions, and special formatting. For precise counts, always refer to the official tokenizer library from the model provider."
-            }
-        },{
-            "@type": "Question",
-            "name": "Why do output tokens cost more than input tokens?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence."
-            }
-        },{
-            "@type": "Question",
-            "name": "Which models offer the best value for money?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "For general tasks, models like GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios. For complex reasoning, models like Claude 4 Sonnet or GPT-4.1 offer superior capabilities at competitive pricing."
-            }
-        }]
-    }
-    </script>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- Add Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Add Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <!-- Universal Header Section - Copy and paste this into any page -->
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -446,31 +448,32 @@
             </a>
         </div>
 
-        <div class="search-wrapper">
-            <div class="search-container" role="search">
-                <input 
-                    type="search" 
-                    class="search-input" 
-                    placeholder="Search calculators..." 
-                    id="calculatorSearch"
-                    aria-label="Search for calculators"
-                    aria-autocomplete="list"
-                    aria-controls="searchResults"
-                    autocomplete="off"
-                    spellcheck="false"
-                    maxlength="100"
-                >
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
-            </div>
+<div class="search-wrapper">
+        <div class="search-container" role="search">
+            <input 
+                type="search" 
+                class="search-input" 
+                placeholder="Search calculators..." 
+                id="calculatorSearch"
+                aria-label="Search for calculators"
+                aria-autocomplete="list"
+                aria-controls="searchResults"
+                autocomplete="off"
+                spellcheck="false"
+                maxlength="100"
+            >
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
         </div>
     </div>
+</div>
 </header>
 
 <!-- Load external calculator database -->
+
 <script src="/calculators-database.js"></script>
 
 <script>
@@ -547,7 +550,7 @@
         } else {
             searchResults.innerHTML = results.map((calc, index) => `
                 <a href="${sanitizeHTML(calc.url)}" class="search-result-item" role="option" aria-selected="false" data-index="${index}" tabindex="-1">
-                    <div class="search-result-title">${highlightMatch(sanitizeHTML(calc.title), query)}</div>
+                    <div class="search-result-title">${highlightMatch(calc.title, query)}</div>
                     <div class="search-result-description">${sanitizeHTML(calc.description)}</div>
                 </a>`).join('');
         }
@@ -555,10 +558,16 @@
     }
 
     function highlightMatch(text, query) {
-        if (!query.trim()) return text;
+        if (!query.trim()) return sanitizeHTML(text);
         const sanitizedQuery = sanitizeHTML(query);
-        const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        return text.replace(regex, '<strong>$1</strong>');
+        const escapedQuery = sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(`(${escapedQuery})`, 'gi');
+        const parts = text.split(regex);
+        return parts.map((part, i) => 
+            i % 2 === 1 
+                ? `<strong>${sanitizeHTML(part)}</strong>` 
+                : sanitizeHTML(part)
+        ).join('');
     }
 
     searchInput.addEventListener('input', (e) => {
@@ -616,6 +625,7 @@
     }
 })();
 </script>
+
 <!-- End of Universal Header Section -->
 
 <style>
@@ -1005,12 +1015,14 @@
         }
         .results {
             padding: 20px 16px;
+            padding-top: 40px; /* Add space for copy button */
         }
         .copy-button {
             padding: 4px 8px;
             font-size: 12px;
             top: 8px;
             right: 8px;
+            z-index: 10;
         }
         .copy-button svg {
             width: 14px;
@@ -1063,6 +1075,7 @@
         font-size: 13px;
         font-weight: 500;
         transition: all 0.2s ease;
+        z-index: 10; /* Add this line */
     }
     .copy-button:hover {
         background-color: #e1e8ed;
@@ -1146,6 +1159,8 @@
     .result-item:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        position: relative;
+        z-index: 1;
     }
 
     @media (max-width: 768px) {
@@ -1188,6 +1203,7 @@
         }
     }
 </style>
+
 </head>
 <body>
     <div class="main-container">
@@ -1198,373 +1214,372 @@
                 <p>Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs</p>
             </div>
 
-            <div class="calculator-inputs">
+<div class="calculator-inputs">
+            <div class="input-group">
+                <label for="text-input">Your Input Text</label>
+                <textarea id="text-input" rows="8" placeholder="Paste your input text here..." aria-label="Input text for token calculation"></textarea>
+            </div>
+
+            <div class="toggle-group">
+                <input type="checkbox" id="include-output" class="toggle-checkbox">
+                <label for="include-output" class="toggle-label">Include Output Text</label>
+            </div>
+
+            <div class="input-group" id="output-text-container" style="display: none;">
+                <label for="output-text-input">Your Output Text</label>
+                <textarea id="output-text-input" rows="8" placeholder="Paste your expected output text here..." aria-label="Output text for token calculation"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label for="model-select">Select LLM Model</label>
+                <select id="model-select" aria-label="Select LLM Model"></select>
+            </div>
+            <div class="custom-cost-inputs">
                 <div class="input-group">
-                    <label for="text-input">Your Input Text</label>
-                    <textarea id="text-input" rows="8" placeholder="Paste your input text here..." aria-label="Input text for token calculation"></textarea>
+                    <label for="custom-input-cost">Input Cost ($ / 1M tokens)</label>
+                    <input type="number" id="custom-input-cost" step="0.01" min="0" aria-label="Custom input cost per 1 million tokens">
                 </div>
-
-                <div class="toggle-group">
-                    <input type="checkbox" id="include-output" class="toggle-checkbox">
-                    <label for="include-output" class="toggle-label">Include Output Text</label>
-                </div>
-
-                <div class="input-group" id="output-text-container" style="display: none;">
-                    <label for="output-text-input">Your Output Text</label>
-                    <textarea id="output-text-input" rows="8" placeholder="Paste your expected output text here..." aria-label="Output text for token calculation"></textarea>
-                </div>
-
                 <div class="input-group">
-                    <label for="model-select">Select LLM Model</label>
-                    <select id="model-select" aria-label="Select LLM Model"></select>
+                    <label for="custom-output-cost">Output Cost ($ / 1M tokens)</label>
+                    <input type="number" id="custom-output-cost" step="0.01" min="0" aria-label="Custom output cost per 1 million tokens">
                 </div>
-                <div class="custom-cost-inputs">
-                    <div class="input-group">
-                        <label for="custom-input-cost">Input Cost ($ / 1M tokens)</label>
-                        <input type="number" id="custom-input-cost" step="0.01" min="0" aria-label="Custom input cost per 1 million tokens">
-                    </div>
-                    <div class="input-group">
-                        <label for="custom-output-cost">Output Cost ($ / 1M tokens)</label>
-                        <input type="number" id="custom-output-cost" step="0.01" min="0" aria-label="Custom output cost per 1 million tokens">
-                    </div>
-                </div>
-                <p class="cost-warning">Note: This does not account for thinking tokens or cache tokens, which may affect final pricing.</p>
-                
-                <div class="toggle-group">
-                    <input type="checkbox" id="compare-models" class="toggle-checkbox">
-                    <label for="compare-models" class="toggle-label">Compare costs across all models</label>
-                </div>
-                
-                <button type="button" id="clearButton" style="
-                    background-color: #f0f4f8;
-                    border: 1px solid #e1e8ed;
-                    color: #5a6c7d;
-                    padding: 8px 16px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: 500;
-                    margin-top: 10px;
-                    transition: all 0.2s ease;
-                " onmouseover="this.style.backgroundColor='#e1e8ed'" onmouseout="this.style.backgroundColor='#f0f4f8'">
-                    Clear All Text
-                </button>
+            </div>
+            <p class="cost-warning">Note: This does not account for thinking tokens or cache tokens, which may affect final pricing.</p>
+            
+            <div class="toggle-group">
+                <input type="checkbox" id="compare-models" class="toggle-checkbox">
+                <label for="compare-models" class="toggle-label">Compare costs across all models</label>
             </div>
             
-            <div class="calculator-results">
-                <div class="results" id="results" role="region" aria-label="Calculation results">
-                    <button class="copy-button" onclick="copyResults()" aria-label="Copy results to clipboard">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <span>Copy</span>
-                    </button>
-                    
-                    <!-- Simple Results View -->
-                    <div class="result-grid" id="simple-results-grid">
-                        <div class="result-item">
-                            <span class="result-label">Character Count</span>
-                            <span class="result-value" id="charCount">0</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Word Count</span>
-                            <span class="result-value" id="wordCount">0</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Estimated Token Count</span>
-                            <span class="result-value" id="tokenCount">0</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Estimated Cost</span>
-                            <span class="result-value" id="estimatedCost">$0.00</span>
-                        </div>
+            <button type="button" id="clearButton" style="
+                background-color: #f0f4f8;
+                border: 1px solid #e1e8ed;
+                color: #5a6c7d;
+                padding: 8px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                font-weight: 500;
+                margin-top: 10px;
+                transition: all 0.2s ease;
+            " onmouseover="this.style.backgroundColor='#e1e8ed'" onmouseout="this.style.backgroundColor='#f0f4f8'">
+                Clear All Text
+            </button>
+        </div>
+        
+        <div class="calculator-results">
+            <div class="results" id="results" role="region" aria-label="Calculation results">
+                <button class="copy-button" onclick="copyResults()" aria-label="Copy results to clipboard">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    <span>Copy</span>
+                </button>
+                
+                <!-- Simple Results View -->
+                <div class="result-grid" id="simple-results-grid">
+                    <div class="result-item">
+                        <span class="result-label">Character Count</span>
+                        <span class="result-value" id="charCount">0</span>
                     </div>
+                    <div class="result-item">
+                        <span class="result-label">Word Count</span>
+                        <span class="result-value" id="wordCount">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Estimated Token Count</span>
+                        <span class="result-value" id="tokenCount">0</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Estimated Cost</span>
+                        <span class="result-value" id="estimatedCost">$0.00</span>
+                    </div>
+                </div>
 
-                    <!-- Detailed Results View -->
-                    <div id="detailed-results-summary" style="display: none;">
-                        <div class="results-summary">
-                            <div class="summary-col" id="input-summary">
-                                <h4>Input</h4>
-                                <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="inputCharCount">0</span></div>
-                                <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="inputWordCount">0</span></div>
-                                <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="inputTokenCount">0</span></div>
-                                <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="inputCost"> $0.00</span></div>
-                            </div>
-                            <div class="summary-col" id="output-summary">
-                                <h4>Output</h4>
-                                <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="outputCharCount">0</span></div>
-                                <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="outputWordCount">0</span></div>
-                                <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="outputTokenCount">0</span></div>
-                                <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="outputCost">$0.00</span></div>
-                            </div>
+                <!-- Detailed Results View -->
+                <div id="detailed-results-summary" style="display: none;">
+                    <div class="results-summary">
+                        <div class="summary-col" id="input-summary">
+                            <h4>Input</h4>
+                            <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="inputCharCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="inputWordCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="inputTokenCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="inputCost"> $0.00</span></div>
                         </div>
-                        <div class="total-summary">
-                            <h4>Total</h4>
-                            <div class="summary-item"><span class="summary-label">Total Tokens</span><span class="summary-value" id="totalTokenCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Total Estimated Cost</span><span class="summary-value" id="totalCost">$0.00</span></div>
+                        <div class="summary-col" id="output-summary">
+                            <h4>Output</h4>
+                            <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="outputCharCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="outputWordCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="outputTokenCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="outputCost">$0.00</span></div>
                         </div>
                     </div>
-            
-                    <div id="tokenUsageContainer" style="display: none; margin-top: 24px;">
-                        <div style="margin-bottom: 12px; font-size: 14px; color: #5a6c7d; font-weight: 500;">
-                            Input Token Usage vs Model Limit:
-                        </div>
-                        <div style="position: relative; height: 200px; background-color: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
-                            <canvas id="tokenUsageChart"></canvas>
-                        </div>
-                        <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d; text-align: center;">
-                            <span id="tokenUsageStats"></span>
-                        </div>
+                    <div class="total-summary">
+                        <h4>Total</h4>
+                        <div class="summary-item"><span class="summary-label">Total Tokens</span><span class="summary-value" id="totalTokenCount">0</span></div>
+                        <div class="summary-item"><span class="summary-label">Total Estimated Cost</span><span class="summary-value" id="totalCost">$0.00</span></div>
                     </div>
-                    
-                    <div class="comparison-table" id="comparisonTable">
-                        <h3 style="font-size: 16px; margin-bottom: 12px; color: #34495e;">Cost Comparison Across Models</h3>
-                        <div style="overflow-x: auto;">
-                            <table id="comparisonTableContent">
-                                <thead>
-                                    <tr>
-                                        <th>Model</th>
-                                        <th>Input Cost</th>
-                                        <th>Output Cost</th>
-                                        <th>Total Cost</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </div>
+                </div>
+        
+                <div id="tokenUsageContainer" style="display: none; margin-top: 24px;">
+                    <div style="margin-bottom: 12px; font-size: 14px; color: #5a6c7d; font-weight: 500;">
+                        Input Token Usage vs Model Limit:
                     </div>
-                    
-                    <div class="estimation-notice">
-                        <strong>Note:</strong> Token count is estimated using the <strong>1 token ≈ 4 characters</strong> rule. Actual count may vary.
+                    <div style="position: relative; height: 200px; background-color: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
+                        <canvas id="tokenUsageChart"></canvas>
                     </div>
+                    <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d; text-align: center;">
+                        <span id="tokenUsageStats"></span>
+                    </div>
+                </div>
+                
+                <div class="comparison-table" id="comparisonTable">
+                    <h3 style="font-size: 16px; margin-bottom: 12px; color: #34495e;">Cost Comparison Across Models</h3>
+                    <div style="overflow-x: auto;">
+                        <table id="comparisonTableContent">
+                            <thead>
+                                <tr>
+                                    <th>Model</th>
+                                    <th>Input Cost</th>
+                                    <th>Output Cost</th>
+                                    <th>Total Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="estimation-notice">
+                    <strong>Note:</strong> Token count is estimated using the <strong>1 token ≈ 4 characters</strong> rule. Actual count may vary.
                 </div>
             </div>
         </div>
-
-        <!-- Blog Section -->
-        <article class="blog-section">
-            <div class="blog-content">
-                <h2 style="text-align: center;">A Developer's Guide to LLM Tokens and API Costs</h2>
-                <p>
-                    Understanding Large Language Model (LLM) tokens and their associated costs is essential for developers, businesses, and AI enthusiasts managing API expenses. Our free token calculator provides instant estimates for popular models including GPT-4.1, Claude 4, Gemini 2.5 Pro, and Llama 3.
-                </p>
-
-                <h3>What Are LLM Tokens? A Complete Guide</h3>
-                <p>
-                    In artificial intelligence and natural language processing, a token represents the fundamental processing unit that Large Language Models use to understand and generate text. Unlike humans who read words and sentences, AI models break down text into tokens before processing.
-                </p>
-                <p><strong>Key characteristics of tokens:</strong></p>
-                <ul>
-                    <li>Can represent whole words, word fragments, punctuation, or spaces</li>
-                    <li>Determined by model-specific tokenizers</li>
-                    <li>Directly impact API costs and processing time</li>
-                    <li>Vary between different AI model providers</li>
-                </ul>
-
-                <h4>Token Examples:</h4>
-                <p>The phrase "AI tokenization costs money" might tokenize as:</p>
-                <ul>
-                    <li><strong>GPT models:</strong> ["AI", " token", "ization", " costs", " money"]</li>
-                    <li><strong>Claude models:</strong> ["AI", "Ġtoken", "ization", "Ġcosts", "Ġmoney"]</li>
-                </ul>
-                <p>(The "Ġ" symbol indicates a leading space)</p>
-
-                <h3>How Our Token Calculator Works</h3>
-                <p>
-                    Since running actual tokenizers in browsers is computationally intensive, our calculator uses the industry-standard approximation:
-                </p>
-                <div class="formula-box">
-                    Estimated Tokens = Character Count ÷ 4
-                </div>
-                <p>
-                    This formula provides 85-90% accuracy for English text, making it ideal for:
-                </p>
-                <ul>
-                    <li>Budget planning and cost estimation</li>
-                    <li>Prompt optimization</li>
-                    <li>Context window management</li>
-                    <li>API usage forecasting</li>
-                </ul>
-
-                <h3>Why Token Count Matters for AI Applications</h3>
-                <h4>1. API Costs</h4>
-                <p>Most providers charge separately for input and output tokens, with text models typically priced at $5 per 1M input tokens and $20 per 1M output tokens for premium models.</p>
-                <h4>2. Processing Speed</h4>
-                <p>Higher token counts result in slower response times and increased computational requirements.</p>
-                <h4>3. Context Limitations</h4>
-                <p>Every model has maximum context windows. Exceeding these limits causes API requests to fail.</p>
-                <h4>4. Performance Optimization</h4>
-                <p>Efficient token usage improves application responsiveness and user experience.</p>
-
-                <h3>2025 LLM Pricing Comparison: Latest API Costs</h3>
-                <p><em>Updated June 2025 - Prices subject to change</em></p>
-                <h4>Premium Models</h4>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Model</th>
-                                <th>Input Cost/1M Tokens</th>
-                                <th>Output Cost/1M Tokens</th>
-                                <th>Context Window</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GPT-4.1</td>
-                                <td>$2.50</td>
-                                <td>$10.00</td>
-                                <td>1M tokens</td>
-                            </tr>
-                            <tr>
-                                <td>GPT-4o</td>
-                                <td>$5.00</td>
-                                <td>$20.00</td>
-                                <td>128K tokens</td>
-                            </tr>
-                            <tr>
-                                <td>Claude 4 Opus</td>
-                                <td>$15.00</td>
-                                <td>$75.00</td>
-                                <td>200K tokens</td>
-                            </tr>
-                            <tr>
-                                <td>Claude 4 Sonnet</td>
-                                <td>$3.00</td>
-                                <td>$15.00</td>
-                                <td>200K tokens</td>
-                            </tr>
-                            <tr>
-                                <td>Gemini 2.5 Pro</td>
-                                <td>$3.50</td>
-                                <td>$14.00</td>
-                                <td>1M tokens</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <h4>Budget-Friendly Options</h4>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Model</th>
-                                <th>Input Cost/1M Tokens</th>
-                                <th>Output Cost/1M Tokens</th>
-                                <th>Context Window</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>GPT-4.1 Mini</td>
-                                <td>$0.15</td>
-                                <td>$0.60</td>
-                                <td>128K tokens</td>
-                            </tr>
-                            <tr>
-                                <td>GPT-3.5 Turbo</td>
-                                <td>$0.50</td>
-                                <td>$1.50</td>
-                                <td>16K tokens</td>
-                            </tr>
-                            <tr>
-                                <td>Claude 3.5 Haiku</td>
-                                <td>$0.25</td>
-                                <td>$1.25</td>
-                                <td>200K tokens</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <h3>Token Optimization Strategies</h3>
-                <h4>Prompt Engineering for Cost Efficiency</h4>
-                <ul>
-                    <li><strong>Remove unnecessary words</strong> - Eliminate filler words and redundant phrases</li>
-                    <li><strong>Use concise instructions</strong> - Replace verbose explanations with clear, direct commands</li>
-                    <li><strong>Implement conversation summarization</strong> - For chat applications, summarize conversation history instead of sending full transcripts</li>
-                    <li><strong>Strategic formatting</strong> - Use structured formats like JSON or bullet points when appropriate</li>
-                </ul>
-                <h4>Advanced Cost Management</h4>
-                <ul>
-                    <li><strong>Model selection</strong> - Choose the most cost-effective model for your specific use case</li>
-                    <li><strong>Batch processing</strong> - Group multiple requests to reduce overhead</li>
-                    <li><strong>Response length control</strong> - Set appropriate max_tokens parameters</li>
-                    <li><strong>Caching strategies</strong> - Store and reuse common responses</li>
-                </ul>
-
-                <h3>Frequently Asked Questions About LLM Tokens</h3>
-                <div class="faq-item">
-                    <div class="faq-question">How accurate is the 4-character-per-token estimation?</div>
-                    <div class="faq-answer">
-                        <p>The approximation works well for English text (85-90% accuracy) but varies for:</p>
-                        <ul>
-                            <li><strong>Code:</strong> Often requires more tokens due to special characters</li>
-                            <li><strong>Other languages:</strong> May have different tokenization ratios</li>
-                            <li><strong>Mathematical expressions:</strong> Can be token-intensive</li>
-                            <li><strong>Special formatting:</strong> Markdown, HTML, and structured data affect token counts</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">Why do output tokens cost more than input tokens?</div>
-                    <div class="faq-answer">
-                        Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence.
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">Which models offer the best value for money?</div>
-                    <div class="faq-answer">
-                        <ul>
-                            <li><strong>For general tasks:</strong> GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios.</li>
-                            <li><strong>For complex reasoning:</strong> Claude 4 Sonnet offers superior capabilities at competitive pricing.</li>
-                            <li><strong>For coding:</strong> Claude 4 Opus shows superior coding accuracy and may justify higher costs for development tasks.</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question">How can I reduce token usage without losing quality?</div>
-                    <div class="faq-answer">
-                        <ul>
-                            <li>Use system prompts efficiently</li>
-                            <li>Implement few-shot learning instead of extensive examples</li>
-                            <li>Break complex tasks into smaller, focused requests</li>
-                            <li>Utilize model-specific optimization techniques</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <h3>Future of LLM Pricing and Tokens</h3>
-                <p>
-                    The AI industry continues evolving rapidly, with major providers engaging in pricing competition and new models regularly launching. Key trends include:
-                </p>
-                <ul>
-                    <li><strong>Decreasing costs:</strong> Competition drives prices down for compute-intensive models</li>
-                    <li><strong>Specialized models:</strong> Task-specific models offering better cost-efficiency</li>
-                    <li><strong>Improved tokenization:</strong> More efficient token representations reducing overall usage</li>
-                    <li><strong>Flexible pricing:</strong> Usage-based and subscription models becoming more common</li>
-                </ul>
-
-                <h3>Ready to Optimize Your AI Costs?</h3>
-                <p>Start using our free calculator now to:</p>
-                <ul>
-                    <li>Estimate costs before implementing AI features</li>
-                    <li>Optimize prompts for better efficiency</li>
-                    <li>Compare models based on your specific use cases</li>
-                    <li>Plan budgets for AI integration projects</li>
-                </ul>
-                <p><strong>Try the calculator above and see how much you can save with smarter token management!</strong></p>
-
-                <div style="background-color: #f8fafc; padding: 20px; border-radius: 12px; margin-top: 30px;">
-                    <p style="font-size: 14px; color: #5a6c7d; margin: 0;">
-                        <strong>Disclaimer:</strong> This calculator provides estimates for planning purposes. Actual token counts may vary based on specific tokenizers and model implementations. Always consult official API documentation for the most current pricing and technical specifications.
-                    </p>
-                </div>
-            </div>
-        </article>
     </div>
 
+    <!-- Blog Section -->
+    <article class="blog-section">
+        <div class="blog-content">
+            <h2 style="text-align: center;">A Developer's Guide to LLM Tokens and API Costs</h2>
+            <p>
+                Understanding Large Language Model (LLM) tokens and their associated costs is essential for developers, businesses, and AI enthusiasts managing API expenses. Our free token calculator provides instant estimates for popular models including GPT-4.1, Claude 4, Gemini 2.5 Pro, and Llama 3.
+            </p>
+
+            <h3>What Are LLM Tokens? A Complete Guide</h3>
+            <p>
+                In artificial intelligence and natural language processing, a token represents the fundamental processing unit that Large Language Models use to understand and generate text. Unlike humans who read words and sentences, AI models break down text into tokens before processing.
+            </p>
+            <p><strong>Key characteristics of tokens:</strong></p>
+            <ul>
+                <li>Can represent whole words, word fragments, punctuation, or spaces</li>
+                <li>Determined by model-specific tokenizers</li>
+                <li>Directly impact API costs and processing time</li>
+                <li>Vary between different AI model providers</li>
+            </ul>
+
+            <h4>Token Examples:</h4>
+            <p>The phrase "AI tokenization costs money" might tokenize as:</p>
+            <ul>
+                <li><strong>GPT models:</strong> ["AI", " token", "ization", " costs", " money"]</li>
+                <li><strong>Claude models:</strong> ["AI", "Ġtoken", "ization", "Ġcosts", "Ġmoney"]</li>
+            </ul>
+            <p>(The "Ġ" symbol indicates a leading space)</p>
+
+            <h3>How Our Token Calculator Works</h3>
+            <p>
+                Since running actual tokenizers in browsers is computationally intensive, our calculator uses the industry-standard approximation:
+            </p>
+            <div class="formula-box">
+                Estimated Tokens = Character Count ÷ 4
+            </div>
+            <p>
+                This formula provides 85-90% accuracy for English text, making it ideal for:
+            </p>
+            <ul>
+                <li>Budget planning and cost estimation</li>
+                <li>Prompt optimization</li>
+                <li>Context window management</li>
+                <li>API usage forecasting</li>
+            </ul>
+
+            <h3>Why Token Count Matters for AI Applications</h3>
+            <h4>1. API Costs</h4>
+            <p>Most providers charge separately for input and output tokens, with text models typically priced at $5 per 1M input tokens and $20 per 1M output tokens for premium models.</p>
+            <h4>2. Processing Speed</h4>
+            <p>Higher token counts result in slower response times and increased computational requirements.</p>
+            <h4>3. Context Limitations</h4>
+            <p>Every model has maximum context windows. Exceeding these limits causes API requests to fail.</p>
+            <h4>4. Performance Optimization</h4>
+            <p>Efficient token usage improves application responsiveness and user experience.</p>
+
+            <h3>2025 LLM Pricing Comparison: Latest API Costs</h3>
+            <p><em>Updated June 2025 - Prices subject to change</em></p>
+            <h4>Premium Models</h4>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Input Cost/1M Tokens</th>
+                            <th>Output Cost/1M Tokens</th>
+                            <th>Context Window</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GPT-4.1</td>
+                            <td>$2.50</td>
+                            <td>$10.00</td>
+                            <td>1M tokens</td>
+                        </tr>
+                        <tr>
+                            <td>GPT-4o</td>
+                            <td>$5.00</td>
+                            <td>$20.00</td>
+                            <td>128K tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Claude 4 Opus</td>
+                            <td>$15.00</td>
+                            <td>$75.00</td>
+                            <td>200K tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Claude 4 Sonnet</td>
+                            <td>$3.00</td>
+                            <td>$15.00</td>
+                            <td>200K tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Gemini 2.5 Pro</td>
+                            <td>$3.50</td>
+                            <td>$14.00</td>
+                            <td>1M tokens</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4>Budget-Friendly Options</h4>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Input Cost/1M Tokens</th>
+                            <th>Output Cost/1M Tokens</th>
+                            <th>Context Window</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>GPT-4.1 Mini</td>
+                            <td>$0.15</td>
+                            <td>$0.60</td>
+                            <td>128K tokens</td>
+                        </tr>
+                        <tr>
+                            <td>GPT-3.5 Turbo</td>
+                            <td>$0.50</td>
+                            <td>$1.50</td>
+                            <td>16K tokens</td>
+                        </tr>
+                        <tr>
+                            <td>Claude 3.5 Haiku</td>
+                            <td>$0.25</td>
+                            <td>$1.25</td>
+                            <td>200K tokens</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Token Optimization Strategies</h3>
+            <h4>Prompt Engineering for Cost Efficiency</h4>
+            <ul>
+                <li><strong>Remove unnecessary words</strong> - Eliminate filler words and redundant phrases</li>
+                <li><strong>Use concise instructions</strong> - Replace verbose explanations with clear, direct commands</li>
+                <li><strong>Implement conversation summarization</strong> - For chat applications, summarize conversation history instead of sending full transcripts</li>
+                <li><strong>Strategic formatting</strong> - Use structured formats like JSON or bullet points when appropriate</li>
+            </ul>
+            <h4>Advanced Cost Management</h4>
+            <ul>
+                <li><strong>Model selection</strong> - Choose the most cost-effective model for your specific use case</li>
+                <li><strong>Batch processing</strong> - Group multiple requests to reduce overhead</li>
+                <li><strong>Response length control</strong> - Set appropriate max_tokens parameters</li>
+                <li><strong>Caching strategies</strong> - Store and reuse common responses</li>
+            </ul>
+
+            <h3>Frequently Asked Questions About LLM Tokens</h3>
+            <div class="faq-item">
+                <div class="faq-question">How accurate is the 4-character-per-token estimation?</div>
+                <div class="faq-answer">
+                    <p>The approximation works well for English text (85-90% accuracy) but varies for:</p>
+                    <ul>
+                        <li><strong>Code:</strong> Often requires more tokens due to special characters</li>
+                        <li><strong>Other languages:</strong> May have different tokenization ratios</li>
+                        <li><strong>Mathematical expressions:</strong> Can be token-intensive</li>
+                        <li><strong>Special formatting:</strong> Markdown, HTML, and structured data affect token counts</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Why do output tokens cost more than input tokens?</div>
+                <div class="faq-answer">
+                    Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Which models offer the best value for money?</div>
+                <div class="faq-answer">
+                    <ul>
+                        <li><strong>For general tasks:</strong> GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios.</li>
+                        <li><strong>For complex reasoning:</strong> Claude 4 Sonnet offers superior capabilities at competitive pricing.</li>
+                        <li><strong>For coding:</strong> Claude 4 Opus shows superior coding accuracy and may justify higher costs for development tasks.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How can I reduce token usage without losing quality?</div>
+                <div class="faq-answer">
+                    <ul>
+                        <li>Use system prompts efficiently</li>
+                        <li>Implement few-shot learning instead of extensive examples</li>
+                        <li>Break complex tasks into smaller, focused requests</li>
+                        <li>Utilize model-specific optimization techniques</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>Future of LLM Pricing and Tokens</h3>
+            <p>
+                The AI industry continues evolving rapidly, with major providers engaging in pricing competition and new models regularly launching. Key trends include:
+            </p>
+            <ul>
+                <li><strong>Decreasing costs:</strong> Competition drives prices down for compute-intensive models</li>
+                <li><strong>Specialized models:</strong> Task-specific models offering better cost-efficiency</li>
+                <li><strong>Improved tokenization:</strong> More efficient token representations reducing overall usage</li>
+                <li><strong>Flexible pricing:</strong> Usage-based and subscription models becoming more common</li>
+            </ul>
+
+            <h3>Ready to Optimize Your AI Costs?</h3>
+            <p>Start using our free calculator now to:</p>
+            <ul>
+                <li>Estimate costs before implementing AI features</li>
+                <li>Optimize prompts for better efficiency</li>
+                <li>Compare models based on your specific use cases</li>
+                <li>Plan budgets for AI integration projects</li>
+            </ul>
+            <p><strong>Try the calculator above and see how much you can save with smarter token management!</strong></p>
+
+            <div style="background-color: #f8fafc; padding: 20px; border-radius: 12px; margin-top: 30px;">
+                <p style="font-size: 14px; color: #5a6c7d; margin: 0;">
+                    <strong>Disclaimer:</strong> This calculator provides estimates for planning purposes. Actual token counts may vary based on specific tokenizers and model implementations. Always consult official API documentation for the most current pricing and technical specifications.
+                </p>
+            </div>
+        </div>
+    </article>
+</div>
 <script>
     'use strict';
     let tokenUsageChart = null;
@@ -1629,10 +1644,6 @@
         customOption.textContent = '⭐ Custom Model';
         customOption.style.fontWeight = '600';
         modelSelect.appendChild(customOption);
-        const separator = document.createElement('option');
-        separator.disabled = true;
-        separator.textContent = '──────────';
-        modelSelect.appendChild(separator);
 
         const providers = { 'Claude': [], 'OpenAI': [], 'Gemini': [] };
         for (const key in MODELS) {
@@ -1735,61 +1746,62 @@
     }
 
     function updateTokenUsageBar(tokenCount, model) {
-        if (model && model.contextWindow > 0) {
-            tokenUsageContainer.style.display = 'block';
-            const rawPercentage = (tokenCount / model.contextWindow) * 100;
-            const remaining = Math.max(model.contextWindow - tokenCount, 0);
-
-            let warningText = '';
-            if (rawPercentage > 100) {
-                warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Exceeds token limit!</span>`;
-            } else if (rawPercentage > 90) {
-                warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Near token limit!</span>`;
-            } else if (rawPercentage > 75) {
-                warningText = ` <span style="color: #f39c12; font-weight: 600;">⚠️ High token usage</span>`;
-            }
-
-            document.getElementById('tokenUsageStats').innerHTML = `Using <strong>${tokenCount.toLocaleString()}</strong> of <strong>${model.contextWindow.toLocaleString()}</strong> tokens (${rawPercentage.toFixed(1)}%) • <strong>${remaining.toLocaleString()}</strong> tokens remaining${warningText}`;
-            
-            const ctx = document.getElementById('tokenUsageChart').getContext('2d');
-            const chartColor = rawPercentage > 100 ? '#e74c3c' : rawPercentage > 90 ? '#e74c3c' : rawPercentage > 75 ? '#f39c12' : '#4a90e2';
-
-            if (tokenUsageChart) {
-                tokenUsageChart.data.datasets[0].data = [tokenCount, remaining < 0 ? 0 : remaining];
-                tokenUsageChart.data.datasets[0].backgroundColor[0] = chartColor;
-                tokenUsageChart.update();
-            } else {
-                tokenUsageChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Used Tokens', 'Available Tokens'],
-                        datasets: [{
-                            data: [tokenCount, remaining < 0 ? 0 : remaining],
-                            backgroundColor: [chartColor, '#e1e8ed'],
-                            borderWidth: 0,
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false,
-                        plugins: {
-                            legend: { position: 'bottom', labels: { padding: 15, font: { size: 12, family: "'Inter', sans-serif" }, usePointStyle: true, pointStyle: 'circle' } },
-                            tooltip: {
-                                callbacks: { label: (c) => `${c.label}: ${c.parsed.toLocaleString()} (${((c.parsed / model.contextWindow) * 100).toFixed(1)}%)` },
-                                backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, cornerRadius: 6,
-                                titleFont: { size: 13, family: "'Inter', sans-serif" }, bodyFont: { size: 12, family: "'Inter', sans-serif" }
-                            }
-                        },
-                        cutout: '65%', animation: { animateRotate: true, animateScale: false }
-                    }
-                });
-            }
-        } else {
+        if (!model || model.contextWindow <= 0 || modelSelect.value === 'custom') {
             tokenUsageContainer.style.display = 'none';
             if (tokenUsageChart) {
                 tokenUsageChart.destroy();
                 tokenUsageChart = null;
             }
+            return;
+        }
+
+        tokenUsageContainer.style.display = 'block';
+        const rawPercentage = (tokenCount / model.contextWindow) * 100;
+        const remaining = Math.max(model.contextWindow - tokenCount, 0);
+
+        let warningText = '';
+        if (rawPercentage > 100) {
+            warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Exceeds token limit!</span>`;
+        } else if (rawPercentage > 90) {
+            warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Near token limit!</span>`;
+        } else if (rawPercentage > 75) {
+            warningText = ` <span style="color: #f39c12; font-weight: 600;">⚠️ High token usage</span>`;
+        }
+
+        document.getElementById('tokenUsageStats').innerHTML = `Using <strong>${tokenCount.toLocaleString()}</strong> of <strong>${model.contextWindow.toLocaleString()}</strong> tokens (${rawPercentage.toFixed(1)}%) • <strong>${remaining.toLocaleString()}</strong> tokens remaining${warningText}`;
+        
+        const ctx = document.getElementById('tokenUsageChart').getContext('2d');
+        const chartColor = rawPercentage > 100 ? '#e74c3c' : rawPercentage > 90 ? '#e74c3c' : rawPercentage > 75 ? '#f39c12' : '#4a90e2';
+
+        if (tokenUsageChart) {
+            tokenUsageChart.data.datasets[0].data = [tokenCount, remaining < 0 ? 0 : remaining];
+            tokenUsageChart.data.datasets[0].backgroundColor[0] = chartColor;
+            tokenUsageChart.update();
+        } else {
+            tokenUsageChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Used Tokens', 'Available Tokens'],
+                    datasets: [{
+                        data: [tokenCount, remaining < 0 ? 0 : remaining],
+                        backgroundColor: [chartColor, '#e1e8ed'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { padding: 15, font: { size: 12, family: "'Inter', sans-serif" }, usePointStyle: true, pointStyle: 'circle' } },
+                        tooltip: {
+                            callbacks: { label: (c) => `${c.label}: ${c.parsed.toLocaleString()} (${((c.parsed / model.contextWindow) * 100).toFixed(1)}%)` },
+                            backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, cornerRadius: 6,
+                            titleFont: { size: 13, family: "'Inter', sans-serif" }, bodyFont: { size: 12, family: "'Inter', sans-serif" }
+                        }
+                    },
+                    cutout: '65%', animation: { animateRotate: true, animateScale: false }
+                }
+            });
         }
     }
 
@@ -1895,5 +1907,11 @@
         clearTimeout(debounceTimer);
     });
 </script>
+
+<script>
+    // Make copyResults globally accessible
+    window.copyResults = copyResults;
+</script>
+
 </body>
 </html>
