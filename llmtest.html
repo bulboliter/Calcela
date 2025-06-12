@@ -83,7 +83,6 @@
 </head>
 
 <!-- Universal Header Section - Copy and paste this into any page -->
-
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -447,49 +446,52 @@
                 <span>Home</span>
             </a>
         </div>
-
-<div class="search-wrapper">
-        <div class="search-container" role="search">
-            <input 
-                type="search" 
-                class="search-input" 
-                placeholder="Search calculators..." 
-                id="calculatorSearch"
-                aria-label="Search for calculators"
-                aria-autocomplete="list"
-                aria-controls="searchResults"
-                autocomplete="off"
-                spellcheck="false"
-                maxlength="100"
-            >
-            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-            </svg>
-            <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+        
+        <div class="search-wrapper">
+            <div class="search-container" role="search">
+                <input 
+                    type="search" 
+                    class="search-input" 
+                    placeholder="Search calculators..." 
+                    id="calculatorSearch"
+                    aria-label="Search for calculators"
+                    aria-autocomplete="list"
+                    aria-controls="searchResults"
+                    autocomplete="off"
+                    spellcheck="false"
+                    maxlength="100"
+                >
+                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+            </div>
         </div>
     </div>
-</div>
 </header>
 
 <!-- Load external calculator database -->
-
 <script src="/calculators-database.js"></script>
 
 <script>
 (function() {
     'use strict';
     
+    // Wait for the calculator database to load
     if (!window.calculators) {
         console.error('Calculator database not loaded. Please ensure calculators-database.js is included.');
+        return;
     }
     
+    // Security: Sanitize HTML to prevent XSS
     function sanitizeHTML(str) {
         const temp = document.createElement('div');
         temp.textContent = str;
         return temp.innerHTML;
     }
 
+    // Security: Validate and sanitize search input
     function sanitizeSearchInput(input) {
         return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
     }
@@ -502,7 +504,7 @@
     function performSearch(query) {
         query = sanitizeSearchInput(query);
         
-        if (!query.trim() || !window.calculators) {
+        if (!query.trim()) {
             hideResults();
             return;
         }
@@ -518,6 +520,7 @@
                 return titleMatch || descMatch || keywordMatch;
             });
 
+            // Sort by relevance
             results.sort((a, b) => {
                 const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
                 const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
@@ -546,65 +549,90 @@
 
     function displayResults(results, query) {
         if (results.length === 0) {
-            searchResults.innerHTML = `<div class="search-no-results">No calculators found for "${sanitizeHTML(query)}"</div>`;
+            searchResults.innerHTML = `
+                <div class="search-no-results">
+                    No calculators found for "${sanitizeHTML(query)}"
+                </div>
+            `;
         } else {
             searchResults.innerHTML = results.map((calc, index) => `
-                <a href="${sanitizeHTML(calc.url)}" class="search-result-item" role="option" aria-selected="false" data-index="${index}" tabindex="-1">
-                    <div class="search-result-title">${highlightMatch(calc.title, query)}</div>
+                <a href="${sanitizeHTML(calc.url)}" 
+                   class="search-result-item" 
+                   role="option" 
+                   aria-selected="false"
+                   data-index="${index}"
+                   tabindex="-1">
+                    <div class="search-result-title">${highlightMatch(sanitizeHTML(calc.title), query)}</div>
                     <div class="search-result-description">${sanitizeHTML(calc.description)}</div>
-                </a>`).join('');
+                </a>
+            `).join('');
         }
         searchResults.classList.add('show');
     }
 
     function highlightMatch(text, query) {
-        if (!query.trim()) return sanitizeHTML(text);
+        if (!query.trim()) return text;
         const sanitizedQuery = sanitizeHTML(query);
-        const escapedQuery = sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        const regex = new RegExp(`(${escapedQuery})`, 'gi');
-        const parts = text.split(regex);
-        return parts.map((part, i) => 
-            i % 2 === 1 
-                ? `<strong>${sanitizeHTML(part)}</strong>` 
-                : sanitizeHTML(part)
-        ).join('');
+        const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return text.replace(regex, '<strong>$1</strong>');
     }
 
+    // Event listeners
     searchInput.addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => { performSearch(e.target.value); }, 300);
+                clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            performSearch(e.target.value);
+        }, 300);
     });
 
     searchInput.addEventListener('focus', () => {
-        if (searchInput.value.trim()) { performSearch(searchInput.value); }
+        if (searchInput.value.trim()) {
+            performSearch(searchInput.value);
+        }
     });
 
+    // Close search results when clicking outside
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-wrapper')) { hideResults(); }
+        if (!e.target.closest('.search-wrapper')) {
+            hideResults();
+        }
     });
 
+    // Keyboard navigation
     searchInput.addEventListener('keydown', (e) => {
         const items = searchResults.querySelectorAll('.search-result-item');
-        if (items.length === 0) return;
         
         switch(e.key) {
             case 'ArrowDown':
                 e.preventDefault();
-                selectedIndex = (selectedIndex + 1) % items.length;
-                updateSelection(items, selectedIndex);
+                if (selectedIndex < items.length - 1) {
+                    selectedIndex++;
+                    updateSelection(items, selectedIndex);
+                }
                 break;
+                
             case 'ArrowUp':
                 e.preventDefault();
-                selectedIndex = (selectedIndex - 1 + items.length) % items.length;
-                updateSelection(items, selectedIndex);
+                if (selectedIndex > -1) {
+                    selectedIndex--;
+                    updateSelection(items, selectedIndex);
+                }
                 break;
+                
             case 'Enter':
                 e.preventDefault();
                 if (selectedIndex > -1 && items[selectedIndex]) {
-                    window.location.href = items[selectedIndex].getAttribute('href');
+                    const url = items[selectedIndex].getAttribute('href');
+                    if (url && url.startsWith('/')) {
+                        window.location.href = url;
+                    }
+                } else if (items.length > 0) {
+                    window.location.href = items[0].getAttribute('href');
                 }
                 break;
+                
             case 'Escape':
+                e.preventDefault();
                 hideResults();
                 searchInput.blur();
                 break;
@@ -616,16 +644,120 @@
             if (i === index) {
                 item.setAttribute('aria-selected', 'true');
                 item.style.backgroundColor = '#f8fafc';
-                item.scrollIntoView({ block: 'nearest' });
+                item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             } else {
                 item.setAttribute('aria-selected', 'false');
                 item.style.backgroundColor = '';
             }
         });
     }
+
+    // Prevent form submission
+    searchInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    });
+
+    // Mobile touch optimization
+    if ('ontouchstart' in window) {
+        searchResults.addEventListener('touchstart', (e) => {
+            const target = e.target.closest('.search-result-item');
+            if (target) {
+                target.style.backgroundColor = '#f0f4f8';
+            }
+        }, { passive: true });
+
+        searchResults.addEventListener('touchend', (e) => {
+            const target = e.target.closest('.search-result-item');
+            if (target) {
+                setTimeout(() => {
+                    target.style.backgroundColor = '';
+                }, 100);
+            }
+        }, { passive: true });
+    }
+
+    // Rate limiting
+    let searchCount = 0;
+    let rateLimitReset = Date.now();
+    
+    function checkRateLimit() {
+        const now = Date.now();
+        if (now - rateLimitReset > 60000) {
+            searchCount = 0;
+            rateLimitReset = now;
+        }
+        
+        searchCount++;
+        if (searchCount > 30) {
+            console.warn('Search rate limit exceeded');
+            return false;
+        }
+        return true;
+    }
+
+    const originalPerformSearch = performSearch;
+    performSearch = function(query) {
+        if (checkRateLimit()) {
+            originalPerformSearch(query);
+        }
+    };
+
+    // Accessibility announcements
+    const announcer = document.createElement('div');
+    announcer.setAttribute('role', 'status');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.setAttribute('aria-atomic', 'true');
+    announcer.style.position = 'absolute';
+    announcer.style.left = '-10000px';
+    announcer.style.width = '1px';
+    announcer.style.height = '1px';
+    announcer.style.overflow = 'hidden';
+    document.body.appendChild(announcer);
+
+    const originalDisplayResults = displayResults;
+    displayResults = function(results, query) {
+        originalDisplayResults(results, query);
+        
+        if (results.length === 0) {
+            announcer.textContent = `No results found for ${query}`;
+        } else {
+            announcer.textContent = `${results.length} calculator${results.length > 1 ? 's' : ''} found`;
+        }
+    };
+
+    // Handle resize events
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            if (searchResults.classList.contains('show') && window.innerWidth <= 768) {
+                const rect = searchInput.getBoundingClientRect();
+                searchResults.style.maxWidth = `${window.innerWidth - 32}px`;
+            } else {
+                searchResults.style.maxWidth = '';
+            }
+        }, 250);
+    });
+
+    // Clean up
+    window.addEventListener('beforeunload', () => {
+        clearTimeout(searchTimeout);
+        clearTimeout(resizeTimeout);
+    });
+
+    // Brand name click tracking (optional)
+    document.querySelector('.brand-name').addEventListener('click', () => {
+        if (typeof gtag !== 'undefined') {
+            gtag('event', 'brand_click', {
+                'event_category': 'Navigation',
+                'event_label': 'CALCELA Brand'
+            });
+        }
+    });
 })();
 </script>
-
 <!-- End of Universal Header Section -->
 
 <style>
