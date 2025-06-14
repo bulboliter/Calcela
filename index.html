@@ -1342,6 +1342,7 @@
             }
 
 // Initialize on page load
+// REPLACE THIS SECTION:
 document.addEventListener('DOMContentLoaded', () => {
     // Wait a bit to ensure calculator database is loaded
     const initializeApp = () => {
@@ -1356,6 +1357,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     initializeApp();
 });
+
+// Main search functionality - Initialize after DOM and calculators are loaded
+// Replace the entire main search section in your HTML with this corrected version:
 
 // Main search functionality - Initialize after DOM and calculators are loaded
 function initializeMainSearch() {
@@ -1390,6 +1394,7 @@ function initializeMainSearch() {
 
     function performMainSearch(query) {
         query = sanitizeSearchInput(query);
+        console.log('Searching for:', query); // Debug log
         
         if (!query) {
             hideMainResults();
@@ -1400,9 +1405,11 @@ function initializeMainSearch() {
         const results = window.calculators.filter(calc => {
             const titleMatch = calc.title.toLowerCase().includes(lowerQuery);
             const descMatch = calc.description.toLowerCase().includes(lowerQuery);
-            const keywordMatch = calc.keywords.some(keyword => keyword.includes(lowerQuery));
+            const keywordMatch = calc.keywords.some(keyword => keyword.toLowerCase().includes(lowerQuery));
             return titleMatch || descMatch || keywordMatch;
         });
+
+        console.log('Found results:', results.length); // Debug log
 
         // Sort by relevance
         results.sort((a, b) => {
@@ -1417,43 +1424,6 @@ function initializeMainSearch() {
         displayMainResults(results, query);
     }
 
-    // Rate limiting for main search
-    let searchCount = 0;
-    let rateLimitReset = Date.now();
-    
-    function checkRateLimit() {
-        const now = Date.now();
-        if (now - rateLimitReset > 60000) {
-            searchCount = 0;
-            rateLimitReset = now;
-        }
-        
-        searchCount++;
-        if (searchCount > 30) {
-            console.warn('Search rate limit exceeded');
-            return false;
-        }
-        return true;
-    }
-
-    // Event listener with rate limiting
-    mainSearchInput.addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
-        
-        if (!checkRateLimit()) {
-            return;
-        }
-        
-        searchTimeout = setTimeout(() => {
-            performMainSearch(e.target.value);
-        }, 300);
-    });
-
-    // Set proper attributes for accessibility and security
-    mainSearchInput.setAttribute('maxlength', '100');
-    mainSearchInput.setAttribute('autocomplete', 'off');
-    mainSearchInput.setAttribute('spellcheck', 'false');
-
     function hideMainResults() {
         mainSearchResults.classList.remove('show');
         setTimeout(() => {
@@ -1463,6 +1433,8 @@ function initializeMainSearch() {
     }
 
     function displayMainResults(results, query) {
+        console.log('Displaying results for:', query); // Debug log
+        
         if (results.length === 0) {
             mainSearchResults.innerHTML = `
                 <div class="main-search-no-results">
@@ -1470,8 +1442,8 @@ function initializeMainSearch() {
                 </div>
             `;
         } else {
-            mainSearchResults.innerHTML = results.map((calc, index) => {
-                const url = calc.url.startsWith('/') || calc.url.startsWith('http') 
+            mainSearchResults.innerHTML = results.slice(0, 8).map((calc, index) => {
+                const url = calc.url && (calc.url.startsWith('/') || calc.url.startsWith('http')) 
                     ? sanitizeHTML(calc.url) 
                     : '#';
                 
@@ -1491,9 +1463,56 @@ function initializeMainSearch() {
     function highlightMatch(text, query) {
         if (!query.trim()) return text;
         const sanitizedQuery = sanitizeHTML(query);
-        const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        return text.replace(regex, '<strong>$1</strong>');
+        try {
+            const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<strong>$1</strong>');
+        } catch (e) {
+            return text;
+        }
     }
+
+    function updateSelection(items, index) {
+        items.forEach((item, i) => {
+            if (i === index) {
+                item.style.backgroundColor = '#f8fafc';
+                item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            } else {
+                item.style.backgroundColor = '';
+            }
+        });
+    }
+
+    // Rate limiting for main search
+    let searchCount = 0;
+    let rateLimitReset = Date.now();
+    
+    function checkRateLimit() {
+        const now = Date.now();
+        if (now - rateLimitReset > 60000) {
+            searchCount = 0;
+            rateLimitReset = now;
+        }
+        
+        searchCount++;
+        if (searchCount > 50) { // Increased limit for main search
+            console.warn('Search rate limit exceeded');
+            return false;
+        }
+        return true;
+    }
+
+    // Event listeners
+    mainSearchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        
+        if (!checkRateLimit()) {
+            return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+            performMainSearch(e.target.value);
+        }, 300);
+    });
 
     mainSearchInput.addEventListener('focus', () => {
         if (mainSearchInput.value.trim()) {
@@ -1501,12 +1520,14 @@ function initializeMainSearch() {
         }
     });
 
+    // Close search results when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.main-search-container')) {
             hideMainResults();
         }
     });
 
+    // Keyboard navigation
     mainSearchInput.addEventListener('keydown', (e) => {
         const items = mainSearchResults.querySelectorAll('.main-search-result-item');
         
@@ -1530,9 +1551,15 @@ function initializeMainSearch() {
             case 'Enter':
                 e.preventDefault();
                 if (selectedIndex > -1 && items[selectedIndex]) {
-                    window.location.href = items[selectedIndex].getAttribute('href');
+                    const href = items[selectedIndex].getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
                 } else if (items.length > 0) {
-                    window.location.href = items[0].getAttribute('href');
+                    const href = items[0].getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    }
                 }
                 break;
                 
@@ -1544,23 +1571,43 @@ function initializeMainSearch() {
         }
     });
 
+    // Prevent form submission
     mainSearchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     });
 
-    function updateSelection(items, index) {
-        items.forEach((item, i) => {
-            if (i === index) {
-                item.style.backgroundColor = '#f8fafc';
-                item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            } else {
-                item.style.backgroundColor = '';
-            }
-        });
-    }
+    console.log('Main search initialized successfully'); // Debug log
 }
+
+// FIXED: Better initialization that ensures everything is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    let initAttempts = 0;
+    const maxAttempts = 50; // Try for up to 5 seconds
+    
+    const initializeApp = () => {
+        initAttempts++;
+        
+        if (window.calculators && Array.isArray(window.calculators) && window.calculators.length > 0) {
+            console.log('Calculator database loaded with', window.calculators.length, 'calculators');
+            renderCalculators();
+            initializeMainSearch();
+        } else if (initAttempts < maxAttempts) {
+            // Retry after a short delay
+            setTimeout(initializeApp, 100);
+        } else {
+            console.error('Failed to load calculator database after', maxAttempts, 'attempts');
+            // Show error message to user
+            const calculatorGrid = document.getElementById('calculatorGrid');
+            if (calculatorGrid) {
+                calculatorGrid.innerHTML = '<p style="text-align: center; color: #e74c3c;">Unable to load calculators. Please refresh the page.</p>';
+            }
+        }
+    };
+    
+    initializeApp();
+});
 
             // Auto-focus search on page load
             setTimeout(() => {
