@@ -3,33 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calcela - Free Online Calculators</title>
-    <meta name="description" content="Access free online calculators for finance, AI costs, and more. Simple tools for complex calculations.">
-    <meta name="keywords" content="online calculator, free calculator, financial calculator, AI cost calculator, token calculator">
+    <title>Calcela - Universal Online Calculator Hub</title>
+    <meta name="description" content="Your one-stop destination for all types of calculators. From LLM token & cost estimators to financial calculators, math tools, and specialized converters - all free and easy to use.">
+    <meta name="keywords" content="online calculator, universal calculator, LLM token calculator, AI cost estimator, financial calculator, compound interest calculator, simple interest calculator, math calculator, unit converter, percentage calculator, loan calculator, mortgage calculator, investment calculator, scientific calculator, free calculator tools">
     <meta name="author" content="Calcela">
     <meta name="robots" content="index, follow">
-
-    <!-- ADDED: Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:;">
-
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:;">
+    
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Calcela - Free Online Calculators">
-    <meta property="og:description" content="Access free online calculators for finance, AI costs, and more.">
+    <meta property="og:title" content="Calcela - Universal Online Calculator Hub">
+    <meta property="og:description" content="Complete collection of online calculators: LLM tokens, AI costs, finance, math, and more. All tools are free and instantly accessible.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://calcela.com">
     <meta property="og:image" content="https://calcela.com/calcela-preview.png">
     <meta property="og:site_name" content="Calcela">
-
+    
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Calcela - Free Online Calculators">
-    <meta name="twitter:description" content="Simple tools for complex calculations. Finance, AI costs, and more.">
+    <meta name="twitter:title" content="Calcela - Universal Calculator Hub">
+    <meta name="twitter:description" content="LLM tokens, AI costs, finance, math - every calculator you need in one place. Free and instant.">
     <meta name="twitter:image" content="https://calcela.com/calcela-preview.png">
-
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Calcela">
+    
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Calcela",
+        "url": "https://calcela.com",
+        "description": "Universal online calculator hub with tools for LLM tokens, AI costs, finance, math, and more",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "creator": {
+            "@type": "Organization",
+            "name": "Calcela"
+        }
+    }
+    </script>
+    
     <link rel="icon" href="/wicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/wicon.png">
     <link rel="canonical" href="https://calcela.com">
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
 
     <!-- Universal Header Section - Copy and paste this into any page -->
     <style>
@@ -385,9 +419,9 @@
     <header class="universal-header" role="banner">
         <div class="header-container">
             <div class="header-left">
-                <a href="/home" class="brand-name" aria-label="CALCELA - Home">CALCELA</a>
+                <a href="/index" class="brand-name" aria-label="CALCELA - Home">CALCELA</a>
                 <div class="nav-divider" aria-hidden="true"></div>
-                <a href="/home" class="home-button" aria-label="Go to home page">
+                <a href="/index" class="home-button" aria-label="Go to home page">
                     <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                         <polyline points="9 22 9 12 15 12 15 22"></polyline>
