@@ -2,7 +2,7 @@ window.calculators = [
     {
         title: "Simple & Compound Interest Calculator",
         description: "Calculate loan interest, savings growth, and investment returns.",
-        url: "interest-calculator.html",
+        url: "simple-compound-interest-calculator.html",
         keywords: ["interest", "compound", "simple", "investment", "savings", "finance", "roi"]
     },
     {
