@@ -432,14 +432,12 @@
 
             <div class="search-wrapper">
                 <div class="search-container" role="search">
+                    <!-- ID removed to avoid conflict. This search bar is now non-functional. -->
                     <input 
                         type="search" 
                         class="search-input" 
                         placeholder="Search calculators..." 
-                        id="calculatorSearch"
                         aria-label="Search for calculators"
-                        aria-autocomplete="list"
-                        aria-controls="searchResults"
                         autocomplete="off"
                         spellcheck="false"
                         maxlength="100"
@@ -448,7 +446,8 @@
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+                    <!-- ID removed to avoid conflict. -->
+                    <div class="search-results" role="listbox" aria-label="Search results"></div>
                 </div>
             </div>
         </div>
@@ -483,6 +482,11 @@
         const searchResults = document.getElementById('searchResults');
         let searchTimeout;
         let selectedIndex = -1;
+
+        // Exit if the main search input isn't on the page
+        if (!searchInput) {
+            return;
+        }
 
         function performSearch(query) {
             query = sanitizeSearchInput(query);
@@ -576,7 +580,7 @@
 
         // Close search results when clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-wrapper')) {
+            if (!e.target.closest('.search-wrapper') && !e.target.closest('.main-search-container')) {
                 hideResults();
             }
         });
@@ -606,11 +610,14 @@
                     e.preventDefault();
                     if (selectedIndex > -1 && items[selectedIndex]) {
                         const url = items[selectedIndex].getAttribute('href');
-                        if (url && url.startsWith('/')) {
+                        if (url && (url.startsWith('/') || url.startsWith('http'))) {
                             window.location.href = url;
                         }
                     } else if (items.length > 0) {
-                        window.location.href = items[0].getAttribute('href');
+                        const url = items[0].getAttribute('href');
+                        if (url && (url.startsWith('/') || url.startsWith('http'))) {
+                           window.location.href = url;
+                        }
                     }
                     break;
                     
@@ -1095,8 +1102,8 @@
             }
         }
 
-        /* Search results styling for main search */
-        .main-search-result-item {
+        /* MODIFIED: Search results styling to work with the universal script */
+        #searchResults .search-result-item {
             padding: 16px 24px;
             border-bottom: 1px solid #f0f4f8;
             cursor: pointer;
@@ -1106,32 +1113,32 @@
             color: inherit;
         }
 
-        .main-search-result-item:last-child {
+        #searchResults .search-result-item:last-child {
             border-bottom: none;
         }
 
-        .main-search-result-item:hover {
+        #searchResults .search-result-item:hover {
             background-color: #f8fafc;
         }
 
-        .main-search-result-title {
+        #searchResults .search-result-title {
             font-weight: 600;
             color: #2c3e50;
             font-size: 16px;
             margin-bottom: 4px;
         }
 
-        .main-search-result-title strong {
+        #searchResults .search-result-title strong {
             color: #4a90e2;
         }
 
-        .main-search-result-description {
+        #searchResults .search-result-description {
             font-size: 14px;
             color: #7f8c8d;
             line-height: 1.4;
         }
 
-        .main-search-no-results {
+        #searchResults .search-no-results {
             padding: 32px;
             text-align: center;
             color: #7f8c8d;
@@ -1181,12 +1188,14 @@
             <p class="tagline">Simple tools for complex calculations</p>
             
             <div class="main-search-container">
+                <!-- MODIFIED: This input now uses the ID for the universal script -->
                 <input 
                     type="search" 
                     class="main-search-input" 
                     placeholder="Search for a calculator..."
-                    id="mainSearchInput"
+                    id="calculatorSearch"
                     aria-label="Search for calculators"
+                    aria-controls="searchResults"
                     autocomplete="off"
                     spellcheck="false"
                 >
@@ -1194,7 +1203,8 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
                 </svg>
-                <div class="main-search-results" id="mainSearchResults"></div>
+                <!-- MODIFIED: This results div now uses the ID for the universal script -->
+                <div class="main-search-results" id="searchResults"></div>
             </div>
         </div>
 
@@ -1234,12 +1244,10 @@
         (function() {
             'use strict';
             
-            
-            const CALCULATORS_PER_PAGE = 12; // Change to 6 for smaller grids
+            const CALCULATORS_PER_PAGE = 12;
             let currentPage = 1;
             let totalPages = 1;
 
-            // Icon mapping for different calculator types
             const iconMap = {
                 'finance': `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -1260,7 +1268,6 @@
             };
 
             function getIconForCalculator(calculator) {
-                // Determine icon based on keywords
                 const keywords = calculator.keywords.join(' ').toLowerCase();
                 if (keywords.includes('finance') || keywords.includes('interest') || keywords.includes('investment')) {
                     return iconMap.finance;
@@ -1284,21 +1291,17 @@
 
                 totalPages = Math.ceil(window.calculators.length / CALCULATORS_PER_PAGE);
                 
-                // Hide pagination if only one page
                 if (totalPages <= 1) {
                     pagination.classList.add('hidden');
                 } else {
                     pagination.classList.remove('hidden');
                 }
 
-                // Calculate start and end indices
                 const startIndex = (currentPage - 1) * CALCULATORS_PER_PAGE;
                 const endIndex = Math.min(startIndex + CALCULATORS_PER_PAGE, window.calculators.length);
                 
-                // Get calculators for current page
                 const calculatorsToShow = window.calculators.slice(startIndex, endIndex);
                 
-                // Render calculator cards
                 calculatorGrid.innerHTML = calculatorsToShow.map(calc => `
                     <a href="${sanitizeHTML(calc.url)}" class="calculator-card">
                         <div class="calculator-icon">
@@ -1309,7 +1312,6 @@
                     </a>
                 `).join('');
 
-                // Update pagination
                 updatePagination();
             }
 
@@ -1330,7 +1332,6 @@
                 if (newPage >= 1 && newPage <= totalPages) {
                     currentPage = newPage;
                     renderCalculators();
-                    // Scroll to top of calculator section
                     document.querySelector('.calculators-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             };
@@ -1341,277 +1342,18 @@
                 return temp.innerHTML;
             }
 
-// Initialize on page load
-// REPLACE THIS SECTION:
-document.addEventListener('DOMContentLoaded', () => {
-    // Wait a bit to ensure calculator database is loaded
-    const initializeApp = () => {
-        if (window.calculators && Array.isArray(window.calculators)) {
-            renderCalculators();
-            initializeMainSearch();
-        } else {
-            // Retry after a short delay
-            setTimeout(initializeApp, 100);
-        }
-    };
-    
-    initializeApp();
-});
+            document.addEventListener('DOMContentLoaded', () => {
+                renderCalculators();
+            });
 
-// Main search functionality - Initialize after DOM and calculators are loaded
-// Replace the entire main search section in your HTML with this corrected version:
-
-// Main search functionality - Initialize after DOM and calculators are loaded
-function initializeMainSearch() {
-    'use strict';
-    
-    const mainSearchInput = document.getElementById('mainSearchInput');
-    const mainSearchResults = document.getElementById('mainSearchResults');
-    
-    if (!mainSearchInput || !mainSearchResults) {
-        console.error('Main search elements not found');
-        return;
-    }
-    
-    if (!window.calculators || !Array.isArray(window.calculators)) {
-        console.error('Calculator database not loaded');
-        return;
-    }
-    
-    let searchTimeout;
-    let selectedIndex = -1;
-
-    // Security function to sanitize search input
-    function sanitizeSearchInput(input) {
-        return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
-    }
-
-    function sanitizeHTML(str) {
-        const temp = document.createElement('div');
-        temp.textContent = str;
-        return temp.innerHTML;
-    }
-
-    function performMainSearch(query) {
-        query = sanitizeSearchInput(query);
-        console.log('Searching for:', query); // Debug log
-        
-        if (!query) {
-            hideMainResults();
-            return;
-        }
-
-        const lowerQuery = query.toLowerCase();
-        const results = window.calculators.filter(calc => {
-            const titleMatch = calc.title.toLowerCase().includes(lowerQuery);
-            const descMatch = calc.description.toLowerCase().includes(lowerQuery);
-            const keywordMatch = calc.keywords.some(keyword => keyword.toLowerCase().includes(lowerQuery));
-            return titleMatch || descMatch || keywordMatch;
-        });
-
-        console.log('Found results:', results.length); // Debug log
-
-        // Sort by relevance
-        results.sort((a, b) => {
-            const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
-            const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
-            if (aTitle !== -1 && bTitle === -1) return -1;
-            if (aTitle === -1 && bTitle !== -1) return 1;
-            if (aTitle !== -1 && bTitle !== -1) return aTitle - bTitle;
-            return 0;
-        });
-
-        displayMainResults(results, query);
-    }
-
-    function hideMainResults() {
-        mainSearchResults.classList.remove('show');
-        setTimeout(() => {
-            mainSearchResults.innerHTML = '';
-            selectedIndex = -1;
-        }, 200);
-    }
-
-    function displayMainResults(results, query) {
-        console.log('Displaying results for:', query); // Debug log
-        
-        if (results.length === 0) {
-            mainSearchResults.innerHTML = `
-                <div class="main-search-no-results">
-                    No calculators found for "${sanitizeHTML(query)}"
-                </div>
-            `;
-        } else {
-            mainSearchResults.innerHTML = results.slice(0, 8).map((calc, index) => {
-                const url = calc.url && (calc.url.startsWith('/') || calc.url.startsWith('http')) 
-                    ? sanitizeHTML(calc.url) 
-                    : '#';
-                
-                return `
-                    <a href="${url}" 
-                       class="main-search-result-item" 
-                       data-index="${index}">
-                        <div class="main-search-result-title">${highlightMatch(sanitizeHTML(calc.title), query)}</div>
-                        <div class="main-search-result-description">${sanitizeHTML(calc.description)}</div>
-                    </a>
-                `;
-            }).join('');
-        }
-        mainSearchResults.classList.add('show');
-    }
-
-    function highlightMatch(text, query) {
-        if (!query.trim()) return text;
-        const sanitizedQuery = sanitizeHTML(query);
-        try {
-            const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-            return text.replace(regex, '<strong>$1</strong>');
-        } catch (e) {
-            return text;
-        }
-    }
-
-    function updateSelection(items, index) {
-        items.forEach((item, i) => {
-            if (i === index) {
-                item.style.backgroundColor = '#f8fafc';
-                item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            } else {
-                item.style.backgroundColor = '';
-            }
-        });
-    }
-
-    // Rate limiting for main search
-    let searchCount = 0;
-    let rateLimitReset = Date.now();
-    
-    function checkRateLimit() {
-        const now = Date.now();
-        if (now - rateLimitReset > 60000) {
-            searchCount = 0;
-            rateLimitReset = now;
-        }
-        
-        searchCount++;
-        if (searchCount > 50) { // Increased limit for main search
-            console.warn('Search rate limit exceeded');
-            return false;
-        }
-        return true;
-    }
-
-    // Event listeners
-    mainSearchInput.addEventListener('input', (e) => {
-        clearTimeout(searchTimeout);
-        
-        if (!checkRateLimit()) {
-            return;
-        }
-        
-        searchTimeout = setTimeout(() => {
-            performMainSearch(e.target.value);
-        }, 300);
-    });
-
-    mainSearchInput.addEventListener('focus', () => {
-        if (mainSearchInput.value.trim()) {
-            performMainSearch(mainSearchInput.value);
-        }
-    });
-
-    // Close search results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.main-search-container')) {
-            hideMainResults();
-        }
-    });
-
-    // Keyboard navigation
-    mainSearchInput.addEventListener('keydown', (e) => {
-        const items = mainSearchResults.querySelectorAll('.main-search-result-item');
-        
-        switch(e.key) {
-            case 'ArrowDown':
-                e.preventDefault();
-                if (selectedIndex < items.length - 1) {
-                    selectedIndex++;
-                    updateSelection(items, selectedIndex);
-                }
-                break;
-                
-            case 'ArrowUp':
-                e.preventDefault();
-                if (selectedIndex > -1) {
-                    selectedIndex--;
-                    updateSelection(items, selectedIndex);
-                }
-                break;
-                
-            case 'Enter':
-                e.preventDefault();
-                if (selectedIndex > -1 && items[selectedIndex]) {
-                    const href = items[selectedIndex].getAttribute('href');
-                    if (href && href !== '#') {
-                        window.location.href = href;
-                    }
-                } else if (items.length > 0) {
-                    const href = items[0].getAttribute('href');
-                    if (href && href !== '#') {
-                        window.location.href = href;
-                    }
-                }
-                break;
-                
-            case 'Escape':
-                e.preventDefault();
-                hideMainResults();
-                mainSearchInput.blur();
-                break;
-        }
-    });
-
-    // Prevent form submission
-    mainSearchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-        }
-    });
-
-    console.log('Main search initialized successfully'); // Debug log
-}
-
-// FIXED: Better initialization that ensures everything is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    let initAttempts = 0;
-    const maxAttempts = 50; // Try for up to 5 seconds
-    
-    const initializeApp = () => {
-        initAttempts++;
-        
-        if (window.calculators && Array.isArray(window.calculators) && window.calculators.length > 0) {
-            console.log('Calculator database loaded with', window.calculators.length, 'calculators');
-            renderCalculators();
-            initializeMainSearch();
-        } else if (initAttempts < maxAttempts) {
-            // Retry after a short delay
-            setTimeout(initializeApp, 100);
-        } else {
-            console.error('Failed to load calculator database after', maxAttempts, 'attempts');
-            // Show error message to user
-            const calculatorGrid = document.getElementById('calculatorGrid');
-            if (calculatorGrid) {
-                calculatorGrid.innerHTML = '<p style="text-align: center; color: #e74c3c;">Unable to load calculators. Please refresh the page.</p>';
-            }
-        }
-    };
-    
-    initializeApp();
-});
+            // REMOVED: The entire redundant main search script was here. It has been deleted.
 
             // Auto-focus search on page load
             setTimeout(() => {
-                document.getElementById('mainSearchInput').focus();
+                const searchInput = document.getElementById('calculatorSearch');
+                if (searchInput) {
+                    searchInput.focus();
+                }
             }, 100);
 
             // Handle window resize for responsive grid
@@ -1619,7 +1361,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
-                    // Re-render if needed for responsive changes
                     renderCalculators();
                 }, 250);
             });
