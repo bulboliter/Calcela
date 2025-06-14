@@ -1233,6 +1233,20 @@
         // Pagination and calculator display logic
         (function() {
             'use strict';
+
+                        // --- FIX STARTS HERE ---
+            // Add a crucial safety check to ensure the calculator database is loaded
+            // before trying to set up any functionality that depends on it.
+            if (!window.calculators) {
+                console.error('Calculator database not loaded. Main page functionality will not be available.');
+                // You can optionally display a message to the user in the grid
+                const calculatorGrid = document.getElementById('calculatorGrid');
+                if(calculatorGrid) {
+                    calculatorGrid.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 40px 0;">Could not load calculator data. Please try again later.</p>';
+                }
+                return; // Exit the script if data is not present
+            }
+            // --- FIX ENDS HERE ---
             
             const CALCULATORS_PER_PAGE = 12; // Change to 6 for smaller grids
             let currentPage = 1;
