@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,7 +8,6 @@
     <meta name="author" content="Calcela">
     <meta name="robots" content="index, follow">
 
-<!-- Open Graph Meta Tags -->
 <meta property="og:title" content="LLM Token Calculator & Cost Estimator">
 <meta property="og:description" content="Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs.">
 <meta property="og:type" content="website">
@@ -18,7 +15,6 @@
 <meta property="og:image" content="https://calcela.com/llm-token-calculator-preview.png">
 <meta property="og:site_name" content="Calcela">
 
-<!-- Twitter Card Meta Tags -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="LLM Token Calculator & Cost Estimator">
 <meta name="twitter:description" content="Free tool to estimate token counts and API costs for models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.">
@@ -26,10 +22,8 @@
 
 <link rel="icon" href="/wicon.png" type="image/png">
 
-<!-- Canonical URL -->
 <link rel="canonical" href="https://calcela.com/llm-token-calculator">
 
-<!-- Schema.org Structured Data -->
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -47,7 +41,6 @@
 }
 </script>
 
-<!-- FAQ Schema -->
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
@@ -78,10 +71,10 @@
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<!-- Add Chart.js -->
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<!-- Universal Header Section - Copy and paste this into any page -->
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -445,7 +438,7 @@
                 <span>Home</span>
             </a>
         </div>
-        
+
         <div class="search-wrapper">
             <div class="search-container" role="search">
                 <input 
@@ -470,27 +463,23 @@
     </div>
 </header>
 
-<!-- Load external calculator database -->
 <script src="/calculators-database.js"></script>
 
 <script>
 (function() {
     'use strict';
-    
-    // Wait for the calculator database to load
+
     if (!window.calculators) {
         console.error('Calculator database not loaded. Please ensure calculators-database.js is included.');
         return;
     }
-    
-    // Security: Sanitize HTML to prevent XSS
+
     function sanitizeHTML(str) {
         const temp = document.createElement('div');
         temp.textContent = str;
         return temp.innerHTML;
     }
 
-    // Security: Validate and sanitize search input
     function sanitizeSearchInput(input) {
         return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
     }
@@ -502,7 +491,7 @@
 
     function performSearch(query) {
         query = sanitizeSearchInput(query);
-        
+
         if (!query.trim()) {
             hideResults();
             return;
@@ -519,7 +508,6 @@
                 return titleMatch || descMatch || keywordMatch;
             });
 
-            // Sort by relevance
             results.sort((a, b) => {
                 const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
                 const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
@@ -576,7 +564,6 @@
         return text.replace(regex, '<strong>$1</strong>');
     }
 
-    // Event listeners
     searchInput.addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
@@ -590,17 +577,15 @@
         }
     });
 
-    // Close search results when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.search-wrapper')) {
             hideResults();
         }
     });
 
-    // Keyboard navigation
     searchInput.addEventListener('keydown', (e) => {
         const items = searchResults.querySelectorAll('.search-result-item');
-        
+
         switch(e.key) {
             case 'ArrowDown':
                 e.preventDefault();
@@ -609,7 +594,7 @@
                     updateSelection(items, selectedIndex);
                 }
                 break;
-                
+
             case 'ArrowUp':
                 e.preventDefault();
                 if (selectedIndex > -1) {
@@ -617,7 +602,7 @@
                     updateSelection(items, selectedIndex);
                 }
                 break;
-                
+
             case 'Enter':
                 e.preventDefault();
                 if (selectedIndex > -1 && items[selectedIndex]) {
@@ -629,7 +614,7 @@
                     window.location.href = items[0].getAttribute('href');
                 }
                 break;
-                
+
             case 'Escape':
                 e.preventDefault();
                 hideResults();
@@ -651,14 +636,12 @@
         });
     }
 
-    // Prevent form submission
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     });
 
-    // Mobile touch optimization
     if ('ontouchstart' in window) {
         searchResults.addEventListener('touchstart', (e) => {
             const target = e.target.closest('.search-result-item');
@@ -677,17 +660,16 @@
         }, { passive: true });
     }
 
-    // Rate limiting
     let searchCount = 0;
     let rateLimitReset = Date.now();
-    
+
     function checkRateLimit() {
         const now = Date.now();
         if (now - rateLimitReset > 60000) {
             searchCount = 0;
             rateLimitReset = now;
         }
-        
+
         searchCount++;
         if (searchCount > 30) {
             console.warn('Search rate limit exceeded');
@@ -703,7 +685,6 @@
         }
     };
 
-    // Accessibility announcements
     const announcer = document.createElement('div');
     announcer.setAttribute('role', 'status');
     announcer.setAttribute('aria-live', 'polite');
@@ -718,7 +699,7 @@
     const originalDisplayResults = displayResults;
     displayResults = function(results, query) {
         originalDisplayResults(results, query);
-        
+
         if (results.length === 0) {
             announcer.textContent = `No results found for ${query}`;
         } else {
@@ -726,7 +707,6 @@
         }
     };
 
-    // Handle resize events
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -740,13 +720,11 @@
         }, 250);
     });
 
-    // Clean up
     window.addEventListener('beforeunload', () => {
         clearTimeout(searchTimeout);
         clearTimeout(resizeTimeout);
     });
 
-    // Brand name click tracking (optional)
     document.querySelector('.brand-name').addEventListener('click', () => {
         if (typeof gtag !== 'undefined') {
             gtag('event', 'brand_click', {
@@ -757,7 +735,6 @@
     });
 })();
 </script>
-<!-- End of Universal Header Section -->
 
 <style>
     * {
@@ -862,7 +839,7 @@
     .input-group {
         margin-bottom: 24px;
     }
-    
+
     .input-group label {
         display: block;
         color: #5a6c7d;
@@ -888,11 +865,11 @@
         background-color: white;
         box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
     }
-    
+
     textarea:hover, select:hover, input[type="number"]:hover {
         border-color: #cbd5e0;
     }
-    
+
     textarea {
         resize: vertical;
         min-height: 150px;
@@ -909,7 +886,7 @@
         background-size: 20px;
         padding-right: 40px;
     }
-    
+
     .custom-cost-inputs {
         display: flex;
         gap: 16px;
@@ -1111,7 +1088,7 @@
         color: #5a6c7d;
         line-height: 1.6;
     }
-    
+
     table {
         width: 100%;
         border-collapse: collapse;
@@ -1170,7 +1147,7 @@
             grid-template-columns: 1fr;
         }
     }
-    
+
     /* Styles for new features */
     .toggle-group {
         display: flex;
@@ -1338,7 +1315,7 @@
 </head>
 <body>
     <div class="main-container">
-        <!-- Calculator Section -->
+
         <div class="calculator-container">
             <div class="main-heading">
                 <h1>LLM Token Calculator & Cost Estimator</h1>
@@ -1376,12 +1353,12 @@
                 </div>
             </div>
             <p class="cost-warning">Note: This does not account for thinking tokens or cache tokens, which may affect final pricing.</p>
-            
+
             <div class="toggle-group">
                 <input type="checkbox" id="compare-models" class="toggle-checkbox">
                 <label for="compare-models" class="toggle-label">Compare costs across all models</label>
             </div>
-            
+
             <button type="button" id="clearButton" style="
                 background-color: #f0f4f8;
                 border: 1px solid #e1e8ed;
@@ -1397,7 +1374,7 @@
                 Clear All Text
             </button>
         </div>
-        
+
         <div class="calculator-results">
             <div class="results" id="results" role="region" aria-label="Calculation results">
                 <button class="copy-button" onclick="copyResults()" aria-label="Copy results to clipboard">
@@ -1407,8 +1384,7 @@
                     </svg>
                     <span>Copy</span>
                 </button>
-                
-                <!-- Simple Results View -->
+
                 <div class="result-grid" id="simple-results-grid">
                     <div class="result-item">
                         <span class="result-label">Character Count</span>
@@ -1428,7 +1404,6 @@
                     </div>
                 </div>
 
-                <!-- Detailed Results View -->
                 <div id="detailed-results-summary" style="display: none;">
                     <div class="results-summary">
                         <div class="summary-col" id="input-summary">
@@ -1452,7 +1427,7 @@
                         <div class="summary-item"><span class="summary-label">Total Estimated Cost</span><span class="summary-value" id="totalCost">$0.00</span></div>
                     </div>
                 </div>
-        
+
                 <div id="tokenUsageContainer" style="display: none; margin-top: 24px;">
                     <div style="margin-bottom: 12px; font-size: 14px; color: #5a6c7d; font-weight: 500;">
                         Input Token Usage vs Model Limit:
@@ -1464,7 +1439,7 @@
                         <span id="tokenUsageStats"></span>
                     </div>
                 </div>
-                
+
                 <div class="comparison-table" id="comparisonTable">
                     <h3 style="font-size: 16px; margin-bottom: 12px; color: #34495e;">Cost Comparison Across Models</h3>
                     <div style="overflow-x: auto;">
@@ -1481,7 +1456,7 @@
                         </table>
                     </div>
                 </div>
-                
+
                 <div class="estimation-notice">
                     <strong>Note:</strong> Token count is estimated using the <strong>1 token ≈ 4 characters</strong> rule. Actual count may vary.
                 </div>
@@ -1489,7 +1464,6 @@
         </div>
     </div>
 
-    <!-- Blog Section -->
     <article class="blog-section">
         <div class="blog-content">
             <h2 style="text-align: center;">A Developer's Guide to LLM Tokens and API Costs</h2>
@@ -1715,7 +1689,6 @@
     'use strict';
     let tokenUsageChart = null;
 
-    // --- Model Data ---
     const MODELS = {
         'gpt-4.1': { provider: 'OpenAI', name: 'GPT-4.1', inputCost: 2.50, outputCost: 10.00, contextWindow: 1000000 },
         'gpt-4o': { provider: 'OpenAI', name: 'GPT-4o', inputCost: 5.00, outputCost: 20.00, contextWindow: 128000 },
@@ -1728,7 +1701,6 @@
         'custom': { provider: 'Custom', name: 'Custom Model', inputCost: 0, outputCost: 0, contextWindow: 0 }
     };
 
-    // --- DOM Elements ---
     const textInput = document.getElementById('text-input');
     const includeOutputCheckbox = document.getElementById('include-output');
     const outputTextContainer = document.getElementById('output-text-container');
@@ -1737,18 +1709,15 @@
     const customInputCostEl = document.getElementById('custom-input-cost');
     const customOutputCostEl = document.getElementById('custom-output-cost');
     const compareModelsCheckbox = document.getElementById('compare-models');
-    
-    // Result View Containers
+
     const simpleResultsGrid = document.getElementById('simple-results-grid');
     const detailedResultsSummary = document.getElementById('detailed-results-summary');
 
-    // Simple Result Elements
     const charCountEl = document.getElementById('charCount');
     const wordCountEl = document.getElementById('wordCount');
     const tokenCountEl = document.getElementById('tokenCount');
     const estimatedCostEl = document.getElementById('estimatedCost');
 
-    // Detailed Result Elements
     const inputCharCountEl = document.getElementById('inputCharCount');
     const inputWordCountEl = document.getElementById('inputWordCount');
     const inputTokenCountEl = document.getElementById('inputTokenCount');
@@ -1760,14 +1729,13 @@
     const outputCostEl = document.getElementById('outputCost');
     const totalTokenCountEl = document.getElementById('totalTokenCount');
     const totalCostEl = document.getElementById('totalCost');
-    
+
     const tokenUsageContainer = document.getElementById('tokenUsageContainer');
     const comparisonTable = document.getElementById('comparisonTable');
     const comparisonTableBody = document.querySelector('#comparisonTableContent tbody');
 
     let debounceTimer;
 
-    // --- Functions ---
     function populateModelSelector() {
         modelSelect.innerHTML = '';
         const customOption = document.createElement('option');
@@ -1829,7 +1797,7 @@
         const tokenCount = Math.ceil(charCount / 4);
         return { charCount, wordCount, tokenCount };
     }
-    
+
     function calculate() {
         const inputCostPerMillion = parseFloat(customInputCostEl.value) || 0;
         const outputCostPerMillion = parseFloat(customOutputCostEl.value) || 0;
@@ -1840,8 +1808,7 @@
 
         const inputCost = (inputStats.tokenCount / 1000000) * inputCostPerMillion;
         const outputCost = (outputStats.tokenCount / 1000000) * outputCostPerMillion;
-        
-        // Update UI based on checkbox
+
         if (includeOutput) {
             simpleResultsGrid.style.display = 'none';
             detailedResultsSummary.style.display = 'block';
@@ -1867,17 +1834,16 @@
             tokenCountEl.textContent = inputStats.tokenCount.toLocaleString('en-US');
             estimatedCostEl.textContent = formatCurrency(inputCost);
         }
-        
+
         const selectedModelKey = modelSelect.value;
         const selectedModel = MODELS[selectedModelKey];
 
-        // Pass only input tokens to the usage bar
         updateTokenUsageBar(inputStats.tokenCount, selectedModel);
         updateComparisonTable(inputStats.tokenCount, outputStats.tokenCount);
     }
 
 function updateTokenUsageBar(tokenCount, model) {
-    // Hide the chart only if no model, no context window, or custom model
+
     if (!model || model.contextWindow <= 0 || modelSelect.value === 'custom') {
         tokenUsageContainer.style.display = 'none';
         if (tokenUsageChart) {
@@ -1901,11 +1867,10 @@ function updateTokenUsageBar(tokenCount, model) {
     }
 
     document.getElementById('tokenUsageStats').innerHTML = `Using <strong>${tokenCount.toLocaleString()}</strong> of <strong>${model.contextWindow.toLocaleString()}</strong> tokens (${rawPercentage.toFixed(1)}%) • <strong>${remaining.toLocaleString()}</strong> tokens remaining${warningText}`;
-    
+
     const ctx = document.getElementById('tokenUsageChart').getContext('2d');
     const chartColor = rawPercentage > 100 ? '#e74c3c' : rawPercentage > 90 ? '#e74c3c' : rawPercentage > 75 ? '#f39c12' : '#4a90e2';
 
-    // Ensure we always have valid data for the chart
     const chartData = tokenCount === 0 ? [0, model.contextWindow] : [tokenCount, remaining];
 
     if (tokenUsageChart) {
@@ -2023,11 +1988,10 @@ function updateTokenUsageBar(tokenCount, model) {
         debounceTimer = setTimeout(calculate, 150);
     }
 
-    // --- Event Listeners ---
     document.addEventListener('DOMContentLoaded', () => {
         populateModelSelector();
         updateCustomCostInputs();
-        
+
         textInput.addEventListener('input', debouncedCalculate);
         outputTextInput.addEventListener('input', debouncedCalculate);
         modelSelect.addEventListener('change', updateCustomCostInputs);
@@ -2052,14 +2016,14 @@ function updateTokenUsageBar(tokenCount, model) {
         customInputCostEl.addEventListener('input', () => { modelSelect.value = 'custom'; debouncedCalculate(); });
         customOutputCostEl.addEventListener('input', () => { modelSelect.value = 'custom'; debouncedCalculate(); });
     });
-    
+
     window.addEventListener('beforeunload', () => {
         clearTimeout(debounceTimer);
     });
 </script>
 
 <script>
-    // Make copyResults globally accessible
+
     window.copyResults = copyResults;
 </script>
 
