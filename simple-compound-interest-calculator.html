@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,27 +9,23 @@
     <meta name="keywords" content="simple interest calculator, compound interest calculator, interest calculator, loan interest calculator, savings calculator, investment calculator, compound interest formula, simple interest formula, financial calculator, interest rate calculator">
     <meta name="author" content="Calcela">
     <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph Meta Tags -->
+
     <meta property="og:title" content="Simple and Compound Interest Calculator - Free Online">
     <meta property="og:description" content="Calculate simple and compound interest instantly. Perfect for loans, savings, and investments. Make smarter financial decisions with our free calculator.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://calcela.com/simple-compound-interest-calculator">
     <meta property="og:image" content="https://calcela.com/interest-calculator-preview.png">
     <meta property="og:site_name" content="Calcela">
-    
-    <!-- Twitter Card Meta Tags -->
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Simple and Compound Interest Calculator">
     <meta name="twitter:description" content="Calculate loan interest, savings growth & investment returns instantly with our free calculator.">
     <meta name="twitter:image" content="https://calcela.com/interest-calculator-preview.png">
-    
+
     <link rel="icon" href="/wicon.png" type="image/png">
 
-    <!-- Canonical URL -->
     <link rel="canonical" href="https://calcela.com/simple-compound-interest-calculator">
-    
-    <!-- Schema.org Structured Data -->
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -45,8 +42,7 @@
         }
     }
     </script>
-    
-    <!-- FAQ Schema -->
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -82,10 +78,10 @@
         }]
     }
     </script>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script></head>
-<!-- Universal Header Section - Copy and paste this into any page -->
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -449,7 +445,7 @@
                 <span>Home</span>
             </a>
         </div>
-        
+
         <div class="search-wrapper">
             <div class="search-container" role="search">
                 <input 
@@ -474,27 +470,23 @@
     </div>
 </header>
 
-<!-- Load external calculator database -->
 <script src="/calculators-database.js"></script>
 
 <script>
 (function() {
     'use strict';
-    
-    // Wait for the calculator database to load
+
     if (!window.calculators) {
         console.error('Calculator database not loaded. Please ensure calculators-database.js is included.');
         return;
     }
-    
-    // Security: Sanitize HTML to prevent XSS
+
     function sanitizeHTML(str) {
         const temp = document.createElement('div');
         temp.textContent = str;
         return temp.innerHTML;
     }
 
-    // Security: Validate and sanitize search input
     function sanitizeSearchInput(input) {
         return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
     }
@@ -506,7 +498,7 @@
 
     function performSearch(query) {
         query = sanitizeSearchInput(query);
-        
+
         if (!query.trim()) {
             hideResults();
             return;
@@ -523,7 +515,6 @@
                 return titleMatch || descMatch || keywordMatch;
             });
 
-            // Sort by relevance
             results.sort((a, b) => {
                 const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
                 const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
@@ -580,7 +571,6 @@
         return text.replace(regex, '<strong>$1</strong>');
     }
 
-    // Event listeners
     searchInput.addEventListener('input', (e) => {
                 clearTimeout(searchTimeout);
         searchTimeout = setTimeout(() => {
@@ -594,17 +584,15 @@
         }
     });
 
-    // Close search results when clicking outside
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.search-wrapper')) {
             hideResults();
         }
     });
 
-    // Keyboard navigation
     searchInput.addEventListener('keydown', (e) => {
         const items = searchResults.querySelectorAll('.search-result-item');
-        
+
         switch(e.key) {
             case 'ArrowDown':
                 e.preventDefault();
@@ -613,7 +601,7 @@
                     updateSelection(items, selectedIndex);
                 }
                 break;
-                
+
             case 'ArrowUp':
                 e.preventDefault();
                 if (selectedIndex > -1) {
@@ -621,7 +609,7 @@
                     updateSelection(items, selectedIndex);
                 }
                 break;
-                
+
             case 'Enter':
                 e.preventDefault();
                 if (selectedIndex > -1 && items[selectedIndex]) {
@@ -633,7 +621,7 @@
                     window.location.href = items[0].getAttribute('href');
                 }
                 break;
-                
+
             case 'Escape':
                 e.preventDefault();
                 hideResults();
@@ -655,14 +643,12 @@
         });
     }
 
-    // Prevent form submission
     searchInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
         }
     });
 
-    // Mobile touch optimization
     if ('ontouchstart' in window) {
         searchResults.addEventListener('touchstart', (e) => {
             const target = e.target.closest('.search-result-item');
@@ -681,17 +667,16 @@
         }, { passive: true });
     }
 
-    // Rate limiting
     let searchCount = 0;
     let rateLimitReset = Date.now();
-    
+
     function checkRateLimit() {
         const now = Date.now();
         if (now - rateLimitReset > 60000) {
             searchCount = 0;
             rateLimitReset = now;
         }
-        
+
         searchCount++;
         if (searchCount > 30) {
             console.warn('Search rate limit exceeded');
@@ -707,7 +692,6 @@
         }
     };
 
-    // Accessibility announcements
     const announcer = document.createElement('div');
     announcer.setAttribute('role', 'status');
     announcer.setAttribute('aria-live', 'polite');
@@ -722,7 +706,7 @@
     const originalDisplayResults = displayResults;
     displayResults = function(results, query) {
         originalDisplayResults(results, query);
-        
+
         if (results.length === 0) {
             announcer.textContent = `No results found for ${query}`;
         } else {
@@ -730,7 +714,6 @@
         }
     };
 
-    // Handle resize events
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
@@ -744,13 +727,11 @@
         }, 250);
     });
 
-    // Clean up
     window.addEventListener('beforeunload', () => {
         clearTimeout(searchTimeout);
         clearTimeout(resizeTimeout);
     });
 
-    // Brand name click tracking (optional)
     document.querySelector('.brand-name').addEventListener('click', () => {
         if (typeof gtag !== 'undefined') {
             gtag('event', 'brand_click', {
@@ -761,7 +742,6 @@
     });
 })();
 </script>
-<!-- End of Universal Header Section -->
 
     <style>
         * {
@@ -816,16 +796,16 @@
                 gap: 40px;
                 padding: 40px 50px;
             }
-            
+
             .calculator-container h1 {
                 grid-column: 1 / -1;
             }
-            
+
             .calculator-inputs {
                 display: flex;
                 flex-direction: column;
             }
-            
+
             .calculator-results {
                 display: flex;
                 flex-direction: column;
@@ -966,7 +946,6 @@
         #timeUnit {
             font-size: 15px;
         }
-        
 
         select {
             width: 100%;
@@ -1096,7 +1075,7 @@
             .chart-wrapper {
                 max-width: 350px;
             }
-            
+
             .line-chart-wrapper {
                 height: 300px;
             }
@@ -1189,7 +1168,7 @@
             .blog-section {
                 padding: 50px 60px;
             }
-            
+
             .blog-content {
                 max-width: 800px;
                 margin: 0 auto;
@@ -1415,12 +1394,12 @@
             .formula-visual {
                 padding: 10px;
             }
-            
+
             .formula-breakdown {
                 grid-template-columns: 1fr;
                 gap: 10px;
             }
-            
+
             .formula-input-display {
                 font-size: 16px;
             }
@@ -1430,7 +1409,7 @@
                 .toggle-option label:active {
                     background-color: #e1e8ed;
                 }
-                
+
                 .toggle-option input[type="radio"]:checked + label:active {
                     background-color: #357abd;
                 }
@@ -1451,12 +1430,12 @@
             body {
                 background-color: white;
             }
-            
+
             .calculator-container {
                 box-shadow: none;
                 padding: 20px;
             }
-            
+
             .tap-hint,
             .realtime-notice {
                 display: none;
@@ -1466,10 +1445,10 @@
 </head>
 <body>
     <div class="main-container">
-        <!-- Calculator Section -->
+
         <div class="calculator-container">
             <h1>Simple & Compound Interest Calculator</h1>
-            
+
             <div class="calculator-inputs">
                 <div class="input-group">
                     <label for="principal">Principal Amount ($)</label>
@@ -1522,7 +1501,6 @@
                     </div>
                 </div>
 
-                <!-- Interactive Formula Display -->
                 <div class="interactive-formula" id="interactiveFormula" style="display: none;">
                     <h3 style="font-size: 16px; margin-bottom: 15px; text-align: center;">Formula Breakdown</h3>
                     <div id="formulaDisplay"></div>
@@ -1540,7 +1518,7 @@
                     </select>
                 </div>
             </div>
-            
+
             <div class="calculator-results">
                 <div class="results" id="results" role="region" aria-label="Calculation results">
                     <div class="result-item">
@@ -1557,24 +1535,23 @@
                         <div class="chart-wrapper">
                             <canvas id="pieChart" aria-label="Pie chart showing principal vs interest breakdown"></canvas>
                         </div>
-                        
+
                         <div class="chart-title" style="margin-top: 30px;">Growth Over Time</div>
                         <div class="line-chart-wrapper">
                             <canvas id="lineChart" aria-label="Line chart showing investment growth over time"></canvas>
                         </div>
                         <div class="tap-hint">Tap the chart for details</div>
                     </div>
-                    
+
                     <div class="realtime-notice">Calculating in real-time as you type</div>
                 </div>
             </div>
         </div>
 
-<!-- Blog Section -->
 <article class="blog-section">
     <div class="blog-content">
         <h1 style="font-size: 32px; color: #2c3e50; margin-bottom: 25px;">Simple And Compound Interest Calculator</h1>
-        
+
         <p>
             Master your financial planning with our free online interest calculator. Whether you're calculating loan interest, savings growth, or investment returns, get instant results with our comprehensive simple and compound interest calculator. Compare scenarios, visualize growth charts, and make smarter financial decisions today.
         </p>
@@ -1702,10 +1679,8 @@
             <li><strong>Export Results:</strong> Save your calculations and share them with others by copying the full URL</li>
         </ul>
 
-     
-
         <h2>Advanced Interest Calculation Concepts</h2>
-        
+
         <h3>Compounding Frequency Impact</h3>
         <p>The frequency of compounding significantly affects your returns:</p>
         <ul>
@@ -1715,8 +1690,6 @@
             <li><strong>Annual Compounding:</strong> Once per year - basic compound interest</li>
         </ul>
 
-
-
         <h2>Interest Calculator FAQ</h2>
 
         <div class="faq-item">
@@ -1725,7 +1698,6 @@
                 Our calculator uses industry-standard financial formulas and provides highly accurate results for financial planning. Real-world returns may vary due to market conditions, fees, and account-specific terms.
             </div>
         </div>
-
 
         <div class="faq-item">
             <div class="faq-question">How often should I compound my investments?</div>
@@ -1749,7 +1721,7 @@
         </div>
 
         <h2>Popular Interest Calculations</h2>
-        
+
         <h3>Common Financial Scenarios:</h3>
         <ul>
             <li>$1,000 at 5% for 10 years: <strong>$1,628.89</strong> (compound annually)</li>
@@ -1758,9 +1730,8 @@
             <li>$100,000 at 4% for 30 years: <strong>$324,339.75</strong> (compound quarterly)</li>
         </ul>
 
-
         <h2>Maximize Your Financial Growth</h2>
-        
+
         <h3>Smart Money Strategies:</h3>
         <ul>
             <li><strong>Start Early:</strong> Time is your greatest asset for compound growth</li>
@@ -1802,7 +1773,6 @@
         let tooltipTimeout = null;
         let debounceTimer = null;
 
-        // Input validation limits
         const LIMITS = {
             principal: { min: 0, max: 999999999 },
             rate: { min: 0, max: 100 },
@@ -1810,7 +1780,7 @@
         };
 
         function sanitizeNumber(value) {
-            // Remove any potentially harmful characters
+
             return String(value).replace(/[^0-9.,]/g, '');
         }
 
@@ -1819,27 +1789,22 @@
         }
 
         function formatInputWithCommas(input) {
-            // Sanitize input first
+
             let value = sanitizeNumber(input.value);
-            
-            // Remove all non-numeric characters except decimal point
+
             value = value.replace(/[^0-9.]/g, '');
-            
-            // Ensure only one decimal point
+
             const parts = value.split('.');
             if (parts.length > 2) {
                 value = parts[0] + '.' + parts.slice(1).join('');
             }
-            
-            // Limit decimal places to 2
+
             if (parts.length === 2 && parts[1].length > 2) {
                 value = parts[0] + '.' + parts[1].substring(0, 2);
             }
-            
-            // Format integer part with commas
+
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            
-            // Rejoin parts
+
             input.value = parts.length === 2 ? parts[0] + '.' + parts[1] : parts[0];
         }
 
@@ -1852,11 +1817,11 @@
             const limits = LIMITS[id];
             const errorElement = document.getElementById(`${id}-error`);
             const inputElement = document.getElementById(id);
-            
+
             if (!limits) return true;
-            
+
             const numValue = id === 'principal' ? parseFormattedNumber(value) : parseFloat(value);
-            
+
             if (isNaN(numValue) || numValue < limits.min || numValue > limits.max) {
                 inputElement.classList.add('input-error');
                 errorElement.style.display = 'block';
@@ -1871,11 +1836,11 @@
         function updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total, compoundFrequency) {
             const formulaDiv = document.getElementById('interactiveFormula');
             const formulaDisplay = document.getElementById('formulaDisplay');
-            
+
             if (!formulaDiv || !formulaDisplay) return;
-            
+
             formulaDiv.style.display = 'block';
-            
+
             if (interestType === 'simple') {
                 formulaDisplay.innerHTML = `
                     <div class="formula-input-display">
@@ -1915,7 +1880,7 @@
                     '2': 'Semi-Annually',
                     '1': 'Annually'
                 }[compoundFrequency] || 'Annually';
-                
+
                 formulaDisplay.innerHTML = `
                     <div class="formula-input-display">
                         <span class="formula-value">$${formatWithCommas(principal)}</span>
@@ -1958,21 +1923,20 @@
         }
 
         function calculateInterest() {
-            // Clear any existing debounce
+
             clearTimeout(debounceTimer);
-            
-            // Debounce calculation for performance
+
             debounceTimer = setTimeout(() => {
                 performCalculation();
             }, 100);
         }
 
         function performCalculation() {
-            // Get input values
+
             const principalInput = document.getElementById('principal');
             const rateInput = document.getElementById('rate');
             const timeInput = document.getElementById('time');
-            
+
             const principal = parseFormattedNumber(principalInput.value);
             const rate = parseFloat(rateInput.value) || 0;
             const time = parseFloat(timeInput.value) || 0;
@@ -1980,7 +1944,6 @@
             const interestType = document.querySelector('input[name="interestType"]:checked').value;
             const compoundFrequency = parseFloat(document.getElementById('compoundFrequency').value) || 1;
 
-            // Show/hide compound frequency based on interest type
             const compoundFreqGroup = document.getElementById('compoundFrequencyGroup');
             if (interestType === 'compound') {
                 compoundFreqGroup.style.display = 'block';
@@ -1990,12 +1953,10 @@
                 compoundFreqGroup.classList.remove('show');
             }
 
-            // Validate inputs
             const isPrincipalValid = validateInput('principal', principalInput.value);
             const isRateValid = validateInput('rate', rate);
             const isTimeValid = validateInput('time', time);
 
-            // Don't show results if validation fails or no valid input
             if (!isPrincipalValid || !isRateValid || !isTimeValid || 
                 principal === 0 || rate === 0 || time === 0) {
                 document.getElementById('results').classList.remove('show');
@@ -2003,7 +1964,6 @@
                 return;
             }
 
-            // Convert time to years
             let timeInYears;
             switch(timeUnit) {
                 case 'days':
@@ -2018,11 +1978,10 @@
                 case 'quarters':
                     timeInYears = time / 4;
                     break;
-                default: // years
+                default: 
                     timeInYears = time;
             }
 
-            // Calculate interest
             let interest = 0;
             let total = 0;
 
@@ -2031,37 +1990,30 @@
                     interest = (principal * rate * timeInYears) / 100;
                     total = principal + interest;
                 } else {
-                    // Compound interest formula: A = P(1 + r/n)^(nt)
+
                     const rateDecimal = rate / 100;
                     total = principal * Math.pow(1 + rateDecimal / compoundFrequency, compoundFrequency * timeInYears);
                     interest = total - principal;
                 }
 
-                // Check for overflow
                 if (!isFinite(total) || !isFinite(interest)) {
                     throw new Error('Calculation overflow');
                 }
 
-                // Display results with thousand separators
                 document.getElementById('interestEarned').textContent = `$${formatWithCommas(interest)}`;
                 document.getElementById('totalAmount').textContent = `$${formatWithCommas(total)}`;
-                
-                // Show results section
+
                 document.getElementById('results').classList.add('show');
 
-                // Update charts. Deferring to the next browser tick to ensure the DOM is ready.
-                // This prevents rendering glitches when the results section becomes visible.
                 setTimeout(() => {
                     safeChartUpdate(() => {
                         updateChart(principal, interest);
                         updateLineChart(principal, rate, timeInYears, interestType, timeUnit, compoundFrequency);
                     });
                 }, 0);
-                
-                // Update interactive formula
+
                 updateInteractiveFormula(principal, rate, time, timeInYears, interestType, interest, total, compoundFrequency);
-                
-                // Update meta tags
+
                 updateMetaTags();
             } catch (error) {
                 console.error('Calculation error:', error);
@@ -2071,17 +2023,15 @@
         }
 
 function updateChart(principal, interest) {
-    // Safely destroy existing chart if it exists
+
     if (pieChart && typeof pieChart.destroy === 'function') {
         pieChart.destroy();
     }
 
-            // Calculate percentages
             const total = principal + interest;
             const principalPercentage = ((principal / total) * 100).toFixed(1);
             const interestPercentage = ((interest / total) * 100).toFixed(1);
 
-            // Create pie chart
             const pieCtx = document.getElementById('pieChart').getContext('2d');
             pieChart = new Chart(pieCtx, {
                 type: 'doughnut',
@@ -2127,7 +2077,7 @@ function updateChart(principal, interest) {
                                     return [];
                                 }
                             },
-                            onClick: null // Disable legend click
+                            onClick: null 
                         },
                         tooltip: {
                             enabled: true,
@@ -2147,29 +2097,26 @@ function updateChart(principal, interest) {
         }
 
 function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, compoundFrequency = 1) {
-    // Safely destroy existing chart if it exists
+
     if (lineChart && typeof lineChart.destroy === 'function') {
         lineChart.destroy();
     }
 
-            // Generate data points
             const labels = [];
             const principalData = [];
             const interestData = [];
             const totalData = [];
-            
-            // Determine number of points and labels
+
             let numPoints = Math.min(Math.ceil(timeInYears), 10);
             if (timeUnit === 'months' && timeInYears < 2) {
                 numPoints = Math.ceil(timeInYears * 12);
             }
-            
+
             const isMobile = window.innerWidth <= 480;
-            
+
             for (let i = 0; i <= numPoints; i++) {
                 const currentTime = (i / numPoints) * timeInYears;
-                
-                // Generate appropriate labels
+
                 if (timeUnit === 'days' && timeInYears < 0.5) {
                     labels.push(`Day ${Math.round(currentTime * 365)}`);
                 } else if (timeUnit === 'weeks' && timeInYears < 1) {
@@ -2179,11 +2126,10 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                 } else {
                     labels.push(`Year ${currentTime.toFixed(1)}`);
                 }
-                
-                // Calculate values at this time point
+
                 let currentInterest = 0;
                 let currentTotal = principal;
-                
+
                 if (currentTime > 0) {
                     if (interestType === 'simple') {
                         currentInterest = (principal * rate * currentTime) / 100;
@@ -2193,15 +2139,14 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                         currentInterest = currentTotal - principal;
                     }
                 }
-                
+
                 principalData.push(principal);
                 interestData.push(currentInterest);
                 totalData.push(currentTotal);
             }
 
-            // Create line chart with mobile-optimized settings
             const lineCtx = document.getElementById('lineChart').getContext('2d');
-            
+
             lineChart = new Chart(lineCtx, {
                 type: 'line',
                 data: {
@@ -2275,7 +2220,7 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                                     ];
                                 }
                             },
-                            onClick: null // Disable legend click
+                            onClick: null 
                         },
                         tooltip: {
                             enabled: true,
@@ -2307,7 +2252,7 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                                     const total = totalData[index];
                                     const interest = interestData[index];
                                     const principal = principalData[index];
-                                    
+
                                     return [
                                         'Total: $' + formatWithCommas(total),
                                         'Principal: $' + formatWithCommas(principal),
@@ -2353,17 +2298,16 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                         }
                     },
                     onClick: function(event, elements) {
-                        // Clear any existing timeout
+
                         if (tooltipTimeout) {
                             clearTimeout(tooltipTimeout);
                         }
-                        
-                        // If clicking on empty space, hide tooltip immediately
+
                         if (!elements || elements.length === 0) {
                             lineChart.tooltip.setActiveElements([]);
                             lineChart.update();
                         } else {
-                            // Auto-hide tooltip after 3 seconds
+
                             tooltipTimeout = setTimeout(() => {
                                 lineChart.tooltip.setActiveElements([]);
                                 lineChart.update();
@@ -2371,7 +2315,7 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                         }
                     },
                     onHover: function(event, elements) {
-                        // Clear timeout when hovering over data points
+
                         if (elements && elements.length > 0) {
                             if (tooltipTimeout) {
                                 clearTimeout(tooltipTimeout);
@@ -2381,14 +2325,11 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
                 }
             });
 
-            // Add click outside handler for mobile
             if (isMobile) {
                 const chartContainer = document.querySelector('.line-chart-wrapper');
-                
-                // Remove any existing listeners
+
                 chartContainer.removeEventListener('click', handleChartOutsideClick);
-                
-                // Add new listener
+
                 chartContainer.addEventListener('click', handleChartOutsideClick);
             }
         }
@@ -2397,40 +2338,34 @@ function updateLineChart(principal, rate, timeInYears, interestType, timeUnit, c
             const rect = event.currentTarget.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
-            
-            // Check if click is outside the chart area
+
             const chartArea = lineChart.chartArea;
             if (x < chartArea.left || x > chartArea.right || 
                 y < chartArea.top || y > chartArea.bottom) {
-                // Hide tooltip
+
                 lineChart.tooltip.setActiveElements([]);
                 lineChart.update();
-                
-                // Clear any timeout
+
                 if (tooltipTimeout) {
                     clearTimeout(tooltipTimeout);
                 }
             }
         }
 
-// Real-time calculation
 function setupRealtimeCalculation() {
-    // Special handling for principal input
+
     const principalInput = document.getElementById('principal');
     principalInput.addEventListener('input', function(e) {
         formatInputWithCommas(e.target);
         calculateInterest();
     });
-    
-    // Add arrow key support for principal input
+
     principalInput.addEventListener('keydown', function(e) {
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
-            
-            // Get current value without commas
+
             let currentValue = parseFormattedNumber(this.value);
-            
-            // Determine increment based on current value
+
             let increment = 1;
             if (currentValue >= 10000) {
                 increment = 1000;
@@ -2439,26 +2374,22 @@ function setupRealtimeCalculation() {
             } else if (currentValue >= 100) {
                 increment = 10;
             }
-            
-            // Increase or decrease value
+
             if (e.key === 'ArrowUp') {
                 currentValue += increment;
             } else {
                 currentValue -= increment;
             }
-            
-            // Ensure value stays within limits
+
             if (currentValue < 0) currentValue = 0;
             if (currentValue > LIMITS.principal.max) currentValue = LIMITS.principal.max;
-            
-            // Set the new value
+
             this.value = currentValue.toString();
             formatInputWithCommas(this);
             calculateInterest();
         }
     });
-    
-    // Prevent paste of invalid content
+
     principalInput.addEventListener('paste', function(e) {
         e.preventDefault();
         const pastedText = (e.clipboardData || window.clipboardData).getData('text');
@@ -2467,95 +2398,82 @@ function setupRealtimeCalculation() {
         formatInputWithCommas(e.target);
         calculateInterest();
     });
-    
-    // Regular inputs with arrow key support
+
     const inputs = ['rate', 'time'];
     inputs.forEach(id => {
         const input = document.getElementById(id);
         input.addEventListener('input', calculateInterest);
-        
-        // Add arrow key support for rate and time inputs
+
         input.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
                 e.preventDefault();
-                
-                // Get current value
+
                 let currentValue = parseFloat(this.value) || 0;
-                
-                // Determine increment
+
                 let increment = 1;
                 if (id === 'rate') {
-                    increment = 0.1; // 0.1% increments for interest rate
+                    increment = 0.1; 
                 } else if (id === 'time') {
-                    increment = 1; // 1 unit increment for time
+                    increment = 1; 
                 }
-                
-                // Increase or decrease value
+
                 if (e.key === 'ArrowUp') {
                     currentValue += increment;
                 } else {
                     currentValue -= increment;
                 }
-                
-                // Ensure value stays within limits
+
                 const limits = LIMITS[id];
                 if (currentValue < limits.min) currentValue = limits.min;
                 if (currentValue > limits.max) currentValue = limits.max;
-                
-                // Round to appropriate decimal places
+
                 if (id === 'rate') {
-                    currentValue = Math.round(currentValue * 10) / 10; // Round to 1 decimal place
+                    currentValue = Math.round(currentValue * 10) / 10; 
                 } else {
-                    currentValue = Math.round(currentValue); // Round to whole number
+                    currentValue = Math.round(currentValue); 
                 }
-                
-                // Set the new value
+
                 this.value = currentValue.toString();
                 calculateInterest();
             }
         });
-        
-        // Prevent invalid input
+
         input.addEventListener('keypress', function(e) {
             const char = String.fromCharCode(e.which);
             const value = e.target.value;
-            
-            // Allow backspace, delete, tab, escape, enter
+
             if ([8, 9, 27, 13, 46].indexOf(e.keyCode) !== -1 ||
-                // Allow Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+
                 (e.keyCode === 65 && e.ctrlKey === true) ||
                 (e.keyCode === 67 && e.ctrlKey === true) ||
                 (e.keyCode === 86 && e.ctrlKey === true) ||
                 (e.keyCode === 88 && e.ctrlKey === true)) {
                 return;
             }
-            
-            // Ensure that it is a number or decimal point
+
             if ((char < '0' || char > '9') && char !== '.') {
                 e.preventDefault();
             }
-            
-            // Only allow one decimal point
+
             if (char === '.' && value.indexOf('.') !== -1) {
                 e.preventDefault();
             }
         });
     });
-    
+
     document.getElementById('timeUnit').addEventListener('change', calculateInterest);
     document.getElementById('compoundFrequency').addEventListener('change', calculateInterest);
-    
+
     document.querySelectorAll('input[name="interestType"]').forEach(radio => {
         radio.addEventListener('change', calculateInterest);
     });
 }
 
-        // Update meta tags dynamically
         function updateMetaTags() {
             const principal = parseFormattedNumber(document.getElementById('principal').value);
             const rate = parseFloat(document.getElementById('rate').value) || 0;
             const time = parseFloat(document.getElementById('time').value) || 0;
-            
+
             if (principal && rate && time) {
                 const description = `Calculate interest on $${formatWithCommas(principal)} at ${rate}% for ${time} ${document.getElementById('timeUnit').value}`;
                 document.querySelector('meta[name="description"]').content = description;
@@ -2563,23 +2481,21 @@ function setupRealtimeCalculation() {
             }
         }
 
-        // Initialize with default values
         window.addEventListener('DOMContentLoaded', () => {
             setupRealtimeCalculation();
-            calculateInterest(); // Calculate with initial values
-            
-            // Add global click handler for closing tooltips
+            calculateInterest(); 
+
             document.addEventListener('click', function(e) {
-                // Check if click is outside any chart
+
                 const chartContainers = document.querySelectorAll('.chart-wrapper, .line-chart-wrapper');
                 let clickedInsideChart = false;
-                
+
                 chartContainers.forEach(container => {
                     if (container.contains(e.target)) {
                         clickedInsideChart = true;
                     }
                 });
-                
+
                 if (!clickedInsideChart && lineChart) {
                     lineChart.tooltip.setActiveElements([]);
                     lineChart.update();
@@ -2589,7 +2505,6 @@ function setupRealtimeCalculation() {
                 }
             });
 
-            // Smooth scroll for anchor links
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
@@ -2604,17 +2519,14 @@ function setupRealtimeCalculation() {
             });
         });
 
-        // Add enter key support
         document.querySelectorAll('input:not([type="radio"])').forEach(input => {
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
-                    // Prevent the default form submission or other 'Enter' key actions
+
                     e.preventDefault();
-                    
-                    // Trigger calculation
+
                     calculateInterest();
 
-                    // Find the next input field to move to
                     const inputs = Array.from(document.querySelectorAll('input:not([type="radio"])'));
                     const currentIndex = inputs.indexOf(e.target);
 
@@ -2622,8 +2534,6 @@ function setupRealtimeCalculation() {
                         const nextInput = inputs[currentIndex + 1];
                         nextInput.focus();
 
-                        // IMPORTANT: Use a setTimeout to move the cursor to the end.
-                        // This runs after the browser's default focus behavior (which can select all text).
                         setTimeout(() => {
                             const len = nextInput.value.length;
                             nextInput.setSelectionRange(len, len);
@@ -2633,12 +2543,10 @@ function setupRealtimeCalculation() {
             });
         });
 
-        // Handle window resize for chart responsiveness
         let resizeTimeout;
         window.addEventListener('resize', () => {
             const currentWidth = window.innerWidth;
-            
-            // Only recalculate if width actually changed
+
             if (Math.abs(currentWidth - lastWindowWidth) > 10) {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(() => {
@@ -2650,7 +2558,6 @@ function setupRealtimeCalculation() {
             }
         });
 
-        // Prevent accidental zoom on double tap
         let lastTouchEnd = 0;
         document.addEventListener('touchend', function(e) {
             const now = Date.now();
@@ -2660,13 +2567,12 @@ function setupRealtimeCalculation() {
             lastTouchEnd = now;
         }, { passive: false });
 
-        // Touch event handling for better mobile experience
         if ('ontouchstart' in window) {
             document.querySelectorAll('.toggle-option label').forEach(label => {
                 label.addEventListener('touchstart', function() {
                     this.style.backgroundColor = '#e1e8ed';
                 });
-                
+
                 label.addEventListener('touchend', function() {
                     setTimeout(() => {
                         this.style.backgroundColor = '';
@@ -2675,13 +2581,11 @@ function setupRealtimeCalculation() {
             });
         }
 
-        // Optimize chart performance on mobile
         if (window.innerWidth <= 480) {
-            Chart.defaults.animation.duration = 500; // Faster animations on mobile
-            Chart.defaults.elements.point.radius = 0; // Hide points by default on mobile
+            Chart.defaults.animation.duration = 500; 
+            Chart.defaults.elements.point.radius = 0; 
         }
 
-        // Prevent memory leaks
         window.addEventListener('beforeunload', () => {
             if (pieChart) {
                 pieChart.destroy();
@@ -2689,8 +2593,7 @@ function setupRealtimeCalculation() {
             if (lineChart) {
                 lineChart.destroy();
             }
-            
-            // Clear all timeouts
+
             if (tooltipTimeout) {
                 clearTimeout(tooltipTimeout);
             }
@@ -2701,12 +2604,12 @@ function setupRealtimeCalculation() {
                 clearTimeout(resizeTimeout);
             }
         });
-        // Add enter key support
+
         document.querySelectorAll('input:not([type="radio"])').forEach(input => {
             input.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     e.preventDefault();
-                    
+
                     clearTimeout(debounceTimer);
                     performCalculation();
 
@@ -2717,8 +2620,6 @@ function setupRealtimeCalculation() {
                         const nextInput = inputs[currentIndex + 1];
                         nextInput.focus();
 
-                        // With type="text", a simple timeout is all that's needed
-                        // to ensure the cursor is placed after the focus event.
                         setTimeout(() => {
                             const len = nextInput.value.length;
                             nextInput.setSelectionRange(len, len);
@@ -2728,7 +2629,6 @@ function setupRealtimeCalculation() {
             });
         });
 
-        // Performance monitoring (optional)
         if ('PerformanceObserver' in window) {
             try {
                 const perfObserver = new PerformanceObserver((list) => {
@@ -2740,13 +2640,12 @@ function setupRealtimeCalculation() {
                 });
                 perfObserver.observe({ entryTypes: ['measure'] });
             } catch (e) {
-                // PerformanceObserver not supported
+
             }
         }
 
-        // Add print functionality
         window.addEventListener('beforeprint', () => {
-            // Ensure charts are visible for printing
+
             if (pieChart) {
                 pieChart.resize();
             }
@@ -2755,7 +2654,6 @@ function setupRealtimeCalculation() {
             }
         });
 
-// SEO-friendly URL update without page reload
 function updateURL() {
     const principal = document.getElementById('principal').value;
     const rate = document.getElementById('rate').value;
@@ -2763,7 +2661,7 @@ function updateURL() {
     const timeUnit = document.getElementById('timeUnit').value;
     const interestType = document.querySelector('input[name="interestType"]:checked').value;
     const compoundFrequency = document.getElementById('compoundFrequency').value;
-    
+
     const params = new URLSearchParams({
         p: principal.replace(/,/g, ''),
         r: rate,
@@ -2772,52 +2670,49 @@ function updateURL() {
         type: interestType,
         freq: compoundFrequency
     });
-    
+
     const newURL = window.location.pathname + '?' + params.toString();
     window.history.replaceState({}, '', newURL);
 }
 
-// Load parameters from URL on page load
 function loadFromURL() {
     const params = new URLSearchParams(window.location.search);
-    
+
     if (params.has('p')) {
         const principal = params.get('p');
         document.getElementById('principal').value = principal;
         formatInputWithCommas(document.getElementById('principal'));
     }
-    
+
     if (params.has('r')) {
         document.getElementById('rate').value = params.get('r');
     }
-    
+
     if (params.has('t')) {
         document.getElementById('time').value = params.get('t');
     }
-    
+
     if (params.has('u')) {
         document.getElementById('timeUnit').value = params.get('u');
     }
-    
+
     if (params.has('type')) {
         const type = params.get('type');
         document.querySelector(`input[name="interestType"][value="${type}"]`).checked = true;
     }
-    
+
     if (params.has('freq')) {
         document.getElementById('compoundFrequency').value = params.get('freq');
     }
 }
 
-        // Initialize URL parameters
         window.addEventListener('DOMContentLoaded', () => {
             loadFromURL();
-            
-            // Update URL when inputs change
+
             ['principal', 'rate', 'time'].forEach(id => {
                 document.getElementById(id).addEventListener('input', debounce(updateURL, 1000));
             });
-            
+
             document.getElementById('timeUnit').addEventListener('change', updateURL);
             document.getElementById('compoundFrequency').addEventListener('change', updateURL);
             document.querySelectorAll('input[name="interestType"]').forEach(radio => {
@@ -2825,7 +2720,6 @@ function loadFromURL() {
             });
         });
 
-        // Debounce function for performance
         function debounce(func, wait) {
             let timeout;
             return function executedFunction(...args) {
@@ -2838,11 +2732,10 @@ function loadFromURL() {
             };
         }
 
-        // Add social sharing functionality
         function shareCalculation() {
             const url = window.location.href;
             const text = 'Check out this Simple & Compound Interest Calculator!';
-            
+
             if (navigator.share) {
                 navigator.share({
                     title: 'Interest Calculator',
@@ -2852,9 +2745,8 @@ function loadFromURL() {
             }
         }
 
-        // Accessibility improvements
         document.addEventListener('DOMContentLoaded', () => {
-            // Add skip to content link
+
             const skipLink = document.createElement('a');
             skipLink.href = '#calculator';
             skipLink.className = 'skip-link';
@@ -2867,20 +2759,18 @@ function loadFromURL() {
                 skipLink.style.left = '-9999px';
             });
             document.body.insertBefore(skipLink, document.body.firstChild);
-            
-            // Ensure proper focus management
+
             const calculator = document.querySelector('.calculator-container');
             calculator.setAttribute('id', 'calculator');
             calculator.setAttribute('tabindex', '-1');
         });
 
-        // Error boundary for chart rendering
         function safeChartUpdate(updateFunction) {
             try {
                 updateFunction();
             } catch (error) {
                 console.error('Chart update error:', error);
-                // Attempt to recover by destroying and recreating charts
+
                 if (pieChart) {
                     pieChart.destroy();
                     pieChart = null;
@@ -2889,12 +2779,11 @@ function loadFromURL() {
                     lineChart.destroy();
                     lineChart = null;
                 }
-                // Retry calculation after recovery
+
                 setTimeout(calculateInterest, 100);
             }
         }
 
-        // Lazy load images if any (for future enhancements)
         if ('IntersectionObserver' in window) {
             const imageObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -2912,9 +2801,8 @@ function loadFromURL() {
             });
         }
 
-        // Add analytics tracking (if needed)
         function trackEvent(category, action, label) {
-            // Google Analytics tracking
+
             if (typeof gtag !== 'undefined') {
                 gtag('event', action, {
                     'event_category': category,
@@ -2923,14 +2811,12 @@ function loadFromURL() {
             }
         }
 
-        // Track calculator usage
         document.querySelectorAll('input[name="interestType"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 trackEvent('Calculator', 'Interest Type Changed', this.value);
             });
         });
 
-        // Service Worker registration for PWA capabilities
         if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js')
@@ -2939,46 +2825,43 @@ function loadFromURL() {
             });
         }
 
-        // Add custom validation messages
         function setCustomValidationMessages() {
             const principalInput = document.getElementById('principal');
             const rateInput = document.getElementById('rate');
             const timeInput = document.getElementById('time');
-            
+
             principalInput.addEventListener('invalid', function(e) {
                 e.preventDefault();
                 validateInput('principal', this.value);
             });
-            
+
             rateInput.addEventListener('invalid', function(e) {
                 e.preventDefault();
                 validateInput('rate', this.value);
             });
-            
+
             timeInput.addEventListener('invalid', function(e) {
                 e.preventDefault();
                 validateInput('time', this.value);
             });
         }
 
-        // Initialize custom validation
         window.addEventListener('DOMContentLoaded', setCustomValidationMessages);
 
-        // Add copy to clipboard functionality for results
         function addCopyToClipboard() {
             const resultValues = document.querySelectorAll('.result-value');
-            
+
             resultValues.forEach(element => {
                 element.style.cursor = 'pointer';
                 element.title = 'Click to copy';
-                
+
                 element.addEventListener('click', function() {
                     const value = this.textContent;
                     navigator.clipboard.writeText(value).then(() => {
                         const originalText = this.textContent;
                         this.textContent = 'Copied!';
                         this.style.color = '#5cb85c';
-                        
+
                         setTimeout(() => {
                             this.textContent = originalText;
                             this.style.color = '';
@@ -2990,13 +2873,8 @@ function loadFromURL() {
             });
         }
 
-
-        
-
-        // Initialize copy functionality
         window.addEventListener('DOMContentLoaded', addCopyToClipboard);
 
-        // Add export functionality
         function exportResults() {
             const principal = parseFormattedNumber(document.getElementById('principal').value);
             const rate = parseFloat(document.getElementById('rate').value);
@@ -3006,7 +2884,7 @@ function loadFromURL() {
             const compoundFrequency = document.getElementById('compoundFrequency').value;
             const interest = document.getElementById('interestEarned').textContent;
             const total = document.getElementById('totalAmount').textContent;
-            
+
             const data = {
                 'Principal Amount': `$${formatWithCommas(principal)}`,
                 'Interest Rate': `${rate}%`,
@@ -3017,13 +2895,11 @@ function loadFromURL() {
                 'Total Amount': total,
                 'Calculation Date': new Date().toLocaleDateString()
             };
-            
-            // Create CSV content
+
             const csvContent = Object.entries(data)
                 .map(([key, value]) => `${key},${value}`)
                 .join('\n');
-            
-            // Create download link
+
             const blob = new Blob([csvContent], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -3045,7 +2921,6 @@ function loadFromURL() {
             return names[frequency] || 'Unknown';
         }
 
-        // Add print-specific styles
         function addPrintStyles() {
             const style = document.createElement('style');
             style.textContent = `
@@ -3055,19 +2930,19 @@ function loadFromURL() {
                     .realtime-notice {
                         display: none !important;
                     }
-                    
+
                     body {
                         padding-top: 0 !important;
                     }
-                    
+
                     .calculator-container {
                         break-inside: avoid;
                     }
-                    
+
                     .chart-container {
                         break-inside: avoid;
                     }
-                    
+
                     .interactive-formula {
                         break-inside: avoid;
                     }
@@ -3076,20 +2951,17 @@ function loadFromURL() {
             document.head.appendChild(style);
         }
 
-        // Initialize print styles
         window.addEventListener('DOMContentLoaded', addPrintStyles);
 
-        // Handle offline functionality
         window.addEventListener('online', () => {
             console.log('Back online');
         });
 
         window.addEventListener('offline', () => {
             console.log('Gone offline');
-            // Could show a notification that charts might not load
+
         });
 
-        // Add number formatting for different locales
         function formatNumberForLocale(number, locale = 'en-US') {
             return new Intl.NumberFormat(locale, {
                 style: 'currency',
@@ -3099,16 +2971,13 @@ function loadFromURL() {
             }).format(number);
         }
 
-        // Detect user's locale
         const userLocale = navigator.language || 'en-US';
 
-        // Enhanced error handling
         window.addEventListener('error', function(e) {
             console.error('Global error:', e.error);
-            // Could send to error tracking service
+
         });
 
-        // Add calculation history (stored in sessionStorage)
         function saveCalculation() {
             const calculation = {
                 timestamp: Date.now(),
@@ -3121,14 +2990,13 @@ function loadFromURL() {
                 interest: document.getElementById('interestEarned').textContent,
                 total: document.getElementById('totalAmount').textContent
             };
-            
+
             let history = JSON.parse(sessionStorage.getItem('calculationHistory') || '[]');
             history.unshift(calculation);
-            history = history.slice(0, 10); // Keep only last 10 calculations
+            history = history.slice(0, 10); 
             sessionStorage.setItem('calculationHistory', JSON.stringify(history));
         }
 
-        // Call saveCalculation after each successful calculation
         const originalPerformCalculation = performCalculation;
         performCalculation = function() {
             originalPerformCalculation();
@@ -3137,16 +3005,15 @@ function loadFromURL() {
             }
         };
 
-        // Final initialization
         console.log('Interest Calculator initialized successfully');
-        // Handle page restoration from browser's back-forward cache
+
 window.addEventListener('pageshow', function(event) {
-    // Check if the page is being restored from the cache
+
     if (event.persisted) {
         console.log('Page restored from cache');
-        // Re-initialize charts and calculations
+
         if (document.getElementById('results').classList.contains('show')) {
-            // Destroy existing charts first
+
             if (pieChart) {
                 pieChart.destroy();
                 pieChart = null;
@@ -3155,16 +3022,15 @@ window.addEventListener('pageshow', function(event) {
                 lineChart.destroy();
                 lineChart = null;
             }
-            // Recalculate and redraw charts
+
             calculateInterest();
         }
     }
 });
 
-// Also handle visibility changes (tab switching)
 document.addEventListener('visibilitychange', function() {
     if (document.visibilityState === 'visible') {
-        // If the results are shown but charts might be missing
+
         if (document.getElementById('results').classList.contains('show') && 
             (!pieChart || !lineChart)) {
             calculateInterest();
