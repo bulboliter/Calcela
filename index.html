@@ -1346,7 +1346,7 @@
                 renderCalculators();
             });
 
-            <!-- Main search functionality -->
+            // Main search functionality
             (function() {
                 'use strict';
                 
@@ -1355,6 +1355,7 @@
                 let searchTimeout;
                 let selectedIndex = -1;
 
+                // ADDED: Security function to sanitize search input
                 function sanitizeSearchInput(input) {
                     return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
                 }
@@ -1366,13 +1367,7 @@
                 }
 
                 function performMainSearch(query) {
-                    // *** FIXED: Check if the calculator database is loaded before using it ***
-                    if (!window.calculators) {
-                        console.error('Main search: Calculator database not found or failed to load.');
-                        displayMainResults([], query); // Display an empty state
-                        return;
-                    }
-                    
+                    // ADDED: Sanitize the query before using it
                     query = sanitizeSearchInput(query);
                     
                     if (!query) {
@@ -1388,6 +1383,7 @@
                         return titleMatch || descMatch || keywordMatch;
                     });
 
+                    // Sort by relevance
                     results.sort((a, b) => {
                         const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
                         const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
@@ -1400,6 +1396,7 @@
                     displayMainResults(results, query);
                 }
 
+                // ADDED: Rate limiting for main search
                 let searchCount = 0;
                 let rateLimitReset = Date.now();
                 
@@ -1418,9 +1415,11 @@
                     return true;
                 }
 
+                // MODIFIED: Event listener to include rate limiting
                 mainSearchInput.addEventListener('input', (e) => {
                     clearTimeout(searchTimeout);
                     
+                    // ADDED: Check rate limit before performing search
                     if (!checkRateLimit()) {
                         return;
                     }
@@ -1430,6 +1429,7 @@
                     }, 300);
                 });
 
+                // ADDED: Set proper attributes for accessibility and security
                 mainSearchInput.setAttribute('maxlength', '100');
                 mainSearchInput.setAttribute('autocomplete', 'off');
                 mainSearchInput.setAttribute('spellcheck', 'false');
@@ -1442,6 +1442,7 @@
                     }, 200);
                 }
 
+                // MODIFIED: displayMainResults function with URL validation
                 function displayMainResults(results, query) {
                     if (results.length === 0) {
                         mainSearchResults.innerHTML = `
@@ -1451,9 +1452,8 @@
                         `;
                     } else {
                         mainSearchResults.innerHTML = results.map((calc, index) => {
-                            const url = calc.url.startsWith('/') || calc.url.startsWith('http') 
-                                ? sanitizeHTML(calc.url) 
-                                : '#';
+                            // FIXED: Removed faulty validation. Directly use the sanitized URL.
+                            const url = sanitizeHTML(calc.url);
                             
                             return `
                                 <a href="${url}" 
@@ -1524,6 +1524,7 @@
                     }
                 });
 
+                // ADDED: Event listener to prevent form submission
                 mainSearchInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         e.preventDefault();
