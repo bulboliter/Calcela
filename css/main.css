@@ -252,7 +252,8 @@ body {
     border-radius: 50px;
     text-decoration: none;
     font-weight: 600;
-    font-size: 16px;            transition: all 0.3s ease;
+    font-size: 16px;
+    transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(74, 144, 226, 0.3);
 }
 
@@ -266,86 +267,26 @@ body {
         padding: 20px;
         min-height: calc(100vh - 64px);
     }
-
-    .logo-large {
-        font-size: 48px;
-    }
-
-    .tagline {
-        font-size: 18px;
-        margin-bottom: 30px;
-    }
-
-    .main-search-input {
-        font-size: 16px;
-        padding: 16px 50px 16px 20px;
-    }
-
-    .calculator-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .calculator-card {
-        padding: 24px;
-    }
-
-    .feedback-section {
-        padding: 40px 20px;
-        margin-top: 60px;
-    }
-
-    .feedback-title {
-        font-size: 24px;
-    }
-
-    .pagination {
-        flex-wrap: wrap;
-    }
-
-    .pagination-info {
-        width: 100%;
-        text-align: center;
-        margin: 8px 0;
-    }
+    .logo-large { font-size: 48px; }
+    .tagline { font-size: 18px; margin-bottom: 30px; }
+    .main-search-input { font-size: 16px; padding: 16px 50px 16px 20px; }
+    .calculator-grid { grid-template-columns: 1fr; gap: 16px; }
+    .calculator-card { padding: 24px; }
+    .feedback-section { padding: 40px 20px; margin-top: 60px; }
+    .feedback-title { font-size: 24px; }
+    .pagination { flex-wrap: wrap; }
+    .pagination-info { width: 100%; text-align: center; margin: 8px 0; }
 }
 
 @media (max-width: 480px) {
-    .main-content {
-        min-height: calc(100vh - 60px);
-    }
-
-    .logo-large {
-        font-size: 40px;
-        letter-spacing: -1px;
-    }
-
-    .tagline {
-        font-size: 16px;
-    }
-
-    .calculator-icon {
-        width: 40px;
-        height: 40px;
-    }
-
-    .calculator-title {
-        font-size: 18px;
-    }
-
-    .calculator-description {
-        font-size: 14px;
-    }
-
-    .feedback-button {
-        padding: 14px 28px;
-        font-size: 15px;
-    }
-
-    .pagination-button {
-        padding: 6px 12px;
-        font-size: 13px;
-    }
+    .main-content { min-height: calc(100vh - 60px); }
+    .logo-large { font-size: 40px; letter-spacing: -1px; }
+    .tagline { font-size: 16px; }
+    .calculator-icon { width: 40px; height: 40px; }
+    .calculator-title { font-size: 18px; }
+    .calculator-description { font-size: 14px; }
+    .feedback-button { padding: 14px 28px; font-size: 15px; }
+    .pagination-button { padding: 6px 12px; font-size: 13px; }
 }
 
 .main-search-result-item {
@@ -358,13 +299,8 @@ body {
     color: inherit;
 }
 
-.main-search-result-item:last-child {
-    border-bottom: none;
-}
-
-.main-search-result-item:hover {
-    background-color: #f8fafc;
-}
+.main-search-result-item:last-child { border-bottom: none; }
+.main-search-result-item:hover { background-color: #f8fafc; }
 
 .main-search-result-title {
     font-weight: 600;
@@ -373,9 +309,7 @@ body {
     margin-bottom: 4px;
 }
 
-.main-search-result-title strong {
-    color: #4a90e2;
-}
+.main-search-result-title strong { color: #4a90e2; }
 
 .main-search-result-description {
     font-size: 14px;
@@ -390,34 +324,15 @@ body {
     font-size: 15px;
 }
 
-.main-search-results::-webkit-scrollbar {
-    width: 6px;
-}
+.main-search-results::-webkit-scrollbar { width: 6px; }
+.main-search-results::-webkit-scrollbar-track { background: #f8fafc; border-radius: 3px; }
+.main-search-results::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
+.main-search-results::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
 
-.main-search-results::-webkit-scrollbar-track {
-    background: #f8fafc;
-    border-radius: 3px;
-}
+.pagination.hidden { display: none; }
 
-.main-search-results::-webkit-scrollbar-thumb {
-    background: #cbd5e0;
-    border-radius: 3px;
-}
-
-.main-search-results::-webkit-scrollbar-thumb:hover {
-    background: #a0aec0;
-}
-
-.pagination.hidden {
-    display: none;
-}
-
-.icon-finance svg,
-.icon-ai svg,
-.icon-math svg,
-.icon-science svg,
-.icon-health svg,
-.icon-engineering svg {
+.icon-finance svg, .icon-ai svg, .icon-math svg,
+.icon-science svg, .icon-health svg, .icon-engineering svg {
     width: 24px;
     height: 24px;
 }
