@@ -80,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
     (function() {
-        const mainSearchInput = document.getElementById('mainSearchInput');
-        const mainSearchResults = document.getElementById('mainSearchResults');
+const mainSearchInput = document.getElementById('calculatorSearch');
+const mainSearchResults = document.getElementById('searchResults');
         let searchTimeout;
         let selectedIndex = -1;
 
