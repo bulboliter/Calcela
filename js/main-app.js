@@ -1,6 +1,10 @@
 (function() {
     'use strict';
     
+    // Debug logging
+    console.log('Script starting...');
+    console.log('window.calculators:', window.calculators);
+    
     const CALCULATORS_PER_PAGE = 12;
     let currentPage = 1;
     let totalPages = 1;
@@ -20,15 +24,43 @@
         return iconMap.default;
     }
 
+    function sanitizeHTML(str) {
+        const temp = document.createElement('div');
+        temp.textContent = str;
+        return temp.innerHTML;
+    }
+
     function renderCalculators() {
+        console.log('renderCalculators called');
+        
         const calculatorGrid = document.getElementById('calculatorGrid');
         const pagination = document.getElementById('pagination');
         
-        if (!window.calculators || window.calculators.length === 0) {
+        // Debug checks
+        if (!calculatorGrid) {
+            console.error('calculatorGrid element not found!');
+            return;
+        }
+        
+        if (!pagination) {
+            console.error('pagination element not found!');
+            return;
+        }
+        
+        if (!window.calculators) {
+            console.error('window.calculators is not defined!');
+            calculatorGrid.innerHTML = '<p style="text-align: center; color: #7f8c8d;">Calculator database not loaded. Please refresh the page.</p>';
+            pagination.classList.add('hidden');
+            return;
+        }
+        
+        if (window.calculators.length === 0) {
             calculatorGrid.innerHTML = '<p style="text-align: center; color: #7f8c8d;">No calculators available yet.</p>';
             pagination.classList.add('hidden');
             return;
         }
+
+        console.log(`Rendering ${window.calculators.length} calculators`);
 
         totalPages = Math.ceil(window.calculators.length / CALCULATORS_PER_PAGE);
         pagination.classList.toggle('hidden', totalPages <= 1);
@@ -49,44 +81,61 @@
     }
 
     function updatePagination() {
-        if (totalPages > 1) {
-            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
-            document.getElementById('prevButton').disabled = currentPage === 1;
-            document.getElementById('nextButton').disabled = currentPage === totalPages;
+        const pageInfo = document.getElementById('pageInfo');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        
+        if (totalPages > 1 && pageInfo && prevButton && nextButton) {
+            pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+            prevButton.disabled = currentPage === 1;
+            nextButton.disabled = currentPage === totalPages;
         }
     }
 
+    // Make changePage global
     window.changePage = function(direction) {
         const newPage = currentPage + direction;
         if (newPage >= 1 && newPage <= totalPages) {
             currentPage = newPage;
             renderCalculators();
-            document.querySelector('.calculators-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const calculatorsSection = document.querySelector('.calculators-section');
+            if (calculatorsSection) {
+                calculatorsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
     };
 
-    function sanitizeHTML(str) {
-        const temp = document.createElement('div');
-        temp.textContent = str;
-        return temp.innerHTML;
-    }
-
-document.addEventListener('DOMContentLoaded', () => {
-    if (window.calculators) {
-        renderCalculators();
-    } else {
-        // Wait for calculators to load
-        window.addEventListener('load', renderCalculators);
-    }
-});
-    (function() {
-const mainSearchInput = document.getElementById('calculatorSearch');
-const mainSearchResults = document.getElementById('searchResults');
+    // Search functionality
+    function initializeSearch() {
+        const mainSearchInput = document.getElementById('mainSearchInput');
+        const mainSearchResults = document.getElementById('mainSearchResults');
+        
+        if (!mainSearchInput || !mainSearchResults) {
+            console.warn('Search elements not found, skipping search initialization');
+            return;
+        }
+        
         let searchTimeout;
         let selectedIndex = -1;
+        let searchCount = 0;
+        let rateLimitReset = Date.now();
 
         function sanitizeSearchInput(input) {
             return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
+        }
+
+        function checkRateLimit() {
+            const now = Date.now();
+            if (now - rateLimitReset > 60000) {
+                searchCount = 0;
+                rateLimitReset = now;
+            }
+            searchCount++;
+            if (searchCount > 30) {
+                console.warn('Search rate limit exceeded');
+                return false;
+            }
+            return true;
         }
 
         function performMainSearch(query) {
@@ -95,6 +144,12 @@ const mainSearchResults = document.getElementById('searchResults');
                 hideMainResults();
                 return;
             }
+            
+            if (!window.calculators) {
+                console.error('Cannot search: window.calculators is not defined');
+                return;
+            }
+            
             const lowerQuery = query.toLowerCase();
             const results = window.calculators.filter(calc => 
                 calc.title.toLowerCase().includes(lowerQuery) ||
@@ -110,28 +165,6 @@ const mainSearchResults = document.getElementById('searchResults');
             });
             displayMainResults(results, query);
         }
-
-        let searchCount = 0;
-        let rateLimitReset = Date.now();
-        function checkRateLimit() {
-            const now = Date.now();
-            if (now - rateLimitReset > 60000) {
-                searchCount = 0;
-                rateLimitReset = now;
-            }
-            searchCount++;
-            if (searchCount > 30) {
-                console.warn('Search rate limit exceeded');
-                return false;
-            }
-            return true;
-        }
-
-        mainSearchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            if (!checkRateLimit()) return;
-            searchTimeout = setTimeout(() => performMainSearch(e.target.value), 300);
-        });
 
         function hideMainResults() {
             mainSearchResults.classList.remove('show');
@@ -161,6 +194,20 @@ const mainSearchResults = document.getElementById('searchResults');
             const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
             return text.replace(regex, '<strong>$1</strong>');
         }
+
+        function updateSelection(items, index) {
+            items.forEach((item, i) => {
+                item.style.backgroundColor = (i === index) ? '#f8fafc' : '';
+                if (i === index) item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            });
+        }
+
+        // Event listeners
+        mainSearchInput.addEventListener('input', (e) => {
+            clearTimeout(searchTimeout);
+            if (!checkRateLimit()) return;
+            searchTimeout = setTimeout(() => performMainSearch(e.target.value), 300);
+        });
 
         mainSearchInput.addEventListener('focus', () => {
             if (mainSearchInput.value.trim()) performMainSearch(mainSearchInput.value);
@@ -203,21 +250,41 @@ const mainSearchResults = document.getElementById('searchResults');
             }
         });
 
-        function updateSelection(items, index) {
-            items.forEach((item, i) => {
-                item.style.backgroundColor = (i === index) ? '#f8fafc' : '';
-                if (i === index) item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            });
+        // Focus search input after a short delay
+        setTimeout(() => mainSearchInput.focus(), 100);
+    }
+
+    // Initialize when DOM is ready
+    function initialize() {
+        console.log('Initializing...');
+        
+        // Check if window.calculators exists, if not, wait for it
+        if (!window.calculators) {
+            console.log('Waiting for calculators database...');
+            // Try again in 100ms
+            setTimeout(initialize, 100);
+            return;
         }
-    })();
+        
+        renderCalculators();
+        initializeSearch();
+        
+        // Resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(renderCalculators, 250);
+        });
 
-    setTimeout(() => document.getElementById('mainSearchInput').focus(), 100);
+        window.addEventListener('beforeunload', () => clearTimeout(resizeTimeout));
+    }
 
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(renderCalculators, 250);
-    });
+    // Start initialization when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize);
+    } else {
+        // DOM is already ready
+        initialize();
+    }
 
-    window.addEventListener('beforeunload', () => clearTimeout(resizeTimeout));
 })();
