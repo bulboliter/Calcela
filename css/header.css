@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+
+.universal-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #4a90e2;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(74, 144, 226, 0.1);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.brand-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.brand-name:hover {
+    opacity: 0.9;
+}
+
+.nav-divider {
+    width: 1px;
+    height: 24px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.home-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: transparent;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.home-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.home-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.search-wrapper {
+    flex: 1;
+    max-width: 480px;
+    position: relative;
+}
+
+.search-container {
+    position: relative;
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 44px 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: white;
+}
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-input:focus {
+    outline: none;
+    background-color: white;
+    color: #2c3e50;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.search-input:focus::placeholder {
+    color: #95a5a6;
+}
+
+.search-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.search-input:focus ~ .search-icon {
+    color: #4a90e2;
+}
+
+.search-results {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1001;
+}
+
+.search-results.show {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-result-item {
+    padding: 12px 18px;
+    border-bottom: 1px solid #f0f4f8;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: block;
+    color: inherit;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #f8fafc;
+}
+
+.search-result-title {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+    margin-bottom: 2px;
+    font-family: 'Inter', sans-serif;
+}
+
+.search-result-title strong {
+    color: #4a90e2;
+}
+
+.search-result-description {
+    font-size: 13px;
+    color: #7f8c8d;
+    line-height: 1.4;
+    font-family: 'Inter', sans-serif;
+}
+
+.search-no-results {
+    padding: 24px;
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+.search-loading {
+    padding: 20px;
+    text-align: center;
+}
+
+.search-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e1e8ed;
+    border-top-color: #4a90e2;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+body {
+    padding-top: 72px !important;
+}
+
+.search-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-results::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 3px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+@media (max-width: 768px) {
+    .header-container {
+        padding: 14px 16px;
+        gap: 16px;
+    }
+
+    .header-left {
+        gap: 16px;
+    }
+
+    .brand-name {
+        font-size: 20px;
+    }
+
+    .nav-divider {
+        height: 20px;
+    }
+
+    .home-button {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .home-button span {
+        display: none;
+    }
+
+    .search-wrapper {
+        max-width: none;
+    }
+
+    .search-input {
+        padding: 9px 40px 9px 16px;
+        font-size: 16px; 
+    }
+
+    .search-results {
+        border-radius: 0 0 12px 12px;
+        max-height: calc(100vh - 80px);
+    }
+
+    body {
+        padding-top: 64px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-container {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .header-left {
+        gap: 12px;
+    }
+
+    .brand-name {
+        font-size: 18px;
+    }
+
+    .home-button {
+        padding: 6px 10px;
+    }
+
+    .home-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .search-input {
+        padding: 8px 36px 8px 14px;
+    }
+
+    .search-icon {
+        width: 18px;
+        height: 18px;
+        right: 12px;
+    }
+
+    body {
+        padding-top: 60px !important;
+    }
+}
+
+.home-button:focus-visible,
+.search-input:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

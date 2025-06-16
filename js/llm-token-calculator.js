@@ -1,0 +1,267 @@
+'use strict';
+let tokenUsageChart = null;
+
+const MODELS = {
+    'gpt-4.1': { provider: 'OpenAI', name: 'GPT-4.1', inputCost: 2.50, outputCost: 10.00, contextWindow: 1000000 },
+    'gpt-4o': { provider: 'OpenAI', name: 'GPT-4o', inputCost: 5.00, outputCost: 20.00, contextWindow: 128000 },
+    'claude-4-opus': { provider: 'Claude', name: 'Claude 4 Opus', inputCost: 15.00, outputCost: 75.00, contextWindow: 200000 },
+    'claude-4-sonnet': { provider: 'Claude', name: 'Claude 4 Sonnet', inputCost: 3.00, outputCost: 15.00, contextWindow: 200000 },
+    'gemini-2.5-pro': { provider: 'Gemini', name: 'Gemini 2.5 Pro', inputCost: 3.50, outputCost: 14.00, contextWindow: 1000000 },
+    'gpt-4.1-mini': { provider: 'OpenAI', name: 'GPT-4.1 Mini', inputCost: 0.15, outputCost: 0.60, contextWindow: 128000 },
+    'gpt-3.5-turbo': { provider: 'OpenAI', name: 'GPT-3.5 Turbo', inputCost: 0.50, outputCost: 1.50, contextWindow: 16000 },
+    'claude-3.5-haiku': { provider: 'Claude', name: 'Claude 3.5 Haiku', inputCost: 0.25, outputCost: 1.25, contextWindow: 200000 },
+    'custom': { provider: 'Custom', name: 'Custom Model', inputCost: 0, outputCost: 0, contextWindow: 0 }
+};
+
+const textInput = document.getElementById('text-input');
+const includeOutputCheckbox = document.getElementById('include-output');
+const outputTextContainer = document.getElementById('output-text-container');
+const outputTextInput = document.getElementById('output-text-input');
+const modelSelect = document.getElementById('model-select');
+const customInputCostEl = document.getElementById('custom-input-cost');
+const customOutputCostEl = document.getElementById('custom-output-cost');
+const compareModelsCheckbox = document.getElementById('compare-models');
+const simpleResultsGrid = document.getElementById('simple-results-grid');
+const detailedResultsSummary = document.getElementById('detailed-results-summary');
+const charCountEl = document.getElementById('charCount');
+const wordCountEl = document.getElementById('wordCount');
+const tokenCountEl = document.getElementById('tokenCount');
+const estimatedCostEl = document.getElementById('estimatedCost');
+const inputCharCountEl = document.getElementById('inputCharCount');
+const inputWordCountEl = document.getElementById('inputWordCount');
+const inputTokenCountEl = document.getElementById('inputTokenCount');
+const inputCostEl = document.getElementById('inputCost');
+const outputSummary = document.getElementById('output-summary');
+const outputCharCountEl = document.getElementById('outputCharCount');
+const outputWordCountEl = document.getElementById('outputWordCount');
+const outputTokenCountEl = document.getElementById('outputTokenCount');
+const outputCostEl = document.getElementById('outputCost');
+const totalTokenCountEl = document.getElementById('totalTokenCount');
+const totalCostEl = document.getElementById('totalCost');
+const tokenUsageContainer = document.getElementById('tokenUsageContainer');
+const comparisonTable = document.getElementById('comparisonTable');
+const comparisonTableBody = document.querySelector('#comparisonTableContent tbody');
+const copyBtn = document.getElementById('copyBtn');
+
+let debounceTimer;
+
+function populateModelSelector() {
+    modelSelect.innerHTML = '';
+    const customOption = document.createElement('option');
+    customOption.value = 'custom';
+    customOption.textContent = '⭐ Custom Model';
+    modelSelect.appendChild(customOption);
+
+    const providers = { 'Claude': [], 'OpenAI': [], 'Gemini': [] };
+    for (const key in MODELS) {
+        if (key === 'custom') continue;
+        const model = MODELS[key];
+        if (providers[model.provider]) {
+            providers[model.provider].push({ key, ...model });
+        }
+    }
+    ['Claude', 'OpenAI', 'Gemini'].forEach(providerName => {
+        const models = providers[providerName];
+        if (models.length > 0) {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = providerName;
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model.key;
+                option.textContent = model.name;
+                optgroup.appendChild(option);
+            });
+            modelSelect.appendChild(optgroup);
+        }
+    });
+    modelSelect.value = 'claude-4-sonnet';
+}
+
+function updateCustomCostInputs() {
+    const selectedModelKey = modelSelect.value;
+    if (selectedModelKey !== 'custom') {
+        const model = MODELS[selectedModelKey];
+        if (model) {
+            customInputCostEl.value = model.inputCost.toFixed(2);
+            customOutputCostEl.value = model.outputCost.toFixed(2);
+        }
+    }
+    calculate();
+}
+
+function formatCurrency(num, maxDigits = 6) {
+    const options = {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: num < 0.01 && num !== 0 ? maxDigits : 2,
+    };
+    return new Intl.NumberFormat('en-US', options).format(num);
+}
+
+function calculateText(text) {
+    const charCount = text.length;
+    const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    const tokenCount = Math.ceil(charCount / 4);
+    return { charCount, wordCount, tokenCount };
+}
+
+function calculate() {
+    const inputCostPerMillion = parseFloat(customInputCostEl.value) || 0;
+    const outputCostPerMillion = parseFloat(customOutputCostEl.value) || 0;
+    const includeOutput = includeOutputCheckbox.checked;
+
+    const inputStats = calculateText(textInput.value);
+    const outputStats = includeOutput ? calculateText(outputTextInput.value) : { charCount: 0, wordCount: 0, tokenCount: 0 };
+
+    const inputCost = (inputStats.tokenCount / 1000000) * inputCostPerMillion;
+    const outputCost = (outputStats.tokenCount / 1000000) * outputCostPerMillion;
+
+    if (includeOutput) {
+        simpleResultsGrid.style.display = 'none';
+        detailedResultsSummary.style.display = 'block';
+        inputCharCountEl.textContent = inputStats.charCount.toLocaleString('en-US');
+        inputWordCountEl.textContent = inputStats.wordCount.toLocaleString('en-US');
+        inputTokenCountEl.textContent = inputStats.tokenCount.toLocaleString('en-US');
+        inputCostEl.textContent = formatCurrency(inputCost);
+        outputCharCountEl.textContent = outputStats.charCount.toLocaleString('en-US');
+        outputWordCountEl.textContent = outputStats.wordCount.toLocaleString('en-US');
+        outputTokenCountEl.textContent = outputStats.tokenCount.toLocaleString('en-US');
+        outputCostEl.textContent = formatCurrency(outputCost);
+        totalTokenCountEl.textContent = (inputStats.tokenCount + outputStats.tokenCount).toLocaleString('en-US');
+        totalCostEl.textContent = formatCurrency(inputCost + outputCost);
+    } else {
+        simpleResultsGrid.style.display = 'grid';
+        detailedResultsSummary.style.display = 'none';
+        charCountEl.textContent = inputStats.charCount.toLocaleString('en-US');
+        wordCountEl.textContent = inputStats.wordCount.toLocaleString('en-US');
+        tokenCountEl.textContent = inputStats.tokenCount.toLocaleString('en-US');
+        estimatedCostEl.textContent = formatCurrency(inputCost);
+    }
+    
+    const selectedModel = MODELS[modelSelect.value];
+    updateTokenUsageBar(inputStats.tokenCount, selectedModel);
+    updateComparisonTable(inputStats.tokenCount, outputStats.tokenCount);
+}
+
+function updateTokenUsageBar(tokenCount, model) {
+    if (!model || model.contextWindow <= 0 || modelSelect.value === 'custom') {
+        tokenUsageContainer.style.display = 'none';
+        if (tokenUsageChart) {
+            tokenUsageChart.destroy();
+            tokenUsageChart = null;
+        }
+        return;
+    }
+
+    tokenUsageContainer.style.display = 'block';
+    const rawPercentage = (tokenCount / model.contextWindow) * 100;
+    const remaining = Math.max(model.contextWindow - tokenCount, 0);
+
+    let warningText = '';
+    if (rawPercentage > 100) warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Exceeds limit!</span>`;
+    else if (rawPercentage > 90) warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Near limit!</span>`;
+    else if (rawPercentage > 75) warningText = ` <span style="color: #f39c12; font-weight: 600;">⚠️ High usage</span>`;
+
+    document.getElementById('tokenUsageStats').innerHTML = `Using <strong>${tokenCount.toLocaleString()}</strong> of <strong>${model.contextWindow.toLocaleString()}</strong> tokens (${rawPercentage.toFixed(1)}%) • <strong>${remaining.toLocaleString()}</strong> remaining${warningText}`;
+    
+    const ctx = document.getElementById('tokenUsageChart').getContext('2d');
+    const chartColor = rawPercentage > 100 ? '#e74c3c' : rawPercentage > 90 ? '#e74c3c' : rawPercentage > 75 ? '#f39c12' : '#4a90e2';
+    const chartData = tokenCount === 0 ? [0, model.contextWindow] : [tokenCount, remaining];
+
+    if (tokenUsageChart) {
+        tokenUsageChart.data.datasets[0].data = chartData;
+        tokenUsageChart.data.datasets[0].backgroundColor[0] = chartColor;
+        tokenUsageChart.update();
+    } else {
+        tokenUsageChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Used Tokens', 'Available Tokens'],
+                datasets: [{ data: chartData, backgroundColor: [chartColor, '#e1e8ed'], borderWidth: 0, hoverOffset: 4 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { padding: 15, font: { size: 12, family: "'Inter', sans-serif" }, usePointStyle: true, pointStyle: 'circle' } },
+                    tooltip: {
+                        callbacks: { label: (c) => `${c.label}: ${c.parsed.toLocaleString()} (${((c.parsed / model.contextWindow) * 100).toFixed(1)}%)` },
+                        backgroundColor: 'rgba(0,0,0,0.8)', padding: 10, cornerRadius: 6,
+                        titleFont: { size: 13, family: "'Inter', sans-serif" }, bodyFont: { size: 12, family: "'Inter', sans-serif" }
+                    }
+                },
+                cutout: '65%', animation: { animateRotate: true, animateScale: false }
+            }
+        });
+    }
+}
+
+function updateComparisonTable(inputTokenCount, outputTokenCount) {
+    if (compareModelsCheckbox.checked) {
+        comparisonTable.classList.add('show');
+        comparisonTableBody.innerHTML = '';
+        const allModels = Object.values(MODELS).filter(m => m.provider !== 'Custom').sort((a, b) => (a.inputCost + a.outputCost) - (b.inputCost + b.outputCost));
+        allModels.forEach(model => {
+            const input = (inputTokenCount / 1000000) * model.inputCost;
+            const output = (outputTokenCount / 1000000) * model.outputCost;
+            const total = input + output;
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${model.name}</td><td>${formatCurrency(input)}</td><td>${formatCurrency(output)}</td><td><strong>${formatCurrency(total)}</strong></td>`;
+            comparisonTableBody.appendChild(row);
+        });
+    } else {
+        comparisonTable.classList.remove('show');
+    }
+}
+
+function copyResults() {
+    const modelName = MODELS[modelSelect.value]?.name || 'Custom Model';
+    let textToCopy = `LLM Cost Estimation (${modelName}):\n----------------------------------\n`;
+    if (includeOutputCheckbox.checked) {
+        textToCopy += `INPUT:\n  - Chars: ${inputCharCountEl.textContent}\n  - Words: ${inputWordCountEl.textContent}\n  - Tokens: ${inputTokenCountEl.textContent}\n  - Cost: ${inputCostEl.textContent.trim()}\n\nOUTPUT:\n  - Chars: ${outputCharCountEl.textContent}\n  - Words: ${outputWordCountEl.textContent}\n  - Tokens: ${outputTokenCountEl.textContent}\n  - Cost: ${outputCostEl.textContent.trim()}\n\nTOTAL:\n  - Tokens: ${totalTokenCountEl.textContent}\n  - Cost: ${totalCostEl.textContent.trim()}\n`;
+    } else {
+        textToCopy += `Characters: ${charCountEl.textContent}\nWords: ${wordCountEl.textContent}\nEst. Tokens: ${tokenCountEl.textContent}\nEst. Cost: ${estimatedCostEl.textContent.trim()}\n`;
+    }
+    textToCopy += `----------------------------------\nGenerated by Calcela.com`;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        const copyButtonSpan = copyBtn.querySelector('span');
+        copyButtonSpan.textContent = 'Copied!';
+        setTimeout(() => { copyButtonSpan.textContent = 'Copy'; }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy results: ', err);
+        alert('Failed to copy results.');
+    });
+}
+
+function debouncedCalculate() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(calculate, 150);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    populateModelSelector();
+    updateCustomCostInputs();
+    textInput.addEventListener('input', debouncedCalculate);
+    outputTextInput.addEventListener('input', debouncedCalculate);
+    modelSelect.addEventListener('change', updateCustomCostInputs);
+    compareModelsCheckbox.addEventListener('change', calculate);
+    copyBtn.addEventListener('click', copyResults);
+    includeOutputCheckbox.addEventListener('change', () => {
+        const showOutput = includeOutputCheckbox.checked;
+        outputTextContainer.style.display = showOutput ? 'block' : 'none';
+        if (!showOutput) outputTextInput.value = '';
+        calculate();
+    });
+    document.getElementById('clearButton').addEventListener('click', () => {
+        textInput.value = '';
+        outputTextInput.value = '';
+        calculate();
+        textInput.focus();
+    });
+    customInputCostEl.addEventListener('input', () => { modelSelect.value = 'custom'; debouncedCalculate(); });
+    customOutputCostEl.addEventListener('input', () => { modelSelect.value = 'custom'; debouncedCalculate(); });
+});
+
+window.addEventListener('beforeunload', () => {
+    clearTimeout(debounceTimer);
+});

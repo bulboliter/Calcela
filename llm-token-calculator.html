@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,2024 +9,316 @@
     <meta name="author" content="Calcela">
     <meta name="robots" content="index, follow">
 
-<meta property="og:title" content="LLM Token Calculator & Cost Estimator">
-<meta property="og:description" content="Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://calcela.com/llm-token-calculator">
-<meta property="og:image" content="https://calcela.com/llm-token-calculator-preview.png">
-<meta property="og:site_name" content="Calcela">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="LLM Token Calculator & Cost Estimator">
+    <meta property="og:description" content="Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://calcela.com/llm-token-calculator">
+    <meta property="og:image" content="https://calcela.com/llm-token-calculator-preview.png">
+    <meta property="og:site_name" content="Calcela">
 
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="LLM Token Calculator & Cost Estimator">
-<meta name="twitter:description" content="Free tool to estimate token counts and API costs for models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.">
-<meta name="twitter:image" content="https://calcela.com/llm-token-calculator-preview.png">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LLM Token Calculator & Cost Estimator">
+    <meta name="twitter:description" content="Free tool to estimate token counts and API costs for models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.">
+    <meta name="twitter:image" content="https://calcela.com/llm-token-calculator-preview.png">
 
-<link rel="icon" href="/wicon.png" type="image/png">
+    <link rel="icon" href="/wicon.png" type="image/png">
+    <link rel="canonical" href="https://calcela.com/llm-token-calculator">
 
-<link rel="canonical" href="https://calcela.com/llm-token-calculator">
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "LLM Token Calculator & Cost Estimator",
-    "description": "A free tool to estimate token count and API costs for large language models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.",
-    "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "All",
-    "url": "https://calcela.com/llm-token-calculator",
-    "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
-    }
-}
-</script>
-
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [{
-        "@type": "Question",
-        "name": "How accurate is the 4-character-per-token estimation?",
-        "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The approximation works well for English text (95-99% accuracy) but varies for code, other languages, mathematical expressions, and special formatting. For precise counts, always refer to the official tokenizer library from the model provider."
-        }
-    },{
-        "@type": "Question",
-        "name": "Why do output tokens cost more than input tokens?",
-        "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence."
-        }
-    },{
-        "@type": "Question",
-        "name": "Which models offer the best value for money?",
-        "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "For general tasks, models like GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios. For complex reasoning, models like Claude 4 Sonnet or GPT-4.1 offer superior capabilities at competitive pricing."
-        }
-    }]
-}
-</script>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap');
-
-    .universal-header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: #4a90e2;
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(74, 144, 226, 0.1);
-    }
-
-    .header-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 16px 20px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 30px;
-    }
-
-    .header-left {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-    }
-
-    .brand-name {
-        font-family: 'Poppins', sans-serif;
-        font-size: 24px;
-        font-weight: 700;
-        color: white;
-        letter-spacing: -0.5px;
-        text-decoration: none;
-        transition: opacity 0.3s ease;
-    }
-
-    .brand-name:hover {
-        opacity: 0.9;
-    }
-
-    .nav-divider {
-        width: 1px;
-        height: 24px;
-        background-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .home-button {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 16px;
-        background-color: transparent;
-        color: white;
-        text-decoration: none;
-        border-radius: 8px;
-        font-weight: 500;
-        font-size: 15px;
-        font-family: 'Inter', sans-serif;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .home-button:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .home-icon {
-        width: 18px;
-        height: 18px;
-        flex-shrink: 0;
-    }
-
-    .search-wrapper {
-        flex: 1;
-        max-width: 480px;
-        position: relative;
-    }
-
-    .search-container {
-        position: relative;
-        width: 100%;
-    }
-
-    .search-input {
-        width: 100%;
-        padding: 10px 44px 10px 18px;
-        border: none;
-        border-radius: 8px;
-        font-size: 15px;
-        font-family: 'Inter', sans-serif;
-        transition: all 0.3s ease;
-        background-color: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        color: white;
-    }
-
-    .search-input::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .search-input:focus {
-        outline: none;
-        background-color: white;
-        color: #2c3e50;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .search-input:focus::placeholder {
-        color: #95a5a6;
-    }
-
-    .search-icon {
-        position: absolute;
-        right: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        color: rgba(255, 255, 255, 0.7);
-        pointer-events: none;
-        transition: color 0.3s ease;
-    }
-
-    .search-input:focus ~ .search-icon {
-        color: #4a90e2;
-    }
-
-    .search-results {
-        position: absolute;
-        top: calc(100% + 8px);
-        left: 0;
-        right: 0;
-        background-color: white;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        max-height: 400px;
-        overflow-y: auto;
-        display: none;
-        z-index: 1001;
-    }
-
-    .search-results.show {
-        display: block;
-        animation: fadeIn 0.2s ease;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-8px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "LLM Token Calculator & Cost Estimator",
+        "description": "A free tool to estimate token count and API costs for large language models like GPT-4.1, Claude 4, and Gemini 2.5 Pro.",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "All",
+        "url": "https://calcela.com/llm-token-calculator",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
         }
     }
-
-    .search-result-item {
-        padding: 12px 18px;
-        border-bottom: 1px solid #f0f4f8;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        display: block;
-        color: inherit;
-    }
-
-    .search-result-item:last-child {
-        border-bottom: none;
-    }
-
-    .search-result-item:hover {
-        background-color: #f8fafc;
-    }
-
-    .search-result-title {
-        font-weight: 600;
-        color: #2c3e50;
-        font-size: 14px;
-        margin-bottom: 2px;
-        font-family: 'Inter', sans-serif;
-    }
-
-    .search-result-title strong {
-        color: #4a90e2;
-    }
-
-    .search-result-description {
-        font-size: 13px;
-        color: #7f8c8d;
-        line-height: 1.4;
-        font-family: 'Inter', sans-serif;
-    }
-
-    .search-no-results {
-        padding: 24px;
-        text-align: center;
-        color: #7f8c8d;
-        font-size: 14px;
-        font-family: 'Inter', sans-serif;
-    }
-
-    /* Loading state */
-    .search-loading {
-        padding: 20px;
-        text-align: center;
-    }
-
-    .search-spinner {
-        width: 20px;
-        height: 20px;
-        border: 2px solid #e1e8ed;
-        border-top-color: #4a90e2;
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-        margin: 0 auto;
-    }
-
-    @keyframes spin {
-        to { transform: rotate(360deg); }
-    }
-
-    /* Add padding to body */
-    body {
-        padding-top: 72px !important;
-    }
-
-    /* Scrollbar styling for search results */
-    .search-results::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .search-results::-webkit-scrollbar-track {
-        background: #f8fafc;
-        border-radius: 3px;
-    }
-
-    .search-results::-webkit-scrollbar-thumb {
-        background: #cbd5e0;
-        border-radius: 3px;
-    }
-
-    .search-results::-webkit-scrollbar-thumb:hover {
-        background: #a0aec0;
-    }
-
-    /* Mobile responsive */
-    @media (max-width: 768px) {
-        .header-container {
-            padding: 14px 16px;
-            gap: 16px;
-        }
-
-        .header-left {
-            gap: 16px;
-        }
-
-        .brand-name {
-            font-size: 20px;
-        }
-
-        .nav-divider {
-            height: 20px;
-        }
-
-        .home-button {
-            padding: 6px 12px;
-            font-size: 14px;
-        }
-
-        .home-button span {
-            display: none;
-        }
-
-        .search-wrapper {
-            max-width: none;
-        }
-
-        .search-input {
-            padding: 9px 40px 9px 16px;
-            font-size: 16px; /* Prevent zoom on iOS */
-        }
-
-        .search-results {
-            border-radius: 0 0 12px 12px;
-            max-height: calc(100vh - 80px);
-        }
-
-        body {
-            padding-top: 64px !important;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .header-container {
-            padding: 12px;
-            gap: 12px;
-        }
-
-        .header-left {
-            gap: 12px;
-        }
-
-        .brand-name {
-            font-size: 18px;
-        }
-
-        .home-button {
-            padding: 6px 10px;
-        }
-
-        .home-icon {
-            width: 16px;
-            height: 16px;
-        }
-
-        .search-input {
-            padding: 8px 36px 8px 14px;
-        }
-
-        .search-icon {
-            width: 18px;
-            height: 18px;
-            right: 12px;
-        }
-
-        body {
-            padding-top: 60px !important;
-        }
-    }
-
-    /* Focus styles for accessibility */
-    .home-button:focus-visible,
-    .search-input:focus-visible {
-        outline: 2px solid white;
-        outline-offset: 2px;
-    }
-
-    /* Smooth transitions */
-    * {
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-    }
-</style>
-
-<header class="universal-header" role="banner">
-    <div class="header-container">
-        <div class="header-left">
-            <a href="/index" class="brand-name" aria-label="CALCELA - Home">CALCELA</a>
-            <div class="nav-divider" aria-hidden="true"></div>
-            <a href="/index" class="home-button" aria-label="Go to home page">
-                <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <span>Home</span>
-            </a>
-        </div>
-
-        <div class="search-wrapper">
-            <div class="search-container" role="search">
-                <input 
-                    type="search" 
-                    class="search-input" 
-                    placeholder="Search calculators..." 
-                    id="calculatorSearch"
-                    aria-label="Search for calculators"
-                    aria-autocomplete="list"
-                    aria-controls="searchResults"
-                    autocomplete="off"
-                    spellcheck="false"
-                    maxlength="100"
-                >
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <path d="m21 21-4.35-4.35"></path>
-                </svg>
-                <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
-            </div>
-        </div>
-    </div>
-</header>
-
-<script src="/calculators-database.js"></script>
-
-<script>
-(function() {
-    'use strict';
-
-    if (!window.calculators) {
-        console.error('Calculator database not loaded. Please ensure calculators-database.js is included.');
-        return;
-    }
-
-    function sanitizeHTML(str) {
-        const temp = document.createElement('div');
-        temp.textContent = str;
-        return temp.innerHTML;
-    }
-
-    function sanitizeSearchInput(input) {
-        return input.replace(/<[^>]*>/g, '').trim().substring(0, 100);
-    }
-
-    const searchInput = document.getElementById('calculatorSearch');
-    const searchResults = document.getElementById('searchResults');
-    let searchTimeout;
-    let selectedIndex = -1;
-
-    function performSearch(query) {
-        query = sanitizeSearchInput(query);
-
-        if (!query.trim()) {
-            hideResults();
-            return;
-        }
-
-        showLoading();
-
-        setTimeout(() => {
-            const lowerQuery = query.toLowerCase();
-            const results = window.calculators.filter(calc => {
-                const titleMatch = calc.title.toLowerCase().includes(lowerQuery);
-                const descMatch = calc.description.toLowerCase().includes(lowerQuery);
-                const keywordMatch = calc.keywords.some(keyword => keyword.includes(lowerQuery));
-                return titleMatch || descMatch || keywordMatch;
-            });
-
-            results.sort((a, b) => {
-                const aTitle = a.title.toLowerCase().indexOf(lowerQuery);
-                const bTitle = b.title.toLowerCase().indexOf(lowerQuery);
-                if (aTitle !== -1 && bTitle === -1) return -1;
-                if (aTitle === -1 && bTitle !== -1) return 1;
-                if (aTitle !== -1 && bTitle !== -1) return aTitle - bTitle;
-                return 0;
-            });
-
-            displayResults(results, query);
-        }, 200);
-    }
-
-    function showLoading() {
-        searchResults.innerHTML = '<div class="search-loading"><div class="search-spinner"></div></div>';
-        searchResults.classList.add('show');
-    }
-
-    function hideResults() {
-        searchResults.classList.remove('show');
-        setTimeout(() => {
-            searchResults.innerHTML = '';
-            selectedIndex = -1;
-        }, 200);
-    }
-
-    function displayResults(results, query) {
-        if (results.length === 0) {
-            searchResults.innerHTML = `
-                <div class="search-no-results">
-                    No calculators found for "${sanitizeHTML(query)}"
-                </div>
-            `;
-        } else {
-            searchResults.innerHTML = results.map((calc, index) => `
-                <a href="${sanitizeHTML(calc.url)}" 
-                   class="search-result-item" 
-                   role="option" 
-                   aria-selected="false"
-                   data-index="${index}"
-                   tabindex="-1">
-                    <div class="search-result-title">${highlightMatch(sanitizeHTML(calc.title), query)}</div>
-                    <div class="search-result-description">${sanitizeHTML(calc.description)}</div>
-                </a>
-            `).join('');
-        }
-        searchResults.classList.add('show');
-    }
-
-    function highlightMatch(text, query) {
-        if (!query.trim()) return text;
-        const sanitizedQuery = sanitizeHTML(query);
-        const regex = new RegExp(`(${sanitizedQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        return text.replace(regex, '<strong>$1</strong>');
-    }
-
-    searchInput.addEventListener('input', (e) => {
-                clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            performSearch(e.target.value);
-        }, 300);
-    });
-
-    searchInput.addEventListener('focus', () => {
-        if (searchInput.value.trim()) {
-            performSearch(searchInput.value);
-        }
-    });
-
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-wrapper')) {
-            hideResults();
-        }
-    });
-
-    searchInput.addEventListener('keydown', (e) => {
-        const items = searchResults.querySelectorAll('.search-result-item');
-
-        switch(e.key) {
-            case 'ArrowDown':
-                e.preventDefault();
-                if (selectedIndex < items.length - 1) {
-                    selectedIndex++;
-                    updateSelection(items, selectedIndex);
-                }
-                break;
-
-            case 'ArrowUp':
-                e.preventDefault();
-                if (selectedIndex > -1) {
-                    selectedIndex--;
-                    updateSelection(items, selectedIndex);
-                }
-                break;
-
-            case 'Enter':
-                e.preventDefault();
-                if (selectedIndex > -1 && items[selectedIndex]) {
-                    const url = items[selectedIndex].getAttribute('href');
-                    if (url && url.startsWith('/')) {
-                        window.location.href = url;
-                    }
-                } else if (items.length > 0) {
-                    window.location.href = items[0].getAttribute('href');
-                }
-                break;
-
-            case 'Escape':
-                e.preventDefault();
-                hideResults();
-                searchInput.blur();
-                break;
-        }
-    });
-
-    function updateSelection(items, index) {
-        items.forEach((item, i) => {
-            if (i === index) {
-                item.setAttribute('aria-selected', 'true');
-                item.style.backgroundColor = '#f8fafc';
-                item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            } else {
-                item.setAttribute('aria-selected', 'false');
-                item.style.backgroundColor = '';
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+            "@type": "Question",
+            "name": "How accurate is the 4-character-per-token estimation?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The approximation works well for English text (95-99% accuracy) but varies for code, other languages, mathematical expressions, and special formatting. For precise counts, always refer to the official tokenizer library from the model provider."
             }
-        });
-    }
-
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-        }
-    });
-
-    if ('ontouchstart' in window) {
-        searchResults.addEventListener('touchstart', (e) => {
-            const target = e.target.closest('.search-result-item');
-            if (target) {
-                target.style.backgroundColor = '#f0f4f8';
+        },{
+            "@type": "Question",
+            "name": "Why do output tokens cost more than input tokens?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence."
             }
-        }, { passive: true });
-
-        searchResults.addEventListener('touchend', (e) => {
-            const target = e.target.closest('.search-result-item');
-            if (target) {
-                setTimeout(() => {
-                    target.style.backgroundColor = '';
-                }, 100);
+        },{
+            "@type": "Question",
+            "name": "Which models offer the best value for money?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "For general tasks, models like GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios. For complex reasoning, models like Claude 4 Sonnet or GPT-4.1 offer superior capabilities at competitive pricing."
             }
-        }, { passive: true });
+        }]
     }
+    </script>
 
-    let searchCount = 0;
-    let rateLimitReset = Date.now();
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    function checkRateLimit() {
-        const now = Date.now();
-        if (now - rateLimitReset > 60000) {
-            searchCount = 0;
-            rateLimitReset = now;
-        }
-
-        searchCount++;
-        if (searchCount > 30) {
-            console.warn('Search rate limit exceeded');
-            return false;
-        }
-        return true;
-    }
-
-    const originalPerformSearch = performSearch;
-    performSearch = function(query) {
-        if (checkRateLimit()) {
-            originalPerformSearch(query);
-        }
-    };
-
-    const announcer = document.createElement('div');
-    announcer.setAttribute('role', 'status');
-    announcer.setAttribute('aria-live', 'polite');
-    announcer.setAttribute('aria-atomic', 'true');
-    announcer.style.position = 'absolute';
-    announcer.style.left = '-10000px';
-    announcer.style.width = '1px';
-    announcer.style.height = '1px';
-    announcer.style.overflow = 'hidden';
-    document.body.appendChild(announcer);
-
-    const originalDisplayResults = displayResults;
-    displayResults = function(results, query) {
-        originalDisplayResults(results, query);
-
-        if (results.length === 0) {
-            announcer.textContent = `No results found for ${query}`;
-        } else {
-            announcer.textContent = `${results.length} calculator${results.length > 1 ? 's' : ''} found`;
-        }
-    };
-
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            if (searchResults.classList.contains('show') && window.innerWidth <= 768) {
-                const rect = searchInput.getBoundingClientRect();
-                searchResults.style.maxWidth = `${window.innerWidth - 32}px`;
-            } else {
-                searchResults.style.maxWidth = '';
-            }
-        }, 250);
-    });
-
-    window.addEventListener('beforeunload', () => {
-        clearTimeout(searchTimeout);
-        clearTimeout(resizeTimeout);
-    });
-
-    document.querySelector('.brand-name').addEventListener('click', () => {
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'brand_click', {
-                'event_category': 'Navigation',
-                'event_label': 'CALCELA Brand'
-            });
-        }
-    });
-})();
-</script>
-
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        /* Add smooth transitions throughout */
-        transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
-    }
-
-    body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background-color: #f5f7fa;
-        min-height: 100vh;
-        padding: 20px;
-        padding-top: 92px !important; /* 72px header + 20px spacing */
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        line-height: 1.6;
-    }
-
-    @media (max-width: 768px) {
-        body {
-            padding-top: 84px !important; /* 64px header + 20px spacing */
-        }
-    }
-
-    @media (max-width: 480px) {
-        body {
-            padding-top: 80px !important; /* 60px header + 20px spacing */
-        }
-    }
-
-    .main-container {
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .calculator-container {
-        background-color: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        width: 100%;
-        max-width: 1200px;
-        margin: 20px auto 60px;
-    }
-
-    @media (min-width: 992px) {
-        .calculator-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            padding: 40px 50px;
-        }
-        .calculator-container .main-heading {
-            grid-column: 1 / -1;
-        }
-    }
-
-    @media (max-width: 991px) {
-        .calculator-container {
-            max-width: 600px;
-        }
-    }
-
-    .main-heading {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .main-heading h1 {
-        color: #2c3e50;
-        font-size: 28px;
-        font-weight: 600;
-        margin-bottom: 10px;
-    }
-
-    .main-heading p {
-        color: #5a6c7d;
-        font-size: 16px;
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    h2 {
-        color: #2c3e50;
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        margin-top: 30px;
-    }
-
-    h3 {
-        color: #34495e;
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 15px;
-        margin-top: 25px;
-    }
-
-    .input-group {
-        margin-bottom: 24px;
-    }
-
-    .input-group label {
-        display: block;
-        color: #5a6c7d;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 10px;
-    }
-
-    textarea, select, input[type="number"] {
-        width: 100%;
-        padding: 14px 18px;
-        border: 2px solid #e1e8ed;
-        border-radius: 12px;
-        font-size: 16px;
-        font-family: inherit;
-        transition: all 0.3s ease;
-        background-color: #fafbfc;
-    }
-
-    textarea:focus, select:focus, input[type="number"]:focus {
-        outline: none;
-        border-color: #4a90e2;
-        background-color: white;
-        box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-    }
-
-    textarea:hover, select:hover, input[type="number"]:hover {
-        border-color: #cbd5e0;
-    }
-
-    textarea {
-        resize: vertical;
-        min-height: 150px;
-    }
-
-    select {
-        cursor: pointer;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235a6c7d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right 12px center;
-        background-size: 20px;
-        padding-right: 40px;
-    }
-
-    .custom-cost-inputs {
-        display: flex;
-        gap: 16px;
-        margin-top: -10px;
-        margin-bottom: 10px;
-    }
-
-    .cost-warning {
-        font-size: 12px;
-        color: #7f8c8d;
-        margin-top: -12px;
-        margin-bottom: 24px;
-    }
-
-    .results {
-        margin-top: 0;
-        padding: 24px;
-        background-color: #f8fafc;
-        border-radius: 12px;
-        height: fit-content;
-        position: relative;
-        border: 1px solid #e1e8ed;
-    }
-
-    @media (max-width: 991px) {
-        .results {
-            margin-top: 32px;
-        }
-    }
-
-    /* Simple Results Grid */
-    .result-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-    .result-item {
-        background-color: white;
-        padding: 16px;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    }
-    .result-label {
-        color: #5a6c7d;
-        font-size: 13px;
-        margin-bottom: 6px;
-        display: block;
-    }
-    .result-value {
-        color: #2c3e50;
-        font-size: 20px;
-        font-weight: 600;
-    }
-
-    /* Detailed Results Summary */
-    .results-summary {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-    @media (min-width: 500px) {
-        .results-summary {
-            grid-template-columns: 1fr 1fr;
-        }
-    }
-    .summary-col h4 {
-        font-size: 16px;
-        font-weight: 600;
-        color: #34495e;
-        margin-bottom: 12px;
-        padding-bottom: 8px;
-        border-bottom: 1px solid #e1e8ed;
-    }
-    .summary-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 8px 0;
-        font-size: 14px;
-    }
-    .summary-label {
-        color: #5a6c7d;
-    }
-    .summary-value {
-        color: #2c3e50;
-        font-weight: 600;
-    }
-    .total-summary {
-        margin-top: 24px;
-        padding-top: 16px;
-        border-top: 2px solid #e1e8ed;
-    }
-    .total-summary h4 {
-        font-size: 18px;
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 12px;
-    }
-    .total-summary .summary-item .summary-value {
-        font-size: 18px;
-    }
-
-    .estimation-notice {
-        text-align: center;
-        color: #5a6c7d;
-        font-size: 12px;
-        margin-top: 24px;
-        font-style: italic;
-        background-color: #eef4fb;
-        padding: 10px;
-        border-radius: 8px;
-    }
-
-    /* Blog Section Styles */
-    .blog-section {
-        background-color: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    @media (min-width: 992px) {
-        .blog-section {
-            padding: 50px 60px;
-        }
-        .blog-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-    }
-
-    .blog-content {
-        color: #34495e;
-        font-size: 17px;
-        line-height: 1.8;
-        color: #2c3e50;
-    }
-
-    .blog-content h2:first-of-type {
-        font-size: 32px;
-        line-height: 1.3;
-        margin-bottom: 24px;
-        color: #2c3e50;
-    }
-
-    @media (max-width: 768px) {
-        .blog-content h2:first-of-type {
-            font-size: 28px;
-        }
-    }
-
-    .blog-content p, .blog-content ul, .blog-content ol {
-        margin-bottom: 20px;
-    }
-
-    .blog-content ul, .blog-content ol {
-        padding-left: 20px;
-    }
-
-    .blog-content li {
-        margin-bottom: 10px;
-    }
-
-    .blog-content strong {
-        font-weight: 600;
-        color: #2c3e50;
-    }
-
-    .formula-box {
-        background-color: #f8fafc;
-        border-left: 4px solid #4a90e2;
-        padding: 20px;
-        margin: 20px 0;
-        border-radius: 8px;
-        font-family: 'Courier New', monospace;
-        font-size: 14px;
-        color: #2c3e50;
-    }
-
-    .faq-item {
-        margin-bottom: 20px;
-        padding-top: 20px;
-        border-top: 1px solid #e1e8ed;
-    }
-    .faq-item:first-of-type {
-        border-top: none;
-        padding-top: 0;
-    }
-
-    .faq-question {
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 10px;
-    }
-
-    .faq-answer {
-        color: #5a6c7d;
-        line-height: 1.6;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-        font-size: 14px;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    }
-    th, td {
-        padding: 12px;
-        text-align: left;
-        border: 1px solid #e1e8ed;
-    }
-    thead tr {
-        background-color: #f8fafc;
-    }
-    tbody tr:nth-child(even) {
-        background-color: #fafbfc;
-    }
-
-    /* Mobile optimizations */
-    @media (max-width: 480px) {
-        .calculator-container {
-            padding: 24px 16px;
-        }
-        .main-heading h1 {
-            font-size: 24px;
-        }
-        .main-heading p {
-            font-size: 15px;
-        }
-        .results {
-            padding: 20px 16px;
-            padding-top: 40px; /* Add space for copy button */
-        }
-        .copy-button {
-            padding: 4px 8px;
-            font-size: 12px;
-            top: 8px;
-            right: 8px;
-            z-index: 10;
-        }
-        .copy-button svg {
-            width: 14px;
-            height: 14px;
-        }
-        .custom-cost-inputs {
-            flex-direction: column;
-            gap: 10px;
-        }
-        textarea, input[type="number"] {
-            font-size: 16px !important;
-        }
-        .result-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    /* Styles for new features */
-    .toggle-group {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 16px;
-    }
-    .toggle-label {
-        color: #5a6c7d;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        user-select: none;
-    }
-    .toggle-checkbox {
-        cursor: pointer;
-        width: 16px;
-        height: 16px;
-    }
-    .copy-button {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        background-color: #f0f4f8;
-        border: 1px solid #e1e8ed;
-        color: #5a6c7d;
-        padding: 6px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 13px;
-        font-weight: 500;
-        transition: all 0.2s ease;
-        z-index: 10; /* Add this line */
-    }
-    .copy-button:hover {
-        background-color: #e1e8ed;
-        color: #2c3e50;
-    }
-    .token-usage-bar {
-        width: 100%;
-        background-color: #e1e8ed;
-        border-radius: 8px;
-        height: 24px;
-        overflow: hidden;
-        position: relative;
-    }
-    .token-usage-fill {
-        height: 100%;
-        background-color: #4a90e2;
-        width: 0%; /* Controlled by JS */
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 12px;
-        font-weight: 600;
-        transition: width 0.5s ease, background-color 0.5s ease;
-        overflow: hidden;
-    }
-    .token-usage-fill.warning { background-color: #f39c12; }
-    .token-usage-fill.danger { background-color: #e74c3c; }
-    .token-usage-text {
-        white-space: nowrap;
-    }
-    .comparison-table {
-        display: none; /* Controlled by JS */
-        margin-top: 24px;
-        padding-top: 24px;
-        border-top: 1px solid #e1e8ed;
-    }
-    .comparison-table.show {
-        display: block;
-    }
-    #comparisonTableContent {
-        border: 1px solid #e1e8ed;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    #comparisonTableContent th, #comparisonTableContent td {
-        border: none;
-        border-bottom: 1px solid #e1e8ed;
-    }
-    #comparisonTableContent tr:last-child td {
-        border-bottom: none;
-    }
-    #comparisonTableContent thead th {
-        background-color: #4a90e2;
-        color: white;
-        font-weight: 600;
-        text-align: center;
-    }
-    #comparisonTableContent tbody tr:nth-child(odd) {
-        background-color: white;
-    }
-    #comparisonTableContent tbody tr:nth-child(even) {
-        background-color: #f8fafc;
-    }
-    #comparisonTableContent td {
-        text-align: right;
-    }
-    #comparisonTableContent td:first-child {
-        text-align: left;
-        font-weight: 500;
-        color: #34495e;
-    }
-
-    #model-select option[value="custom"] {
-        background-color: #fff3cd;
-        color: #856404;
-        font-weight: 600;
-    }
-
-    .result-item:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        position: relative;
-        z-index: 1;
-    }
-
-    @media (max-width: 768px) {
-        .calculator-container {
-            gap: 24px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-        }
-        .main-heading h1 {
-            font-size: 26px;
-            line-height: 1.3;
-        }
-    }
-
-    select {
-        font-weight: 500;
-    }
-
-    select optgroup {
-        font-weight: 600;
-        color: #2c3e50;
-    }
-
-    #tokenUsageChart {
-        max-height: 180px !important;
-    }
-
-    .copy-button:active {
-        transform: translateY(1px);
-    }
-
-    .comparison-table table {
-        font-size: 13px;
-    }
-
-    @media (max-width: 768px) {
-        .comparison-table table {
-            font-size: 12px;
-        }
-    }
-</style>
-
+    <!-- Link to External CSS Files -->
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/llm-token-calculator.css">
 </head>
 <body>
-    <div class="main-container">
+    <!-- Reusable Universal Header -->
+    <header class="universal-header" role="banner">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="/index" class="brand-name" aria-label="CALCELA - Home">CALCELA</a>
+                <div class="nav-divider" aria-hidden="true"></div>
+                <a href="/index" class="home-button" aria-label="Go to home page">
+                    <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+            </div>
+            <div class="search-wrapper">
+                <div class="search-container" role="search">
+                    <input type="search" class="search-input" placeholder="Search calculators..." id="calculatorSearch" aria-label="Search for calculators" aria-autocomplete="list" aria-controls="searchResults" autocomplete="off" spellcheck="false" maxlength="100">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                    <div class="search-results" id="searchResults" role="listbox" aria-label="Search results"></div>
+                </div>
+            </div>
+        </div>
+    </header>
 
+    <div class="main-container">
+        <!-- Calculator Section -->
         <div class="calculator-container">
             <div class="main-heading">
                 <h1>LLM Token Calculator & Cost Estimator</h1>
                 <p>Calculate AI Token Costs Instantly for OpenAI, Anthropic, Google Gemini, and other LLMs</p>
             </div>
 
-<div class="calculator-inputs">
-            <div class="input-group">
-                <label for="text-input">Your Input Text</label>
-                <textarea id="text-input" rows="8" placeholder="Paste your input text here..." aria-label="Input text for token calculation"></textarea>
-            </div>
-
-            <div class="toggle-group">
-                <input type="checkbox" id="include-output" class="toggle-checkbox">
-                <label for="include-output" class="toggle-label">Include Output Text</label>
-            </div>
-
-            <div class="input-group" id="output-text-container" style="display: none;">
-                <label for="output-text-input">Your Output Text</label>
-                <textarea id="output-text-input" rows="8" placeholder="Paste your expected output text here..." aria-label="Output text for token calculation"></textarea>
-            </div>
-
-            <div class="input-group">
-                <label for="model-select">Select LLM Model</label>
-                <select id="model-select" aria-label="Select LLM Model"></select>
-            </div>
-            <div class="custom-cost-inputs">
+            <div class="calculator-inputs">
                 <div class="input-group">
-                    <label for="custom-input-cost">Input Cost ($ / 1M tokens)</label>
-                    <input type="number" id="custom-input-cost" step="0.01" min="0" aria-label="Custom input cost per 1 million tokens">
+                    <label for="text-input">Your Input Text</label>
+                    <textarea id="text-input" rows="8" placeholder="Paste your input text here..." aria-label="Input text for token calculation"></textarea>
+                </div>
+                <div class="toggle-group">
+                    <input type="checkbox" id="include-output" class="toggle-checkbox">
+                    <label for="include-output" class="toggle-label">Include Output Text</label>
+                </div>
+                <div class="input-group" id="output-text-container" style="display: none;">
+                    <label for="output-text-input">Your Output Text</label>
+                    <textarea id="output-text-input" rows="8" placeholder="Paste your expected output text here..." aria-label="Output text for token calculation"></textarea>
                 </div>
                 <div class="input-group">
-                    <label for="custom-output-cost">Output Cost ($ / 1M tokens)</label>
-                    <input type="number" id="custom-output-cost" step="0.01" min="0" aria-label="Custom output cost per 1 million tokens">
+                    <label for="model-select">Select LLM Model</label>
+                    <select id="model-select" aria-label="Select LLM Model"></select>
                 </div>
-            </div>
-            <p class="cost-warning">Note: This does not account for thinking tokens or cache tokens, which may affect final pricing.</p>
-
-            <div class="toggle-group">
-                <input type="checkbox" id="compare-models" class="toggle-checkbox">
-                <label for="compare-models" class="toggle-label">Compare costs across all models</label>
-            </div>
-
-            <button type="button" id="clearButton" style="
-                background-color: #f0f4f8;
-                border: 1px solid #e1e8ed;
-                color: #5a6c7d;
-                padding: 8px 16px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 14px;
-                font-weight: 500;
-                margin-top: 10px;
-                transition: all 0.2s ease;
-            " onmouseover="this.style.backgroundColor='#e1e8ed'" onmouseout="this.style.backgroundColor='#f0f4f8'">
-                Clear All Text
-            </button>
-        </div>
-
-        <div class="calculator-results">
-            <div class="results" id="results" role="region" aria-label="Calculation results">
-                <button class="copy-button" onclick="copyResults()" aria-label="Copy results to clipboard">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                    <span>Copy</span>
-                </button>
-
-                <div class="result-grid" id="simple-results-grid">
-                    <div class="result-item">
-                        <span class="result-label">Character Count</span>
-                        <span class="result-value" id="charCount">0</span>
+                <div class="custom-cost-inputs">
+                    <div class="input-group">
+                        <label for="custom-input-cost">Input Cost ($ / 1M tokens)</label>
+                        <input type="number" id="custom-input-cost" step="0.01" min="0" aria-label="Custom input cost per 1 million tokens">
                     </div>
-                    <div class="result-item">
-                        <span class="result-label">Word Count</span>
-                        <span class="result-value" id="wordCount">0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Estimated Token Count</span>
-                        <span class="result-value" id="tokenCount">0</span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Estimated Cost</span>
-                        <span class="result-value" id="estimatedCost">$0.00</span>
+                    <div class="input-group">
+                        <label for="custom-output-cost">Output Cost ($ / 1M tokens)</label>
+                        <input type="number" id="custom-output-cost" step="0.01" min="0" aria-label="Custom output cost per 1 million tokens">
                     </div>
                 </div>
-
-                <div id="detailed-results-summary" style="display: none;">
-                    <div class="results-summary">
-                        <div class="summary-col" id="input-summary">
-                            <h4>Input</h4>
-                            <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="inputCharCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="inputWordCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="inputTokenCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="inputCost"> $0.00</span></div>
+                <p class="cost-warning">Note: This does not account for thinking tokens or cache tokens, which may affect final pricing.</p>
+                <div class="toggle-group">
+                    <input type="checkbox" id="compare-models" class="toggle-checkbox">
+                    <label for="compare-models" class="toggle-label">Compare costs across all models</label>
+                </div>
+                <button type="button" id="clearButton" style="background-color: #f0f4f8; border: 1px solid #e1e8ed; color: #5a6c7d; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; margin-top: 10px; transition: all 0.2s ease;" onmouseover="this.style.backgroundColor='#e1e8ed'" onmouseout="this.style.backgroundColor='#f0f4f8'">Clear All Text</button>
+            </div>
+            
+            <div class="calculator-results">
+                <div class="results" id="results" role="region" aria-label="Calculation results">
+                    <button class="copy-button" id="copyBtn" aria-label="Copy results to clipboard">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Copy</span>
+                    </button>
+                    <div class="result-grid" id="simple-results-grid">
+                        <div class="result-item"><span class="result-label">Character Count</span><span class="result-value" id="charCount">0</span></div>
+                        <div class="result-item"><span class="result-label">Word Count</span><span class="result-value" id="wordCount">0</span></div>
+                        <div class="result-item"><span class="result-label">Estimated Token Count</span><span class="result-value" id="tokenCount">0</span></div>
+                        <div class="result-item"><span class="result-label">Estimated Cost</span><span class="result-value" id="estimatedCost">$0.00</span></div>
+                    </div>
+                    <div id="detailed-results-summary" style="display: none;">
+                        <div class="results-summary">
+                            <div class="summary-col" id="input-summary">
+                                <h4>Input</h4>
+                                <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="inputCharCount">0</span></div>
+                                <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="inputWordCount">0</span></div>
+                                <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="inputTokenCount">0</span></div>
+                                <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="inputCost"> $0.00</span></div>
+                            </div>
+                            <div class="summary-col" id="output-summary">
+                                <h4>Output</h4>
+                                <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="outputCharCount">0</span></div>
+                                <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="outputWordCount">0</span></div>
+                                <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="outputTokenCount">0</span></div>
+                                <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="outputCost">$0.00</span></div>
+                            </div>
                         </div>
-                        <div class="summary-col" id="output-summary">
-                            <h4>Output</h4>
-                            <div class="summary-item"><span class="summary-label">Characters</span><span class="summary-value" id="outputCharCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Words</span><span class="summary-value" id="outputWordCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Tokens</span><span class="summary-value" id="outputTokenCount">0</span></div>
-                            <div class="summary-item"><span class="summary-label">Cost</span><span class="summary-value" id="outputCost">$0.00</span></div>
+                        <div class="total-summary">
+                            <h4>Total</h4>
+                            <div class="summary-item"><span class="summary-label">Total Tokens</span><span class="summary-value" id="totalTokenCount">0</span></div>
+                            <div class="summary-item"><span class="summary-label">Total Estimated Cost</span><span class="summary-value" id="totalCost">$0.00</span></div>
                         </div>
                     </div>
-                    <div class="total-summary">
-                        <h4>Total</h4>
-                        <div class="summary-item"><span class="summary-label">Total Tokens</span><span class="summary-value" id="totalTokenCount">0</span></div>
-                        <div class="summary-item"><span class="summary-label">Total Estimated Cost</span><span class="summary-value" id="totalCost">$0.00</span></div>
+                    <div id="tokenUsageContainer" style="display: none; margin-top: 24px;">
+                        <div style="margin-bottom: 12px; font-size: 14px; color: #5a6c7d; font-weight: 500;">Input Token Usage vs Model Limit:</div>
+                        <div style="position: relative; height: 200px; background-color: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);"><canvas id="tokenUsageChart"></canvas></div>
+                        <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d; text-align: center;"><span id="tokenUsageStats"></span></div>
                     </div>
-                </div>
-
-                <div id="tokenUsageContainer" style="display: none; margin-top: 24px;">
-                    <div style="margin-bottom: 12px; font-size: 14px; color: #5a6c7d; font-weight: 500;">
-                        Input Token Usage vs Model Limit:
+                    <div class="comparison-table" id="comparisonTable">
+                        <h3 style="font-size: 16px; margin-bottom: 12px; color: #34495e;">Cost Comparison Across Models</h3>
+                        <div style="overflow-x: auto;"><table id="comparisonTableContent"><thead><tr><th>Model</th><th>Input Cost</th><th>Output Cost</th><th>Total Cost</th></tr></thead><tbody></tbody></table></div>
                     </div>
-                    <div style="position: relative; height: 200px; background-color: white; padding: 16px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04);">
-                        <canvas id="tokenUsageChart"></canvas>
-                    </div>
-                    <div style="margin-top: 8px; font-size: 12px; color: #7f8c8d; text-align: center;">
-                        <span id="tokenUsageStats"></span>
-                    </div>
-                </div>
-
-                <div class="comparison-table" id="comparisonTable">
-                    <h3 style="font-size: 16px; margin-bottom: 12px; color: #34495e;">Cost Comparison Across Models</h3>
-                    <div style="overflow-x: auto;">
-                        <table id="comparisonTableContent">
-                            <thead>
-                                <tr>
-                                    <th>Model</th>
-                                    <th>Input Cost</th>
-                                    <th>Output Cost</th>
-                                    <th>Total Cost</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="estimation-notice">
-                    <strong>Note:</strong> Token count is estimated using the <strong>1 token ≈ 4 characters</strong> rule. Actual count may vary.
+                    <div class="estimation-notice"><strong>Note:</strong> Token count is estimated using the <strong>1 token ≈ 4 characters</strong> rule. Actual count may vary.</div>
                 </div>
             </div>
         </div>
+
+        <!-- Blog Section -->
+        <article class="blog-section">
+            <div class="blog-content">
+                <h2 style="text-align: center;">A Developer's Guide to LLM Tokens and API Costs</h2>
+                <p>Understanding Large Language Model (LLM) tokens and their associated costs is essential for developers, businesses, and AI enthusiasts managing API expenses. Our free token calculator provides instant estimates for popular models including GPT-4.1, Claude 4, Gemini 2.5 Pro, and Llama 3.</p>
+                <h3>What Are LLM Tokens? A Complete Guide</h3>
+                <p>In artificial intelligence and natural language processing, a token represents the fundamental processing unit that Large Language Models use to understand and generate text. Unlike humans who read words and sentences, AI models break down text into tokens before processing.</p>
+                <p><strong>Key characteristics of tokens:</strong></p>
+                <ul>
+                    <li>Can represent whole words, word fragments, punctuation, or spaces</li>
+                    <li>Determined by model-specific tokenizers</li>
+                    <li>Directly impact API costs and processing time</li>
+                    <li>Vary between different AI model providers</li>
+                </ul>
+                <h4>Token Examples:</h4>
+                <p>The phrase "AI tokenization costs money" might tokenize as:</p>
+                <ul>
+                    <li><strong>GPT models:</strong> ["AI", " token", "ization", " costs", " money"]</li>
+                    <li><strong>Claude models:</strong> ["AI", "Ġtoken", "ization", "Ġcosts", "Ġmoney"]</li>
+                </ul>
+                <p>(The "Ġ" symbol indicates a leading space)</p>
+                <h3>How Our Token Calculator Works</h3>
+                <p>Since running actual tokenizers in browsers is computationally intensive, our calculator uses the industry-standard approximation:</p>
+                <div class="formula-box">Estimated Tokens = Character Count ÷ 4</div>
+                <p>This formula provides 85-90% accuracy for English text, making it ideal for:</p>
+                <ul>
+                    <li>Budget planning and cost estimation</li>
+                    <li>Prompt optimization</li>
+                    <li>Context window management</li>
+                    <li>API usage forecasting</li>
+                </ul>
+                <h3>Why Token Count Matters for AI Applications</h3>
+                <h4>1. API Costs</h4>
+                <p>Most providers charge separately for input and output tokens, with text models typically priced at $5 per 1M input tokens and $20 per 1M output tokens for premium models.</p>
+                <h4>2. Processing Speed</h4>
+                <p>Higher token counts result in slower response times and increased computational requirements.</p>
+                <h4>3. Context Limitations</h4>
+                <p>Every model has maximum context windows. Exceeding these limits causes API requests to fail.</p>
+                <h4>4. Performance Optimization</h4>
+                <p>Efficient token usage improves application responsiveness and user experience.</p>
+                <h3>2025 LLM Pricing Comparison: Latest API Costs</h3>
+                <p><em>Updated June 2025 - Prices subject to change</em></p>
+                <h4>Premium Models</h4>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>Model</th><th>Input Cost/1M Tokens</th><th>Output Cost/1M Tokens</th><th>Context Window</th></tr></thead>
+                        <tbody>
+                            <tr><td>GPT-4.1</td><td>$2.50</td><td>$10.00</td><td>1M tokens</td></tr>
+                            <tr><td>GPT-4o</td><td>$5.00</td><td>$20.00</td><td>128K tokens</td></tr>
+                            <tr><td>Claude 4 Opus</td><td>$15.00</td><td>$75.00</td><td>200K tokens</td></tr>
+                            <tr><td>Claude 4 Sonnet</td><td>$3.00</td><td>$15.00</td><td>200K tokens</td></tr>
+                            <tr><td>Gemini 2.5 Pro</td><td>$3.50</td><td>$14.00</td><td>1M tokens</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h4>Budget-Friendly Options</h4>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>Model</th><th>Input Cost/1M Tokens</th><th>Output Cost/1M Tokens</th><th>Context Window</th></tr></thead>
+                        <tbody>
+                            <tr><td>GPT-4.1 Mini</td><td>$0.15</td><td>$0.60</td><td>128K tokens</td></tr>
+                            <tr><td>GPT-3.5 Turbo</td><td>$0.50</td><td>$1.50</td><td>16K tokens</td></tr>
+                            <tr><td>Claude 3.5 Haiku</td><td>$0.25</td><td>$1.25</td><td>200K tokens</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Token Optimization Strategies</h3>
+                <h4>Prompt Engineering for Cost Efficiency</h4>
+                <ul>
+                    <li><strong>Remove unnecessary words</strong> - Eliminate filler words and redundant phrases</li>
+                    <li><strong>Use concise instructions</strong> - Replace verbose explanations with clear, direct commands</li>
+                    <li><strong>Implement conversation summarization</strong> - For chat applications, summarize conversation history instead of sending full transcripts</li>
+                    <li><strong>Strategic formatting</strong> - Use structured formats like JSON or bullet points when appropriate</li>
+                </ul>
+                <h4>Advanced Cost Management</h4>
+                <ul>
+                    <li><strong>Model selection</strong> - Choose the most cost-effective model for your specific use case</li>
+                    <li><strong>Batch processing</strong> - Group multiple requests to reduce overhead</li>
+                    <li><strong>Response length control</strong> - Set appropriate max_tokens parameters</li>
+                    <li><strong>Caching strategies</strong> - Store and reuse common responses</li>
+                </ul>
+                <h3>Frequently Asked Questions About LLM Tokens</h3>
+                <div class="faq-item">
+                    <div class="faq-question">How accurate is the 4-character-per-token estimation?</div>
+                    <div class="faq-answer"><p>The approximation works well for English text (85-90% accuracy) but varies for:</p><ul><li><strong>Code:</strong> Often requires more tokens due to special characters</li><li><strong>Other languages:</strong> May have different tokenization ratios</li><li><strong>Mathematical expressions:</strong> Can be token-intensive</li><li><strong>Special formatting:</strong> Markdown, HTML, and structured data affect token counts</li></ul></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Why do output tokens cost more than input tokens?</div>
+                    <div class="faq-answer">Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">Which models offer the best value for money?</div>
+                    <div class="faq-answer"><ul><li><strong>For general tasks:</strong> GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios.</li><li><strong>For complex reasoning:</strong> Claude 4 Sonnet offers superior capabilities at competitive pricing.</li><li><strong>For coding:</strong> Claude 4 Opus shows superior coding accuracy and may justify higher costs for development tasks.</li></ul></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">How can I reduce token usage without losing quality?</div>
+                    <div class="faq-answer"><ul><li>Use system prompts efficiently</li><li>Implement few-shot learning instead of extensive examples</li><li>Break complex tasks into smaller, focused requests</li><li>Utilize model-specific optimization techniques</li></ul></div>
+                </div>
+                <h3>Future of LLM Pricing and Tokens</h3>
+                <p>The AI industry continues evolving rapidly, with major providers engaging in pricing competition and new models regularly launching. Key trends include:</p>
+                <ul>
+                    <li><strong>Decreasing costs:</strong> Competition drives prices down for compute-intensive models</li>
+                    <li><strong>Specialized models:</strong> Task-specific models offering better cost-efficiency</li>
+                    <li><strong>Improved tokenization:</strong> More efficient token representations reducing overall usage</li>
+                    <li><strong>Flexible pricing:</strong> Usage-based and subscription models becoming more common</li>
+                </ul>
+                <h3>Ready to Optimize Your AI Costs?</h3>
+                <p>Start using our free calculator now to:</p>
+                <ul>
+                    <li>Estimate costs before implementing AI features</li>
+                    <li>Optimize prompts for better efficiency</li>
+                    <li>Compare models based on your specific use cases</li>
+                    <li>Plan budgets for AI integration projects</li>
+                </ul>
+                <p><strong>Try the calculator above and see how much you can save with smarter token management!</strong></p>
+                <div style="background-color: #f8fafc; padding: 20px; border-radius: 12px; margin-top: 30px;">
+                    <p style="font-size: 14px; color: #5a6c7d; margin: 0;"><strong>Disclaimer:</strong> This calculator provides estimates for planning purposes. Actual token counts may vary based on specific tokenizers and model implementations. Always consult official API documentation for the most current pricing and technical specifications.</p>
+                </div>
+            </div>
+        </article>
     </div>
 
-    <article class="blog-section">
-        <div class="blog-content">
-            <h2 style="text-align: center;">A Developer's Guide to LLM Tokens and API Costs</h2>
-            <p>
-                Understanding Large Language Model (LLM) tokens and their associated costs is essential for developers, businesses, and AI enthusiasts managing API expenses. Our free token calculator provides instant estimates for popular models including GPT-4.1, Claude 4, Gemini 2.5 Pro, and Llama 3.
-            </p>
-
-            <h3>What Are LLM Tokens? A Complete Guide</h3>
-            <p>
-                In artificial intelligence and natural language processing, a token represents the fundamental processing unit that Large Language Models use to understand and generate text. Unlike humans who read words and sentences, AI models break down text into tokens before processing.
-            </p>
-            <p><strong>Key characteristics of tokens:</strong></p>
-            <ul>
-                <li>Can represent whole words, word fragments, punctuation, or spaces</li>
-                <li>Determined by model-specific tokenizers</li>
-                <li>Directly impact API costs and processing time</li>
-                <li>Vary between different AI model providers</li>
-            </ul>
-
-            <h4>Token Examples:</h4>
-            <p>The phrase "AI tokenization costs money" might tokenize as:</p>
-            <ul>
-                <li><strong>GPT models:</strong> ["AI", " token", "ization", " costs", " money"]</li>
-                <li><strong>Claude models:</strong> ["AI", "Ġtoken", "ization", "Ġcosts", "Ġmoney"]</li>
-            </ul>
-            <p>(The "Ġ" symbol indicates a leading space)</p>
-
-            <h3>How Our Token Calculator Works</h3>
-            <p>
-                Since running actual tokenizers in browsers is computationally intensive, our calculator uses the industry-standard approximation:
-            </p>
-            <div class="formula-box">
-                Estimated Tokens = Character Count ÷ 4
-            </div>
-            <p>
-                This formula provides 85-90% accuracy for English text, making it ideal for:
-            </p>
-            <ul>
-                <li>Budget planning and cost estimation</li>
-                <li>Prompt optimization</li>
-                <li>Context window management</li>
-                <li>API usage forecasting</li>
-            </ul>
-
-            <h3>Why Token Count Matters for AI Applications</h3>
-            <h4>1. API Costs</h4>
-            <p>Most providers charge separately for input and output tokens, with text models typically priced at $5 per 1M input tokens and $20 per 1M output tokens for premium models.</p>
-            <h4>2. Processing Speed</h4>
-            <p>Higher token counts result in slower response times and increased computational requirements.</p>
-            <h4>3. Context Limitations</h4>
-            <p>Every model has maximum context windows. Exceeding these limits causes API requests to fail.</p>
-            <h4>4. Performance Optimization</h4>
-            <p>Efficient token usage improves application responsiveness and user experience.</p>
-
-            <h3>2025 LLM Pricing Comparison: Latest API Costs</h3>
-            <p><em>Updated June 2025 - Prices subject to change</em></p>
-            <h4>Premium Models</h4>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Model</th>
-                            <th>Input Cost/1M Tokens</th>
-                            <th>Output Cost/1M Tokens</th>
-                            <th>Context Window</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>GPT-4.1</td>
-                            <td>$2.50</td>
-                            <td>$10.00</td>
-                            <td>1M tokens</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-4o</td>
-                            <td>$5.00</td>
-                            <td>$20.00</td>
-                            <td>128K tokens</td>
-                        </tr>
-                        <tr>
-                            <td>Claude 4 Opus</td>
-                            <td>$15.00</td>
-                            <td>$75.00</td>
-                            <td>200K tokens</td>
-                        </tr>
-                        <tr>
-                            <td>Claude 4 Sonnet</td>
-                            <td>$3.00</td>
-                            <td>$15.00</td>
-                            <td>200K tokens</td>
-                        </tr>
-                        <tr>
-                            <td>Gemini 2.5 Pro</td>
-                            <td>$3.50</td>
-                            <td>$14.00</td>
-                            <td>1M tokens</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <h4>Budget-Friendly Options</h4>
-            <div style="overflow-x: auto;">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Model</th>
-                            <th>Input Cost/1M Tokens</th>
-                            <th>Output Cost/1M Tokens</th>
-                            <th>Context Window</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>GPT-4.1 Mini</td>
-                            <td>$0.15</td>
-                            <td>$0.60</td>
-                            <td>128K tokens</td>
-                        </tr>
-                        <tr>
-                            <td>GPT-3.5 Turbo</td>
-                            <td>$0.50</td>
-                            <td>$1.50</td>
-                            <td>16K tokens</td>
-                        </tr>
-                        <tr>
-                            <td>Claude 3.5 Haiku</td>
-                            <td>$0.25</td>
-                            <td>$1.25</td>
-                            <td>200K tokens</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <h3>Token Optimization Strategies</h3>
-            <h4>Prompt Engineering for Cost Efficiency</h4>
-            <ul>
-                <li><strong>Remove unnecessary words</strong> - Eliminate filler words and redundant phrases</li>
-                <li><strong>Use concise instructions</strong> - Replace verbose explanations with clear, direct commands</li>
-                <li><strong>Implement conversation summarization</strong> - For chat applications, summarize conversation history instead of sending full transcripts</li>
-                <li><strong>Strategic formatting</strong> - Use structured formats like JSON or bullet points when appropriate</li>
-            </ul>
-            <h4>Advanced Cost Management</h4>
-            <ul>
-                <li><strong>Model selection</strong> - Choose the most cost-effective model for your specific use case</li>
-                <li><strong>Batch processing</strong> - Group multiple requests to reduce overhead</li>
-                <li><strong>Response length control</strong> - Set appropriate max_tokens parameters</li>
-                <li><strong>Caching strategies</strong> - Store and reuse common responses</li>
-            </ul>
-
-            <h3>Frequently Asked Questions About LLM Tokens</h3>
-            <div class="faq-item">
-                <div class="faq-question">How accurate is the 4-character-per-token estimation?</div>
-                <div class="faq-answer">
-                    <p>The approximation works well for English text (85-90% accuracy) but varies for:</p>
-                    <ul>
-                        <li><strong>Code:</strong> Often requires more tokens due to special characters</li>
-                        <li><strong>Other languages:</strong> May have different tokenization ratios</li>
-                        <li><strong>Mathematical expressions:</strong> Can be token-intensive</li>
-                        <li><strong>Special formatting:</strong> Markdown, HTML, and structured data affect token counts</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Why do output tokens cost more than input tokens?</div>
-                <div class="faq-answer">
-                    Output generation requires significantly more computational resources than input processing, as models must predict and generate each token sequentially while maintaining context and coherence.
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">Which models offer the best value for money?</div>
-                <div class="faq-answer">
-                    <ul>
-                        <li><strong>For general tasks:</strong> GPT-4.1 Mini and Claude 3.5 Haiku provide excellent performance-to-cost ratios.</li>
-                        <li><strong>For complex reasoning:</strong> Claude 4 Sonnet offers superior capabilities at competitive pricing.</li>
-                        <li><strong>For coding:</strong> Claude 4 Opus shows superior coding accuracy and may justify higher costs for development tasks.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">How can I reduce token usage without losing quality?</div>
-                <div class="faq-answer">
-                    <ul>
-                        <li>Use system prompts efficiently</li>
-                        <li>Implement few-shot learning instead of extensive examples</li>
-                        <li>Break complex tasks into smaller, focused requests</li>
-                        <li>Utilize model-specific optimization techniques</li>
-                    </ul>
-                </div>
-            </div>
-
-            <h3>Future of LLM Pricing and Tokens</h3>
-            <p>
-                The AI industry continues evolving rapidly, with major providers engaging in pricing competition and new models regularly launching. Key trends include:
-            </p>
-            <ul>
-                <li><strong>Decreasing costs:</strong> Competition drives prices down for compute-intensive models</li>
-                <li><strong>Specialized models:</strong> Task-specific models offering better cost-efficiency</li>
-                <li><strong>Improved tokenization:</strong> More efficient token representations reducing overall usage</li>
-                <li><strong>Flexible pricing:</strong> Usage-based and subscription models becoming more common</li>
-            </ul>
-
-            <h3>Ready to Optimize Your AI Costs?</h3>
-            <p>Start using our free calculator now to:</p>
-            <ul>
-                <li>Estimate costs before implementing AI features</li>
-                <li>Optimize prompts for better efficiency</li>
-                <li>Compare models based on your specific use cases</li>
-                <li>Plan budgets for AI integration projects</li>
-            </ul>
-            <p><strong>Try the calculator above and see how much you can save with smarter token management!</strong></p>
-
-            <div style="background-color: #f8fafc; padding: 20px; border-radius: 12px; margin-top: 30px;">
-                <p style="font-size: 14px; color: #5a6c7d; margin: 0;">
-                    <strong>Disclaimer:</strong> This calculator provides estimates for planning purposes. Actual token counts may vary based on specific tokenizers and model implementations. Always consult official API documentation for the most current pricing and technical specifications.
-                </p>
-            </div>
-        </div>
-    </article>
-</div>
-<script>
-    'use strict';
-    let tokenUsageChart = null;
-
-    const MODELS = {
-        'gpt-4.1': { provider: 'OpenAI', name: 'GPT-4.1', inputCost: 2.50, outputCost: 10.00, contextWindow: 1000000 },
-        'gpt-4o': { provider: 'OpenAI', name: 'GPT-4o', inputCost: 5.00, outputCost: 20.00, contextWindow: 128000 },
-        'claude-4-opus': { provider: 'Claude', name: 'Claude 4 Opus', inputCost: 15.00, outputCost: 75.00, contextWindow: 200000 },
-        'claude-4-sonnet': { provider: 'Claude', name: 'Claude 4 Sonnet', inputCost: 3.00, outputCost: 15.00, contextWindow: 200000 },
-        'gemini-2.5-pro': { provider: 'Gemini', name: 'Gemini 2.5 Pro', inputCost: 3.50, outputCost: 14.00, contextWindow: 1000000 },
-        'gpt-4.1-mini': { provider: 'OpenAI', name: 'GPT-4.1 Mini', inputCost: 0.15, outputCost: 0.60, contextWindow: 128000 },
-        'gpt-3.5-turbo': { provider: 'OpenAI', name: 'GPT-3.5 Turbo', inputCost: 0.50, outputCost: 1.50, contextWindow: 16000 },
-        'claude-3.5-haiku': { provider: 'Claude', name: 'Claude 3.5 Haiku', inputCost: 0.25, outputCost: 1.25, contextWindow: 200000 },
-        'custom': { provider: 'Custom', name: 'Custom Model', inputCost: 0, outputCost: 0, contextWindow: 0 }
-    };
-
-    const textInput = document.getElementById('text-input');
-    const includeOutputCheckbox = document.getElementById('include-output');
-    const outputTextContainer = document.getElementById('output-text-container');
-    const outputTextInput = document.getElementById('output-text-input');
-    const modelSelect = document.getElementById('model-select');
-    const customInputCostEl = document.getElementById('custom-input-cost');
-    const customOutputCostEl = document.getElementById('custom-output-cost');
-    const compareModelsCheckbox = document.getElementById('compare-models');
-
-    const simpleResultsGrid = document.getElementById('simple-results-grid');
-    const detailedResultsSummary = document.getElementById('detailed-results-summary');
-
-    const charCountEl = document.getElementById('charCount');
-    const wordCountEl = document.getElementById('wordCount');
-    const tokenCountEl = document.getElementById('tokenCount');
-    const estimatedCostEl = document.getElementById('estimatedCost');
-
-    const inputCharCountEl = document.getElementById('inputCharCount');
-    const inputWordCountEl = document.getElementById('inputWordCount');
-    const inputTokenCountEl = document.getElementById('inputTokenCount');
-    const inputCostEl = document.getElementById('inputCost');
-    const outputSummary = document.getElementById('output-summary');
-    const outputCharCountEl = document.getElementById('outputCharCount');
-    const outputWordCountEl = document.getElementById('outputWordCount');
-    const outputTokenCountEl = document.getElementById('outputTokenCount');
-    const outputCostEl = document.getElementById('outputCost');
-    const totalTokenCountEl = document.getElementById('totalTokenCount');
-    const totalCostEl = document.getElementById('totalCost');
-
-    const tokenUsageContainer = document.getElementById('tokenUsageContainer');
-    const comparisonTable = document.getElementById('comparisonTable');
-    const comparisonTableBody = document.querySelector('#comparisonTableContent tbody');
-
-    let debounceTimer;
-
-    function populateModelSelector() {
-        modelSelect.innerHTML = '';
-        const customOption = document.createElement('option');
-        customOption.value = 'custom';
-        customOption.textContent = '⭐ Custom Model';
-        customOption.style.fontWeight = '600';
-        modelSelect.appendChild(customOption);
-
-        const providers = { 'Claude': [], 'OpenAI': [], 'Gemini': [] };
-        for (const key in MODELS) {
-            if (key === 'custom') continue;
-            const model = MODELS[key];
-            if (providers[model.provider]) {
-                providers[model.provider].push({ key, ...model });
-            }
-        }
-        ['Claude', 'OpenAI', 'Gemini'].forEach(providerName => {
-            const models = providers[providerName];
-            if (models.length > 0) {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = providerName;
-                models.forEach(model => {
-                    const option = document.createElement('option');
-                    option.value = model.key;
-                    option.textContent = model.name;
-                    optgroup.appendChild(option);
-                });
-                modelSelect.appendChild(optgroup);
-            }
-        });
-        modelSelect.value = 'claude-4-sonnet';
-    }
-
-    function updateCustomCostInputs() {
-        const selectedModelKey = modelSelect.value;
-        if (selectedModelKey !== 'custom') {
-            const model = MODELS[selectedModelKey];
-            if (model) {
-                customInputCostEl.value = model.inputCost.toFixed(2);
-                customOutputCostEl.value = model.outputCost.toFixed(2);
-            }
-        }
-        calculate();
-    }
-
-    function formatCurrency(num, maxDigits = 6) {
-        const options = {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-            maximumFractionDigits: num < 0.01 && num !== 0 ? maxDigits : 2,
-        };
-        return new Intl.NumberFormat('en-US', options).format(num);
-    }
-
-    function calculateText(text) {
-        const charCount = text.length;
-        const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-        const tokenCount = Math.ceil(charCount / 4);
-        return { charCount, wordCount, tokenCount };
-    }
-
-    function calculate() {
-        const inputCostPerMillion = parseFloat(customInputCostEl.value) || 0;
-        const outputCostPerMillion = parseFloat(customOutputCostEl.value) || 0;
-        const includeOutput = includeOutputCheckbox.checked;
-
-        const inputStats = calculateText(textInput.value);
-        const outputStats = includeOutput ? calculateText(outputTextInput.value) : { charCount: 0, wordCount: 0, tokenCount: 0 };
-
-        const inputCost = (inputStats.tokenCount / 1000000) * inputCostPerMillion;
-        const outputCost = (outputStats.tokenCount / 1000000) * outputCostPerMillion;
-
-        if (includeOutput) {
-            simpleResultsGrid.style.display = 'none';
-            detailedResultsSummary.style.display = 'block';
-
-            inputCharCountEl.textContent = inputStats.charCount.toLocaleString('en-US');
-            inputWordCountEl.textContent = inputStats.wordCount.toLocaleString('en-US');
-            inputTokenCountEl.textContent = inputStats.tokenCount.toLocaleString('en-US');
-            inputCostEl.textContent = formatCurrency(inputCost);
-
-            outputCharCountEl.textContent = outputStats.charCount.toLocaleString('en-US');
-            outputWordCountEl.textContent = outputStats.wordCount.toLocaleString('en-US');
-            outputTokenCountEl.textContent = outputStats.tokenCount.toLocaleString('en-US');
-            outputCostEl.textContent = formatCurrency(outputCost);
-
-            totalTokenCountEl.textContent = (inputStats.tokenCount + outputStats.tokenCount).toLocaleString('en-US');
-            totalCostEl.textContent = formatCurrency(inputCost + outputCost);
-        } else {
-            simpleResultsGrid.style.display = 'grid';
-            detailedResultsSummary.style.display = 'none';
-
-            charCountEl.textContent = inputStats.charCount.toLocaleString('en-US');
-            wordCountEl.textContent = inputStats.wordCount.toLocaleString('en-US');
-            tokenCountEl.textContent = inputStats.tokenCount.toLocaleString('en-US');
-            estimatedCostEl.textContent = formatCurrency(inputCost);
-        }
-
-        const selectedModelKey = modelSelect.value;
-        const selectedModel = MODELS[selectedModelKey];
-
-        updateTokenUsageBar(inputStats.tokenCount, selectedModel);
-        updateComparisonTable(inputStats.tokenCount, outputStats.tokenCount);
-    }
-
-function updateTokenUsageBar(tokenCount, model) {
-
-    if (!model || model.contextWindow <= 0 || modelSelect.value === 'custom') {
-        tokenUsageContainer.style.display = 'none';
-        if (tokenUsageChart) {
-            tokenUsageChart.destroy();
-            tokenUsageChart = null;
-        }
-        return;
-    }
-
-    tokenUsageContainer.style.display = 'block';
-    const rawPercentage = (tokenCount / model.contextWindow) * 100;
-    const remaining = Math.max(model.contextWindow - tokenCount, 0);
-
-    let warningText = '';
-    if (rawPercentage > 100) {
-        warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Exceeds token limit!</span>`;
-    } else if (rawPercentage > 90) {
-        warningText = ` <span style="color: #e74c3c; font-weight: 600;">⚠️ Near token limit!</span>`;
-    } else if (rawPercentage > 75) {
-        warningText = ` <span style="color: #f39c12; font-weight: 600;">⚠️ High token usage</span>`;
-    }
-
-    document.getElementById('tokenUsageStats').innerHTML = `Using <strong>${tokenCount.toLocaleString()}</strong> of <strong>${model.contextWindow.toLocaleString()}</strong> tokens (${rawPercentage.toFixed(1)}%) • <strong>${remaining.toLocaleString()}</strong> tokens remaining${warningText}`;
-
-    const ctx = document.getElementById('tokenUsageChart').getContext('2d');
-    const chartColor = rawPercentage > 100 ? '#e74c3c' : rawPercentage > 90 ? '#e74c3c' : rawPercentage > 75 ? '#f39c12' : '#4a90e2';
-
-    const chartData = tokenCount === 0 ? [0, model.contextWindow] : [tokenCount, remaining];
-
-    if (tokenUsageChart) {
-        tokenUsageChart.data.datasets[0].data = chartData;
-        tokenUsageChart.data.datasets[0].backgroundColor[0] = chartColor;
-        tokenUsageChart.update();
-    } else {
-        tokenUsageChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Used Tokens', 'Available Tokens'],
-                datasets: [{
-                    data: chartData,
-                    backgroundColor: [chartColor, '#e1e8ed'],
-                    borderWidth: 0,
-                    hoverOffset: 4
-                }]
-            },
-            options: {
-                responsive: true, 
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { 
-                        position: 'bottom', 
-                        labels: { 
-                            padding: 15, 
-                            font: { size: 12, family: "'Inter', sans-serif" }, 
-                            usePointStyle: true, 
-                            pointStyle: 'circle' 
-                        } 
-                    },
-                    tooltip: {
-                        callbacks: { 
-                            label: (c) => `${c.label}: ${c.parsed.toLocaleString()} (${((c.parsed / model.contextWindow) * 100).toFixed(1)}%)` 
-                        },
-                        backgroundColor: 'rgba(0,0,0,0.8)', 
-                        padding: 10, 
-                        cornerRadius: 6,
-                        titleFont: { size: 13, family: "'Inter', sans-serif" }, 
-                        bodyFont: { size: 12, family: "'Inter', sans-serif" }
-                    }
-                },
-                cutout: '65%', 
-                animation: { animateRotate: true, animateScale: false }
-            }
-        });
-    }
-}
-
-    function updateComparisonTable(inputTokenCount, outputTokenCount) {
-        if (compareModelsCheckbox.checked) {
-            comparisonTable.classList.add('show');
-            comparisonTableBody.innerHTML = '';
-
-            const allModels = Object.values(MODELS).filter(m => m.provider !== 'Custom').sort((a, b) => (a.inputCost + a.outputCost) - (b.inputCost + b.outputCost));
-
-            allModels.forEach(model => {
-                const input = (inputTokenCount / 1000000) * model.inputCost;
-                const output = (outputTokenCount / 1000000) * model.outputCost;
-                const total = input + output;
-
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${model.name}</td>
-                    <td>${formatCurrency(input)}</td>
-                    <td>${formatCurrency(output)}</td>
-                    <td><strong>${formatCurrency(total)}</strong></td>
-                `;
-                comparisonTableBody.appendChild(row);
-            });
-        } else {
-            comparisonTable.classList.remove('show');
-        }
-    }
-
-    function copyResults() {
-        const modelName = MODELS[modelSelect.value]?.name || 'Custom Model';
-        let textToCopy = `LLM Cost Estimation (${modelName}):\n----------------------------------\n`;
-
-        if (includeOutputCheckbox.checked) {
-            textToCopy += `INPUT:\n` +
-                          `  - Chars: ${inputCharCountEl.textContent}\n` +
-                          `  - Words: ${inputWordCountEl.textContent}\n` +
-                          `  - Tokens: ${inputTokenCountEl.textContent}\n` +
-                          `  - Cost: ${inputCostEl.textContent.trim()}\n\n` +
-                          `OUTPUT:\n` +
-                          `  - Chars: ${outputCharCountEl.textContent}\n` +
-                          `  - Words: ${outputWordCountEl.textContent}\n` +
-                          `  - Tokens: ${outputTokenCountEl.textContent}\n` +
-                          `  - Cost: ${outputCostEl.textContent.trim()}\n\n` +
-                          `TOTAL:\n` +
-                          `  - Tokens: ${totalTokenCountEl.textContent}\n` +
-                          `  - Cost: ${totalCostEl.textContent.trim()}\n`;
-        } else {
-            textToCopy += `Characters: ${charCountEl.textContent}\n` +
-                          `Words: ${wordCountEl.textContent}\n` +
-                          `Est. Tokens: ${tokenCountEl.textContent}\n` +
-                          `Est. Cost: ${estimatedCostEl.textContent.trim()}\n`;
-        }
-
-        textToCopy += `----------------------------------\nGenerated by Calcela.com`;
-
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            const copyButton = document.querySelector('.copy-button span');
-            copyButton.textContent = 'Copied!';
-            setTimeout(() => { copyButton.textContent = 'Copy'; }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy results: ', err);
-            alert('Failed to copy results.');
-        });
-    }
-
-    function debouncedCalculate() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(calculate, 150);
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        populateModelSelector();
-        updateCustomCostInputs();
-
-        textInput.addEventListener('input', debouncedCalculate);
-        outputTextInput.addEventListener('input', debouncedCalculate);
-        modelSelect.addEventListener('change', updateCustomCostInputs);
-        compareModelsCheckbox.addEventListener('change', calculate);
-
-        includeOutputCheckbox.addEventListener('change', () => {
-            const showOutput = includeOutputCheckbox.checked;
-            outputTextContainer.style.display = showOutput ? 'block' : 'none';
-            if (!showOutput) {
-                outputTextInput.value = '';
-            }
-            calculate();
-        });
-
-        document.getElementById('clearButton').addEventListener('click', () => {
-            textInput.value = '';
-            outputTextInput.value = '';
-            calculate();
-            textInput.focus();
-        });
-
-        customInputCostEl.addEventListener('input', () => { modelSelect.value = 'custom'; debouncedCalculate(); });
-        customOutputCostEl.addEventListener('input', () => { modelSelect.value = 'custom'; debouncedCalculate(); });
-    });
-
-    window.addEventListener('beforeunload', () => {
-        clearTimeout(debounceTimer);
-    });
-</script>
-
-<script>
-
-    window.copyResults = copyResults;
-</script>
-
+    <!-- Link to External JS Files -->
+    <script src="js/calc.js"></script>
+    <script src="js/calculators-database.js"></script>
+    <script src="js/header-search.js" defer></script>
+    <script src="js/llm-token-calculator.js" defer></script>
 </body>
 </html>
