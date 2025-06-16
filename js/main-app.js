@@ -71,8 +71,14 @@
         return temp.innerHTML;
     }
 
-    document.addEventListener('DOMContentLoaded', renderCalculators);
-
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.calculators) {
+        renderCalculators();
+    } else {
+        // Wait for calculators to load
+        window.addEventListener('load', renderCalculators);
+    }
+});
     (function() {
         const mainSearchInput = document.getElementById('mainSearchInput');
         const mainSearchResults = document.getElementById('mainSearchResults');
