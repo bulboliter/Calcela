@@ -5,7 +5,7 @@
     const ALLOWED_DOMAINS = [
         'calcela.com',
         'www.calcela.com',
-        'localhost' // Keep localhost for local development
+        'calcela.pages.dev' // Keep localhost for local development
     ];
     
     // Get current domain
