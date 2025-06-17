@@ -6,95 +6,133 @@
     <title>All Calculators - Calcela Directory</title>
     <meta name="description" content="Complete directory of all calculators available on Calcela. Browse our full collection of financial, AI, math, and specialized calculation tools.">
     <meta name="robots" content="index, follow">
-    
-    <link rel="canonical" href="https://calcela.com/all-calculators.html">
+
+    <link rel="canonical" href="https://calcela.com/directory.html">
     <link rel="icon" href="/wicon.png" type="image/png">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/legal.css">
+        <link rel="stylesheet" href="css/legal.css">
+
+
     
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        main {
+            flex: 1;
+        }
+
+
         .directory-container {
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 40px 20px;
         }
-        
         .directory-header {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 60px;
         }
-        
         .directory-title {
-            font-size: 2.5rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 48px;
             font-weight: 700;
-            margin-bottom: 1rem;
-            color: #1f2937;
+            color: #2c3e50;
+            margin-bottom: 16px;
         }
-        
         .directory-subtitle {
-            font-size: 1.25rem;
-            color: #6b7280;
+            font-size: 20px;
+            color: #5a6c7d;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        
-        .calculators-list {
-            display: grid;
-            gap: 1.5rem;
-        }
-        
-        .calculator-item {
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: all 0.2s;
-        }
-        
-        .calculator-item:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .calculator-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-        
-        .calculator-name {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2563eb;
-            margin-bottom: 0.5rem;
-        }
-        
-        .calculator-description {
-            color: #6b7280;
-            line-height: 1.6;
-            margin-bottom: 0.75rem;
-        }
-        
-        .calculator-url {
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-        
         .category-section {
-            margin-bottom: 3rem;
+            margin-bottom: 60px;
         }
-        
         .category-title {
-            font-size: 1.75rem;
+            font-size: 28px;
             font-weight: 600;
-            margin-bottom: 1.5rem;
             color: #374151;
-            border-bottom: 2px solid #e5e7eb;
-            padding-bottom: 0.5rem;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e1e8ed;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            width: 100%;
+        }
+        .calculator-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+        }
+        .calculator-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border-color: #4a90e2;
+        }
+        .calculator-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+        }
+        .calculator-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        .calculator-description {
+            font-size: 15px;
+            color: #5a6c7d;
+            line-height: 1.5;
+        }
+
+
+        @media (max-width: 768px) {
+            .header-container { height: 64px; }
+            .search-input { display: none; } 
+            .search-icon { display: none; }
+            .directory-header { margin-bottom: 40px; }
+            .directory-title { font-size: 36px; }
+            .directory-subtitle { font-size: 18px; }
+            .category-title { font-size: 24px; }
+            .calculator-grid { grid-template-columns: 1fr; gap: 16px; }
+            .calculator-card { padding: 24px; }
         }
     </style>
 </head>
@@ -122,34 +160,34 @@
     <main class="directory-container">
         <div class="directory-header">
             <h1 class="directory-title">All Calculators</h1>
-            <p class="directory-subtitle">Browse our complete collection of calculation tools</p>
+            <p class="directory-subtitle">Browse our complete collection of calculation tools.</p>
         </div>
 
-        <div class="category-section">
+        <section class="category-section">
             <h2 class="category-title">Financial Calculators</h2>
-            <div class="calculators-list">
-                <div class="calculator-item">
-                    <a href="simple-compound-interest-calculator" class="calculator-link">
-                        <h3 class="calculator-name">Simple & Compound Interest Calculator</h3>
-                        <p class="calculator-description">Calculate loan interest, savings growth, and investment returns. Perfect for financial planning, comparing investment options, and understanding how your money grows over time.</p>
-                        <span class="calculator-url">calcela.com/simple-compound-interest-calculator</span>
-                    </a>
-                </div>
+            <div class="calculator-grid">
+                <a href="simple-compound-interest-calculator.html" class="calculator-card">
+                    <div class="calculator-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    </div>
+                    <h3 class="calculator-title">Simple & Compound Interest</h3>
+                    <p class="calculator-description">Calculate loan interest, savings growth, and investment returns for financial planning.</p>
+                </a>
             </div>
-        </div>
+        </section>
 
-        <div class="category-section">
+        <section class="category-section">
             <h2 class="category-title">AI & Technology Calculators</h2>
-            <div class="calculators-list">
-                <div class="calculator-item">
-                    <a href="llm-token-calculator" class="calculator-link">
-                        <h3 class="calculator-name">LLM Token Calculator & Cost Estimator</h3>
-                        <p class="calculator-description">Calculate token usage and API costs for OpenAI, Anthropic, and other LLM providers. Estimate costs for GPT-4, Claude, and other AI models before making API calls.</p>
-                        <span class="calculator-url">calcela.com/llm-token-calculator</span>
-                    </a>
-                </div>
+            <div class="calculator-grid">
+                <a href="llm-token-calculator.html" class="calculator-card">
+                    <div class="calculator-icon">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 8-2 4 2 4 2-4-2-4z"></path><path d="M10 12h4"></path><path d="M21 12a9 9 0 1 1-9-9c2.5 0 4.7.9 6.4 2.3"></path><path d="M13.5 2.6c1.9 1.1 3.4 2.9 4.3 5.1"></path></svg>
+                    </div>
+                    <h3 class="calculator-title">LLM Token & Cost Estimator</h3>
+                    <p class="calculator-description">Estimate token usage and API costs for models like GPT-4, Claude, and more.</p>
+                </a>
             </div>
-        </div>
+        </section>
     </main>
 
     <footer class="site-footer">
@@ -162,8 +200,8 @@
             © 2025 Calcela. All Rights Reserved.
         </div>
     </footer>
-</body>
-</html>
 
     <script src="js/calculators-database.js"></script>
     <script src="js/header-search.js"></script>
+</body>
+</html>
