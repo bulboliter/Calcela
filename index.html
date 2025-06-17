@@ -120,6 +120,24 @@
             © 2025 Calcela. All Rights Reserved.
         </div>
     </footer>
+
+    <script>
+window.addEventListener("DOMContentLoaded", () => {
+  const container = document.createElement("div");
+  container.id = "hidden-seo-links";
+  container.style.position = "absolute";
+  container.style.left = "-9999px";
+  container.style.top = "-9999px";
+  window.calculators.forEach(calc => {
+    const link = document.createElement("a");
+    link.href = calc.url;
+    link.textContent = calc.title;
+    container.appendChild(link);
+  });
+  document.body.appendChild(container);
+});
+</script>
+
     <!-- 
       CORRECT SCRIPT LOADING ORDER
       The order here is critical for the page to function correctly.
@@ -129,22 +147,8 @@
     <script src="js/calc.js"></script>
     
     <!-- 2. The Data Source (MUST load before any script that uses it) -->
-<script>
-window.calculators = [
-    {
-        title: "Simple & Compound Interest Calculator",
-        description: "Calculate loan interest, savings growth, and investment returns.",
-        url: "simple-compound-interest-calculator.html",
-        keywords: ["interest", "compound", "simple", "investment", "savings", "finance", "roi"]
-    },
-    {
-        title: "LLM Token Calculator & Cost Estimator",
-        description: "Calculate token usage and API costs for OpenAI, Anthropic, and other LLM providers.",
-        url: "llm-token-calculator.html",
-        keywords: ["llm", "tokens", "cost", "api", "openai", "anthropic", "gpt", "claude", "pricing", "ai", "estimate"]
-    }
-];
-</script>    
+    <script src="js/calculators-database.js"></script>
+    
     <!-- 3. Application Logic (These scripts depend on the database) -->
     <script src="js/header-search.js" defer></script>
     <script src="js/main-app.js" defer></script>
