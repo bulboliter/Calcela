@@ -110,8 +110,7 @@
             </a>
         </div>
     </section>
-    
-    <link rel="stylesheet" href="css/legal.css">
+  <link rel="stylesheet" href="css/legal.css">
     <footer class="site-footer">
         <div class="footer-links">
             <a href="terms.html">Terms of Service</a>
@@ -123,46 +122,36 @@
     </footer>
 
     <!-- =================================================================== -->
-    <!-- =================== NEW SEO SCRIPT INTEGRATION ==================== -->
+    <!-- =================== CORRECTED SEO SCRIPT ORDER ==================== -->
     <!-- =================================================================== -->
 
-    <!-- 1. SEO Link Container: Hidden from users, visible to crawlers -->
+    <!-- 1. SEO Link Container -->
     <div id="seo-links" style="position:absolute; left:-9999px; top:-9999px;" aria-hidden="true"></div>
-
-    <!-- 2. Script to generate SEO links from the calculator database -->
+    
+    <!-- 2. The Data Source (MUST load before any script that uses it) -->
+    <script src="js/calculators-database.js"></script>
+    
+    <!-- 3. The SEO script that USES the data -->
     <script>
       window.addEventListener("DOMContentLoaded", () => {
         const container = document.getElementById("seo-links");
-        // Ensure the database and container exist before running
         if (window.calculators && container) {
-          // Loop through each calculator in the database
           window.calculators.forEach(calc => {
             const link = document.createElement("a");
             link.href = calc.url;
             link.textContent = calc.title;
             container.appendChild(link);
           });
+        } else {
+          console.error("SEO Links could not be generated. Check if calculators-database.js is loaded and correct.");
         }
       });
     </script>
 
-    <!-- =================================================================== -->
-    <!-- ================= END OF NEW SEO SCRIPT INTEGRATION ================ -->
-    <!-- =================================================================== -->
-
-    <!-- 
-      CORRECT SCRIPT LOADING ORDER
-      The order here is critical for the page to function correctly.
-    -->
-    
-    <!-- 1. The Security Guard (Optional, but must be first if used) -->
+    <!-- 4. Other scripts that also depend on the database -->
     <script src="js/calc.js"></script>
-    
-    <!-- 2. The Data Source (MUST load before any script that uses it) -->
-    <script src="js/calculators-database.js"></script>
-    
-    <!-- 3. Application Logic (These scripts depend on the database) -->
     <script src="js/header-search.js" defer></script>
     <script src="js/main-app.js" defer></script>
+
 </body>
 </html>
