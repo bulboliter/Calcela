@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
-      <loc>https://www.calcela.com</loc>
+      <loc>https://calcela.com</loc>
       <lastmod>2025-06-18</lastmod>
       <changefreq>weekly</changefreq>
       <priority>1.0</priority>
    </url>
    <url>
-      <loc>https://www.calcela.com/llm-token-calculator</loc>
+      <loc>https://calcela.com/llm-token-calculator</loc>
       <lastmod>2025-06-18</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://www.calcela.com/simple-compound-interest-calculator</loc>
+      <loc>https://calcela.com/simple-compound-interest-calculator</loc>
       <lastmod>2025-06-14</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
    <url>
-      <loc>https://www.calcela.com/directory</loc>
+      <loc>https://calcela.com/directory</loc>
       <lastmod>2025-06-18</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.1</priority>
    </url>
    <url>
-      <loc>https://www.calcela.com/privacy</loc>
+      <loc>https://calcela.com/privacy</loc>
       <lastmod>2025-06-18</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.1</priority>
    </url>
    <url>
-      <loc>https://www.calcela.com/terms</loc>
+      <loc>https://calcela.com/terms</loc>
       <lastmod>2025-06-18</lastmod>
       <changefreq>weekly</changefreq>
       <priority>0.1</priority>
