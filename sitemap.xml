@@ -36,4 +36,10 @@
       <changefreq>weekly</changefreq>
       <priority>0.1</priority>
    </url>
+      <url>
+      <loc>https://calcela.com/wordcounter</loc>
+      <lastmod>2025-06-22</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+   </url>
 </urlset>
