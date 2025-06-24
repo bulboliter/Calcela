@@ -42,4 +42,11 @@
       <changefreq>weekly</changefreq>
       <priority>0.8</priority>
    </url>
+      </url>
+      <url>
+      <loc>https://calcela.com/about</loc>
+      <lastmod>2025-06-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.3</priority>
+   </url>
 </urlset>
