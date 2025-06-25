@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI Calculator - Calcela</title>
+    <meta name="description" content="Free BMI calculator with instant results. Calculate your Body Mass Index, understand your weight category, and get personalized health insights. Supports both metric and imperial units.">
+    <meta name="keywords" content="BMI calculator, body mass index, weight calculator, health calculator, BMI chart, obesity calculator, healthy weight, BMI ranges, metric BMI, imperial BMI">
+    <meta name="author" content="Calcela">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="BMI Calculator - Body Mass Index Calculator | Calcela">
+    <meta property="og:description" content="Calculate your BMI instantly. Free Body Mass Index calculator with health insights, BMI categories, and personalized recommendations.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://calcela.com/bmi-calculator">
+    <meta property="og:image" content="https://calcela.com/preview.png">
+    <meta property="og:site_name" content="Calcela">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BMI Calculator - Body Mass Index Calculator | Calcela">
+    <meta name="twitter:description" content="Free BMI calculator with instant results. Calculate Body Mass Index and understand your weight category.">
+    <meta name="twitter:image" content="https://calcela.com/preview-bmi.png">
+
+    <link rel="icon" href="/wicon.png" type="image/png">
+    <link rel="canonical" href="https://calcela.com/bmi-calculator">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "BMI Calculator - Body Mass Index Calculator",
+        "description": "A free online BMI calculator to determine Body Mass Index. Supports metric and imperial units with instant results, health categories, and personalized insights.",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "All",
+        "url": "https://calcela.com/bmi-calculator",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "BMI calculation",
+            "Metric and imperial units",
+            "Weight category classification",
+            "Visual BMI scale",
+            "Health recommendations",
+            "BMI chart reference",
+            "Mobile responsive",
+            "Instant results"
+        ]
+    }
+    </script>
+
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+            "@type": "Question",
+            "name": "What is a healthy BMI range?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A healthy BMI range is 18.5 to 24.9. Below 18.5 is considered underweight, 25-29.9 is overweight, and 30 or above is obese according to WHO guidelines."
+            }
+        },{
+            "@type": "Question",
+            "name": "Is BMI accurate for everyone?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "BMI is a useful screening tool but has limitations. It doesn't distinguish between muscle and fat mass, so athletes may have high BMI despite being healthy. It's also less accurate for elderly people, pregnant women, and children."
+            }
+        },{
+            "@type": "Question",
+            "name": "How is BMI calculated?",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "BMI is calculated by dividing weight in kilograms by height in meters squared (kg/m²). For imperial units, multiply weight in pounds by 703 and divide by height in inches squared."
+            }
+        }]
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/bmi-calculator.css">
+</head>
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "80df5c09098340d0b9309ba085b48ab1"}'></script>
+
+<body>
+    
+    <header class="universal-header" role="banner">
+        <div class="header-container">
+            <div class="header-left">
+                <a href="/index" class="brand-name" aria-label="CALCELA - Home">CALCELA</a>
+                <div class="nav-divider" aria-hidden="true"></div>
+                <a href="/index" class="home-button" aria-label="Go to home page">
+                    <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+            </div>
+            <div class="search-wrapper">
+                <div class="search-container" role="search">
+                    <input type="search" class="search-input" placeholder="Search calculators..." id="calculatorSearch" aria-label="Search for calculators" autocomplete="off">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg>
+                    <div class="search-results" id="searchResults" role="listbox"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        
+        <div class="calculator-container">
+            <div class="main-heading">
+                <h1>BMI Calculator</h1>
+                <p>Calculate your Body Mass Index and understand your weight category with personalized health insights designed for adults 18 and older.</p>
+            </div>
+
+            
+            <div class="unit-toggle">
+                <button class="unit-btn active" data-unit="metric">Metric</button>
+                <button class="unit-btn" data-unit="imperial">Imperial</button>
+            </div>
+
+            
+            <div class="calculator-inputs">
+                
+                <div class="input-group metric-inputs">
+                    <div class="input-field">
+                        <label for="height-cm">Height</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="height-cm" value="170" min="50" max="300" step="1">
+                            <span class="unit-label">cm</span>
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label for="weight-kg">Weight</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="weight-kg" value="70" min="10" max="500" step="0.1">
+                            <span class="unit-label">kg</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="input-group imperial-inputs hidden">
+                    <div class="input-field">
+                        <label>Height</label>
+                        <div class="height-imperial">
+                            <div class="input-wrapper">
+                                <input type="number" id="height-ft" value="5" min="1" max="9" step="1">
+                                <span class="unit-label">ft</span>
+                            </div>
+                            <div class="input-wrapper">
+                                <input type="number" id="height-in" value="7" min="0" max="11" step="1">
+                                <span class="unit-label">in</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-field">
+                        <label for="weight-lb">Weight</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="weight-lb" value="154" min="20" max="1000" step="0.1">
+                            <span class="unit-label">lbs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="calculate-btn" class="calculate-button">Calculate BMI</button>
+                <button id="clear-btn" class="clear-button">Clear</button>
+            </div>
+
+            
+            <div id="results-section" class="results-section hidden">
+                <div class="bmi-result">
+                    <h2>Your BMI</h2>
+                    <div class="bmi-value" id="bmi-value">--</div>
+                    <div class="bmi-category" id="bmi-category">--</div>
+                </div>
+
+                
+                <div class="bmi-scale">
+                    <div class="scale-bar">
+                        <div class="scale-segment underweight"></div>
+                        <div class="scale-segment normal"></div>
+                        <div class="scale-segment overweight"></div>
+                        <div class="scale-segment obese"></div>
+                    </div>
+                    <div class="scale-pointer" id="scale-pointer"></div>
+                    <div class="scale-labels">
+                        <span>Underweight<br>&lt;18.5</span>
+                        <span>Normal<br>18.5-24.9</span>
+                        <span>Overweight<br>25-29.9</span>
+                        <span>Obese<br>≥30</span>
+                    </div>
+                </div>
+
+                
+                <div class="bmi-interpretation">
+                    <h3>What This Means</h3>
+                    <p id="interpretation-text"></p>
+                    <div class="health-tips" id="health-tips"></div>
+                </div>
+
+                
+                <div class="bmi-chart-reference">
+                    <h3>BMI Categories</h3>
+                    <table class="bmi-table">
+                        <thead>
+                            <tr>
+                                <th>BMI Range</th>
+                                <th>Category</th>
+                                <th>Health Risk</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="underweight-row">
+                                <td>&lt; 18.5</td>
+                                <td>Underweight</td>
+                                <td>Possible nutritional deficiency</td>
+                            </tr>
+                            <tr class="normal-row">
+                                <td>18.5 - 24.9</td>
+                                <td>Normal weight</td>
+                                <td>Low risk</td>
+                            </tr>
+                            <tr class="overweight-row">
+                                <td>25.0 - 29.9</td>
+                                <td>Overweight</td>
+                                <td>Increased risk</td>
+                            </tr>
+                            <tr class="obese-row">
+                                <td>≥ 30.0</td>
+                                <td>Obese</td>
+                                <td>High risk</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+                <div class="additional-info">
+                    <div class="info-card">
+                        <h4>Ideal Weight Range</h4>
+                        <p id="ideal-weight-range">--</p>
+                    </div>
+                    <div class="info-card">
+                        <h4>BMI Prime</h4>
+                        <p id="bmi-prime">--</p>
+                        <small>Ratio of your BMI to 25</small>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="disclaimer">
+                <h3>Important Note</h3>
+                <p>BMI is a screening tool and not a diagnostic measure. It doesn't account for muscle mass, bone density, overall body composition, or racial and sex differences. Athletes and people with muscular builds may have high BMI despite having low body fat. Consult healthcare professionals for comprehensive health assessments.</p>
+            </div>
+        </div>
+
+        
+        <article class="blog-section">
+            <div class="blog-content">
+                <h2>Understanding BMI: Your Body Mass Index Guide</h2>
+                <p>Body Mass Index (BMI) is a widely used <strong>health screening tool</strong> that helps assess whether your weight falls within a healthy range for your height. Whether you need a BMI calculator for women or BMI calculator for men. Our BMI calculator provides <strong>instant results</strong> along with personalized insights to help you understand your health status better.</p>
+
+                <h3>What is BMI?</h3>
+                <p>BMI is a simple calculation using your height and weight. The formula is:</p>
+                <ul>
+                    <li><strong>Metric:</strong> BMI = weight (kg) ÷ height² (m²)</li>
+                    <li><strong>Imperial:</strong> BMI = (weight (lbs) × 703) ÷ height² (inches²)</li>
+                </ul>
+                <p>This measurement provides a <strong>general indicator</strong> of whether you're at a healthy weight, though it's important to understand its limitations.</p>
+
+                <h3>BMI Categories Explained</h3>
+                <p>The World Health Organization (WHO) defines these BMI ranges:</p>
+                <ul>
+                    <li><strong>Underweight:</strong> BMI less than 18.5</li>
+                    <li><strong>Normal weight:</strong> BMI 18.5 to 24.9</li>
+                    <li><strong>Overweight:</strong> BMI 25 to 29.9</li>
+                    <li><strong>Obese Class I:</strong> BMI 30 to 34.9</li>
+                    <li><strong>Obese Class II:</strong> BMI 35 to 39.9</li>
+                    <li><strong>Obese Class III:</strong> BMI 40 or greater</li>
+                </ul>
+
+                <h3>Why Calculate Your BMI?</h3>
+                <p>Regular BMI monitoring helps you:</p>
+                <ul>
+                    <li>Track weight changes over time</li>
+                    <li>Identify potential health risks early</li>
+                    <li>Set realistic health and fitness goals</li>
+                    <li>Make informed decisions about diet and exercise</li>
+                    <li>Prepare for medical consultations</li>
+                </ul>
+
+                <h3>Health Implications by BMI Category</h3>
+                <p><strong>Underweight (BMI < 18.5)</strong></p>
+                <ul>
+                    <li>May indicate malnutrition or underlying health conditions</li>
+                    <li>Increased risk of osteoporosis and fractures</li>
+                    <li>Potential fertility issues</li>
+                    <li>Weakened immune system</li>
+                </ul>
+
+                <p><strong>Normal Weight (BMI 18.5-24.9)</strong></p>
+                <ul>
+                    <li>Generally associated with lowest health risks</li>
+                    <li>Better energy levels and physical mobility</li>
+                    <li>Lower risk of chronic diseases</li>
+                    <li>Optimal range for most adults</li>
+                </ul>
+
+                <p><strong>Overweight (BMI 25-29.9)</strong></p>
+                <ul>
+                    <li>Increased risk of cardiovascular disease</li>
+                    <li>Higher likelihood of developing type 2 diabetes</li>
+                    <li>Elevated blood pressure risk</li>
+                    <li>May experience joint problems</li>
+                </ul>
+
+                <p><strong>Obese (BMI ≥ 30)</strong></p>
+                <ul>
+                    <li>Significantly increased risk of heart disease</li>
+                    <li>Higher risk of stroke and certain cancers</li>
+                    <li>Sleep apnea and breathing problems</li>
+                    <li>Metabolic syndrome complications</li>
+                </ul>
+
+                <h3>BMI Limitations to Consider</h3>
+                <p>While BMI is useful, it has important limitations:</p>
+                <ul>
+                    <li><strong>Muscle vs. Fat:</strong> BMI doesn't distinguish between muscle and fat mass. Athletes may have high BMI despite low body fat.</li>
+                    <li><strong>Body Composition:</strong> Doesn't account for bone density or overall body composition</li>
+                    <li><strong>Age Factors:</strong> Less accurate for elderly people who may have lost muscle mass</li>
+                    <li><strong>Ethnicity:</strong> Different ethnic groups may have varying health risks at the same BMI</li>
+                </ul>
+
+                <h3>Beyond BMI: Other Health Indicators</h3>
+                <p>For a complete health picture, consider these additional measurements:</p>
+                <ul>
+                    <li><strong>Waist Circumference:</strong> Indicates abdominal fat distribution</li>
+                    <li><strong>Waist-to-Hip Ratio:</strong> Assesses body fat distribution</li>
+                    <li><strong>Body Fat Percentage:</strong> Direct measurement of fat vs. lean mass</li>
+                    <li><strong>Blood Pressure:</strong> Cardiovascular health indicator</li>
+                    <li><strong>Blood Tests:</strong> Cholesterol, glucose, and other markers</li>
+                </ul>
+
+                <h3>Using Our BMI Calculator Effectively</h3>
+                <p>Our calculator offers several features to help you:</p>
+                <ol>
+                    <li><strong>Dual Unit Support:</strong> Switch between metric and imperial units easily</li>
+                    <li><strong>Visual BMI Scale:</strong> See where you fall on the BMI spectrum</li>
+                    <li><strong>Instant Results:</strong> Get your BMI calculation immediately</li>
+                    <li><strong>Health Insights:</strong> Receive category-specific health information</li>
+                    <li><strong>Ideal Weight Range:</strong> Discover your healthy weight target</li>
+                </ol>
+
+                <h3>Tips for Maintaining a Healthy BMI</h3>
+                <p><strong>For Weight Gain (if underweight):</strong></p>
+                <ul>
+                    <li>Increase caloric intake with nutrient-dense foods</li>
+                    <li>Add strength training to build muscle mass</li>
+                    <li>Eat frequent, balanced meals</li>
+                    <li>Consider consulting a nutritionist</li>
+                </ul>
+
+                <p><strong>For Weight Maintenance:</strong></p>
+                <ul>
+                    <li>Balance calorie intake with physical activity</li>
+                    <li>Maintain regular exercise routine</li>
+                    <li>Monitor portion sizes</li>
+                    <li>Stay hydrated and get adequate sleep</li>
+                </ul>
+
+                <p><strong>For Weight Loss (if overweight/obese):</strong></p>
+                <ul>
+                    <li>Create a moderate caloric deficit</li>
+                    <li>Combine cardio and strength training</li>
+                    <li>Focus on whole, unprocessed foods</li>
+                    <li>Set realistic, sustainable goals</li>
+                </ul>
+
+                <h3>When to Consult Healthcare Professionals</h3>
+                <p>Seek medical advice if:</p>
+                <ul>
+                    <li>Your BMI indicates you're significantly underweight or obese</li>
+                    <li>You experience unexplained weight changes</li>
+                    <li>You have concerns about your health despite normal BMI</li>
+                    <li>You're planning major dietary or exercise changes</li>
+                    <li>You have existing health conditions</li>
+                </ul>
+
+                <h3>BMI for Special Populations</h3>
+                <p><strong>Children and Teens:</strong> BMI calculations differ for young people and use age and gender-specific percentiles.</p>
+                <p><strong>Pregnant Women:</strong> BMI calculations aren't applicable during pregnancy; consult healthcare providers for appropriate weight gain guidelines.</p>
+                <p><strong>Elderly Adults:</strong> May benefit from slightly higher BMI (23-30) for better health outcomes.</p>
+                <p><strong>Athletes:</strong> Should consider body composition analysis alongside BMI for accurate assessment.</p>
+
+                <h3>Start Your Health Journey Today</h3>
+                <p>Understanding your BMI is the first step toward better health awareness. Use our <strong>free BMI calculator</strong> to get instant results and personalized insights. Remember, BMI is just one tool in your health toolkit – combine it with other healthy lifestyle choices for optimal wellbeing.</p>
+                <p>Whether you're tracking fitness progress, preparing for a health checkup, or simply curious about your health status, our BMI calculator provides <strong>easy-to-understand results</strong> for you to make informed decisions about your health.</p>
+            </div>
+        </article>
+    </div>
+
+    <link rel="stylesheet" href="css/legal.css">
+    <footer class="site-footer">
+        <div class="footer-links">
+            <a href="about">About & Contact</a>
+            <a href="terms">Terms of Service</a>
+            <a href="privacy">Privacy Policy</a>
+            <a href="directory">All Calculators</a>
+        </div>
+        <div class="footer-copyright">
+            © 2025 Calcela. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script src="js/calc.js"></script>
+    <script src="js/calculators-database.js"></script>
+    <script src="js/header-search.js" defer></script>
+    <script src="js/bmi-calculator.js" defer></script>
+</body>
+</html>
