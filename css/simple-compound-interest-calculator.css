@@ -9,7 +9,7 @@ body {
     background-color: #f5f7fa;
     min-height: 100vh;
     padding: 20px;
-    padding-top: 92px !important; /* 72px header + 20px spacing */
+    padding-top: 92px !important; 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 1.6;
@@ -17,19 +17,21 @@ body {
 
 @media (max-width: 768px) {
     body {
-        padding-top: 84px !important; /* 64px header + 20px spacing */
+        padding-top: 84px !important;
     }
 }
 
 @media (max-width: 480px) {
     body {
-        padding-top: 80px !important; /* 60px header + 20px spacing */
+        padding-top: 80px !important;
     }
 }
 
 .main-container {
-    max-width: 1200px;
-    margin: 0 auto;
+    flex: 1 0 auto; 
+    width: 100%;    
+    background-color: #f8f9fa;
+    padding: 40px 20px;
 }
 
 .calculator-container {
@@ -241,8 +243,9 @@ select:focus {
     padding: 24px;
     background-color: #f8fafc;
     border-radius: 12px;
-    display: none;
     height: fit-content;
+    border: 1px solid #e1e8ed;
+    transition: box-shadow 0.3s ease;
 }
 
 @media (max-width: 991px) {
@@ -251,9 +254,8 @@ select:focus {
     }
 }
 
-.results.show {
-    display: block;
-    animation: fadeIn 0.3s ease;
+.results.calculated {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 @keyframes fadeIn {
@@ -316,12 +318,43 @@ select:focus {
 .chart-wrapper {
     max-width: 280px;
     margin: 0 auto;
+    position: relative;
 }
 
 .line-chart-wrapper {
     margin-top: 20px;
     height: 250px;
     position: relative;
+}
+
+.chart-placeholder {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #5a6c7d;
+    font-size: 14px;
+    padding: 20px;
+    border: 2px dashed #e1e8ed;
+    border-radius: 8px;
+    background-color: #fafbfc;
+}
+
+.placeholder-active canvas {
+    display: none;
+}
+
+.placeholder-active .chart-placeholder {
+    display: flex;
+}
+
+.placeholder-active .tap-hint {
+    display: none;
 }
 
 @media (min-width: 992px) {
@@ -351,12 +384,73 @@ select:focus {
     opacity: 0.8;
 }
 
+.calculator-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 10px;
+    margin-bottom: 24px;
+}
+
+.calculator-actions button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn-secondary {
+    background-color: #e1e8ed;
+    color: #5a6c7d;
+    border-color: #e1e8ed;
+}
+
+.btn-secondary:hover {
+    background-color: #d3dce3;
+    border-color: #d3dce3;
+}
+
+.btn-tertiary {
+    background-color: transparent;
+    color: #5a6c7d;
+    border-color: #e1e8ed;
+}
+
+.btn-tertiary:hover {
+    background-color: #f8fafc;
+    border-color: #d3dce3;
+}
+
 .interactive-formula {
+    display: none;
     margin: 20px 0;
     padding: 20px;
     background-color: #f8fafc;
     border-radius: 12px;
     border: 2px solid #e1e8ed;
+    animation: fadeIn 0.3s ease;
+}
+
+.interactive-formula.show {
+    display: block;
+}
+
+.interactive-formula h3 {
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+    text-align: center;
+}
+
+.formula-controls {
+    margin-bottom: 20px;
+}
+
+.formula-controls .toggle-group {
+    margin-bottom: 0;
 }
 
 .formula-input-display {
@@ -685,4 +779,16 @@ select:focus {
     .realtime-notice {
         display: none;
     }
+}
+
+.btn-secondary.btn-danger {
+    background-color: transparent;
+    color: #6c757d;
+    border: 2px solid #dee2e6;
+}
+
+.btn-secondary.btn-danger:hover {
+    background-color: #f8f9fa;
+    border-color: #ced4da;
+    color: #495057;
 }
