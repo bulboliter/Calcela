@@ -127,13 +127,13 @@
             <div class="calculator-inputs">
                 <div class="input-group">
                     <label for="principal">Principal Amount ($)</label>
-                    <input type="text" id="principal" placeholder="e.g. 10,000" value="10,000" aria-label="Principal amount in dollars" inputmode="decimal">
+                    <input type="text" id="principal" value = "10,000" aria-label="Principal amount in dollars" inputmode="decimal">
                     <div class="error-message" id="principal-error">Please enter a valid amount</div>
                 </div>
 
                 <div class="input-group">
                     <label for="rate">Annual Interest Rate (%)</label>
-                    <input type="text" id="rate" placeholder="e.g. 5.5" value="5" aria-label="Annual interest rate percentage" inputmode="decimal">
+                    <input type="text" id="rate" value = "5" aria-label="Annual interest rate percentage" inputmode="decimal">
                     <div class="error-message" id="rate-error">Please enter a rate between 0 and 100</div>
                 </div>
 
@@ -141,7 +141,7 @@
                     <label>Time Period</label>
                     <div class="time-period-group">
                         <div class="time-input">
-                            <input type="text" id="time" placeholder="e.g. 2" value="10" aria-label="Time period" inputmode="decimal">
+                            <input type="text" id="time" value="10" aria-label="Time period" inputmode="decimal">
                         </div>
                         <div class="time-toggle">
                             <select id="timeUnit" aria-label="Time unit">
@@ -182,8 +182,25 @@
                     </select>
                 </div>
 
-                <div class="interactive-formula" id="interactiveFormula" style="display: none;">
-                    <h3 style="font-size: 16px; margin-bottom: 15px; text-align: center;">Formula Breakdown</h3>
+                <div class="calculator-actions">
+                    <button id="toggleFormulaBtn" class="btn-secondary">Show Formula Breakdown</button>
+                    <button id="clearButton" class="btn-secondary btn-danger">Clear</button>
+                </div>
+
+                <div class="interactive-formula" id="interactiveFormula">
+                    <div class="formula-controls">
+                        <h3>Formula Breakdown</h3>
+                        <div class="toggle-group" role="radiogroup" aria-label="Formula display type">
+                            <div class="toggle-option">
+                                <input type="radio" id="formulaTotal" name="formulaType" value="total" checked>
+                                <label for="formulaTotal">Total Amount</label>
+                            </div>
+                            <div class="toggle-option">
+                                <input type="radio" id="formulaInterest" name="formulaType" value="interest">
+                                <label for="formulaInterest">Interest Only</label>
+                            </div>
+                        </div>
+                    </div>
                     <div id="formulaDisplay"></div>
                 </div>
 
@@ -193,22 +210,26 @@
                 <div class="results" id="results" role="region" aria-label="Calculation results">
                     <div class="result-item">
                         <span class="result-label">Interest Earned</span>
-                        <span class="result-value" id="interestEarned" aria-live="polite">$0.00</span>
+                        <span class="result-value" id="interestEarned" aria-live="polite">$ --</span>
                     </div>
                     <div class="result-item">
                         <span class="result-label">Total Amount</span>
-                        <span class="result-value total" id="totalAmount" aria-live="polite">$0.00</span>
+                        <span class="result-value total" id="totalAmount" aria-live="polite">$ --</span>
                     </div>
 
-                    <div class="chart-container">
+                    <div class="chart-container" id="pieChartContainer">
                         <div class="chart-title">Principal vs Interest Breakdown</div>
                         <div class="chart-wrapper">
                             <canvas id="pieChart" aria-label="Pie chart showing principal vs interest breakdown"></canvas>
+                            <div class="chart-placeholder">Enter values to generate the pie chart.</div>
                         </div>
-                        
-                        <div class="chart-title" style="margin-top: 30px;">Growth Over Time</div>
+                    </div>
+                    
+                    <div class="chart-container" id="lineChartContainer" style="margin-top: 30px;">
+                        <div class="chart-title">Growth Over Time</div>
                         <div class="line-chart-wrapper">
                             <canvas id="lineChart" aria-label="Line chart showing investment growth over time"></canvas>
+                            <div class="chart-placeholder">Enter values to generate the growth chart.</div>
                         </div>
                         <div class="tap-hint">Tap the chart for details</div>
                     </div>
@@ -394,7 +415,7 @@
 </body>
 </html>
     
-    <script src="js/calc.js"></script>
+    <script src="jas/calc.js"></script>
     <script src="js/calculators-database.js"></script>
     <script src="js/header-search.js" defer></script>
     <script src="js/simple-compound-interest-calculator.js" defer></script>
