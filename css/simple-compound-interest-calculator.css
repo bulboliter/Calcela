@@ -44,7 +44,6 @@ body {
     margin: 20px auto 60px;
 }
 
-/* Desktop layout - side by side */
 @media (min-width: 992px) {
     .calculator-container {
         display: grid;
@@ -289,14 +288,17 @@ select:focus {
 }
 
 .result-value {
-    color: #2c3e50;
+    color: #4a944a;
     font-size: 18px;
     font-weight: 600;
 }
-
+.result-value.princi {
+    color: #498fe0;
+    font-size: 18px;
+}
 .result-value.total {
-    color: #4a90e2;
-    font-size: 22px;
+    color: #2c3e50;
+    font-size: 19px;
 }
 
 .chart-container {
